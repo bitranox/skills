@@ -9,7 +9,7 @@ description: Use when writing, reviewing, or debugging Bash scripts, when needin
 
 Complete reference for GNU Bash 5.3 (May 2025). Covers all shell syntax, builtins, variables, expansions, redirections, and features. Use this skill whenever writing or reviewing bash scripts to ensure correctness.
 
-**This file is a scannable hub.** Each section below summarizes key constructs with compact tables — see the linked reference file in each section for full syntax, edge cases, and examples:
+**This file is a scannable hub.** Each section below summarizes key constructs with compact tables. Use the Read tool to load referenced files identified as relevant for full syntax, edge cases, and examples:
 
 - **Syntax & commands** (quoting, compound commands, pipelines): `shell-syntax-and-commands.md`
 - **Functions, parameters & expansions** (all expansion types, pattern matching): `functions-parameters-expansions.md`

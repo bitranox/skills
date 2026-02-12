@@ -29,18 +29,18 @@ A **skill** is a reference guide for proven techniques, patterns, or tools. Skil
 
 ## TDD Mapping for Skills
 
-| TDD Concept | Skill Creation |
-|-------------|----------------|
-| **Test case** | Pressure scenario with subagent |
-| **Production code** | Skill document (SKILL.md) |
-| **Test fails (RED)** | Agent violates rule without skill (baseline) |
-| **Test passes (GREEN)** | Agent complies with skill present |
-| **Refactor** | Close loopholes while maintaining compliance |
-| **Write test first** | Run baseline scenario BEFORE writing skill |
-| **Watch it fail** | Document exact rationalizations agent uses |
-| **Minimal code** | Write skill addressing those specific violations |
-| **Watch it pass** | Verify agent now complies |
-| **Refactor cycle** | Find new rationalizations → plug → re-verify |
+| TDD Concept             | Skill Creation                                   |
+|-------------------------|--------------------------------------------------|
+| **Test case**           | Pressure scenario with subagent                  |
+| **Production code**     | Skill document (SKILL.md)                        |
+| **Test fails (RED)**    | Agent violates rule without skill (baseline)     |
+| **Test passes (GREEN)** | Agent complies with skill present                |
+| **Refactor**            | Close loopholes while maintaining compliance     |
+| **Write test first**    | Run baseline scenario BEFORE writing skill       |
+| **Watch it fail**       | Document exact rationalizations agent uses       |
+| **Minimal code**        | Write skill addressing those specific violations |
+| **Watch it pass**       | Verify agent now complies                        |
+| **Refactor cycle**      | Find new rationalizations → plug → re-verify     |
 
 The entire skill creation process follows RED-GREEN-REFACTOR.
 
@@ -90,10 +90,18 @@ skills/
 - Code patterns (< 50 lines)
 - Everything else
 
+**Hub skills with supporting files:** When SKILL.md is an index that points to separate reference files, add an explicit instruction in the body (not frontmatter) telling Claude to use the Read tool. This prevents Claude from trying to answer from summary tables alone instead of loading the detailed file.
+
+```markdown
+Use the Read tool to load referenced files identified as relevant for full details.
+```
+
+Only add this for hub/reference skills with supporting files. Self-contained skills (where everything is in SKILL.md) don't need it — the full body is already loaded when invoked.
+
 ## SKILL.md Structure
 
 **Frontmatter (YAML):**
-- Only two fields supported: `name` and `description`
+- Only two fields supported: `name` and `description` (custom fields are stripped by Claude Code)
 - Max 1024 characters total
 - `name`: Use letters, numbers, and hyphens only (no parentheses, special chars)
 - `description`: Third-person, describes ONLY when to use (NOT what it does)

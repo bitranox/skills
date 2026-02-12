@@ -10,7 +10,7 @@ description: >
 
 # uv - Python Package & Project Manager
 
-All documentation files are flat, numbered markdown files.
+All documentation files are flat, numbered markdown files. Use the Read tool to load referenced files identified as relevant for full details.
 
 ---
 
