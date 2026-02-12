@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 >   backward-compatible manner.
 > - **PATCH** — Fixes, corrections, and small improvements to existing skills or documentation.
 
+## [Unreleased]
+
 ## [0.2.0] - 2026-02-12
 
 ### Added
