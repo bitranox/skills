@@ -35,7 +35,7 @@ Skills prefixed with `bx-` are custom-built or modified skills from one of the f
 # install uv/uvx
 python -m pip install --upgrade uv
 # install bx-skills
-uvx bx_skills@latest --help
+uvx bx-skills@latest --help
 ```
 
 ## CLI Usage
@@ -59,7 +59,7 @@ uvx bx-skills@latest tui                                           # Launch inte
 Add the following to `~/.bashrc` to automatically sync skills before every `claude` session:
 
 ```bash
-alias claude='uvx bx_skills@latest install --all -q && command claude'
+alias claude='uvx bx-skills@latest install --all -q && command claude'
 ```
 
 Reload your shell or run `source ~/.bashrc` to activate.
