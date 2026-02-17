@@ -120,11 +120,11 @@ Don't rely on passive `> Source:` annotations in supporting files — agents tre
 ```markdown
 ## Reference Files
 
-| Topic                                            | Distilled reference | Upstream source (full detail)      |
-|--------------------------------------------------|---------------------|------------------------------------|
-| Core API — Client, Session, request(), stream()  | api-reference.md    | docs/api/full-reference.md         |
-| Config — Settings, env vars, pyproject section    | configuration.md    | docs/guides/configuration.md       |
-| Tutorials — quickstart, first app, deployment     | quick-start.md      | tutorial/getting-started/README.md |
+| Topic                                           | Distilled reference | Upstream source (full detail)      |
+|-------------------------------------------------|---------------------|------------------------------------|
+| Core API — Client, Session, request(), stream() | api-reference.md    | docs/api/full-reference.md         |
+| Config — Settings, env vars, pyproject section  | configuration.md    | docs/guides/configuration.md       |
+| Tutorials — quickstart, first app, deployment   | quick-start.md      | tutorial/getting-started/README.md |
 
 Use the Read tool to load a distilled reference first.
 If it lacks the detail you need, load the upstream source.
@@ -133,8 +133,8 @@ If it lacks the detail you need, load the upstream source.
 The upstream table should work as a comprehensive index so an agent can jump straight to the right file for any specific class, function, or method. Each row needs to list the concrete API symbols the file covers, not just a prose summary.
 
 ```markdown
-| Topic                                                   | Upstream source |
-|---------------------------------------------------------|-----------------|
+| Topic                                                  | Upstream source |
+|--------------------------------------------------------|-----------------|
 | ❌ Widgets                                              | docs/widgets.md |
 | ✅ Widgets — DataTable, Tree, OptionList, Select, Input | docs/widgets.md |
 ```
@@ -151,8 +151,8 @@ Common failures:
 Fix: expand topic descriptions to include 2-3 disambiguating subtopics or keywords.
 
 ```markdown
-| Topic                                         | Distilled reference |
-|-----------------------------------------------|---------------------|
+| Topic                                        | Distilled reference |
+|----------------------------------------------|---------------------|
 | ❌ API                                        | api-reference.md    |
 | ❌ Config                                     | configuration.md    |
 | ✅ Core API — endpoints, auth, rate limits    | api-reference.md    |
@@ -195,6 +195,8 @@ Upstream file `docs/api/full-reference.md` contains headings: Client, Session, r
 
 Fixed topic: Core API — Client, Session, request(), Streaming, Connection, Retry
 ```
+
+**Presence gate:** Before checking coverage and accuracy, first confirm a tier 2 table exists at all. Run `find <upstream-dirs> -name '*.md'` to list all upstream files. If any exist but the routing table has no tier 2 (upstream source) column, the skill is incomplete — add the column and populate it before proceeding with coverage/accuracy checks.
 
 ## SKILL.md Structure
 
@@ -605,11 +607,11 @@ This cuts off entire class of "I'm following the spirit" rationalizations.
 Capture rationalizations from baseline testing (see Testing section below). Every excuse agents make goes in the table:
 
 ```markdown
-| Excuse                           | Reality                                                                  |
-|----------------------------------|--------------------------------------------------------------------------|
-| "Too simple to test"             | Simple code breaks. Test takes 30 seconds.                               |
-| "I'll test after"                | Tests passing immediately prove nothing.                                 |
-| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?"  |
+| Excuse                           | Reality                                                                 |
+|----------------------------------|-------------------------------------------------------------------------|
+| "Too simple to test"             | Simple code breaks. Test takes 30 seconds.                              |
+| "I'll test after"                | Tests passing immediately prove nothing.                                |
+| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
 ```
 
 ### Create Red Flags List
@@ -822,6 +824,7 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 - [ ] Hub skills: routing table with topic descriptions for each supporting file
 - [ ] Hub skills: "Use the Read tool..." instruction in body
 - [ ] Hub skills: routing table passes coverage check (file → table) and accuracy check (table → file) for all columns (both distilled reference and upstream source if tier 2 exists)
+- [ ] Hub skills: if upstream reference documents exist in subdirectories (e.g., `docs/`, `tutorial/`, `api/`), tier 2 table is present and lists every upstream file with concrete API symbols — run `find docs/ tutorial/ api/ -name '*.md'` (adjust paths) and confirm each result has a row in the tier 2 column
 - [ ] Token budget: `wc -w SKILL.md` under 500 words (body only)
 
 **Deployment:**
