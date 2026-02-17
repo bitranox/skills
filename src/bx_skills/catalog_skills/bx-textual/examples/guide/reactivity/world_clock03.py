@@ -9,7 +9,6 @@ from textual.widgets import Digits, Label
 
 
 class WorldClock(Widget):
-
     clock_time: reactive[datetime] = reactive(datetime.now)
 
     def __init__(self, timezone: str) -> None:

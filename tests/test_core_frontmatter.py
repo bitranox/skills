@@ -102,7 +102,8 @@ def test_colon_in_value_preserved(tmp_path: Path) -> None:
     md.parent.mkdir()
     md.write_text("---\nname: My Skill\ndescription: Key: value pair inside\n---\n", encoding="utf-8")
     _, desc = parse_frontmatter(md)
-    assert desc == "value pair inside"
+    # partition(":") splits on FIRST colon only, so everything after "description:" is kept
+    assert desc == "Key: value pair inside"
 
 
 def test_colon_in_quoted_value_preserved(tmp_path: Path) -> None:

@@ -41,15 +41,15 @@ uvx bx_skills@latest --help
 ## CLI Usage
 
 ```bash
-bx-skills --help                                        # Show help
-bx-skills list                                          # Browse catalog
-bx-skills list -q                                       # Machine-readable list
-bx-skills status --target all --scope both              # Audit installed skills
-bx-skills install --all --target claude-code            # Install all skills
-bx-skills install bx-textual --target claude-code --scope project  # Install specific skill
-bx-skills uninstall bx-textual --target claude-code -y  # Remove a skill
-bx-skills info                                          # Version & metadata
-bx-skills tui                                           # Launch interactive TUI
+uvx bx-skills@latest --help                                        # Show help
+uvx bx-skills@latest list                                          # Browse catalog
+uvx bx-skills@latest list -q                                       # Machine-readable list
+uvx bx-skills@latest status --target all --scope both              # Audit installed skills
+uvx bx-skills@latest install --all --target claude-code            # Install all skills
+uvx bx-skills@latest install bx-textual --target claude-code --scope project  # Install specific skill
+uvx bx-skills@latest uninstall bx-textual --target claude-code -y  # Remove a skill
+uvx bx-skills@latest info                                          # Version & metadata
+uvx bx-skills@latest tui                                           # Launch interactive TUI
 ```
 
 ## Auto-Update via Shell Alias

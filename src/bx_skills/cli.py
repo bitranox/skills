@@ -122,12 +122,18 @@ def cli(ctx: click.Context) -> None:
 @click.argument("skills", nargs=-1)
 @click.option("--all", "install_all", is_flag=True, default=False, help="Install/update all catalog skills.")
 @click.option(
-    "-t", "--target", "targets", multiple=True, default=("auto",),
+    "-t",
+    "--target",
+    "targets",
+    multiple=True,
+    default=("auto",),
     type=click.Choice(_target_choices, case_sensitive=False),
     help="Target CLI(s). Repeatable.",
 )
 @click.option(
-    "-s", "--scope", default="user",
+    "-s",
+    "--scope",
+    default="user",
     type=click.Choice(["user", "project", "both"], case_sensitive=False),
     help="Installation scope.",
 )
@@ -182,19 +188,30 @@ def install(skills: tuple[str, ...], install_all: bool, targets: tuple[str, ...]
 @click.argument("skills", nargs=-1)
 @click.option("--all", "uninstall_all", is_flag=True, default=False, help="Uninstall all installed skills.")
 @click.option(
-    "-t", "--target", "targets", multiple=True, default=("auto",),
+    "-t",
+    "--target",
+    "targets",
+    multiple=True,
+    default=("auto",),
     type=click.Choice(_target_choices, case_sensitive=False),
     help="Target CLI(s). Repeatable.",
 )
 @click.option(
-    "-s", "--scope", default="user",
+    "-s",
+    "--scope",
+    default="user",
     type=click.Choice(["user", "project", "both"], case_sensitive=False),
     help="Uninstall scope.",
 )
 @click.option("-y", "--yes", is_flag=True, default=False, help="Skip confirmation prompt.")
 @click.option("-q", "--quiet", is_flag=True, default=False, help="Suppress non-error output.")
 def uninstall(
-    skills: tuple[str, ...], uninstall_all: bool, targets: tuple[str, ...], scope: str, yes: bool, quiet: bool,
+    skills: tuple[str, ...],
+    uninstall_all: bool,
+    targets: tuple[str, ...],
+    scope: str,
+    yes: bool,
+    quiet: bool,
 ) -> None:
     """Remove installed skills."""
     if uninstall_all and skills:
@@ -238,9 +255,7 @@ def uninstall(
             succeeded += 1
             if not quiet:
                 scope_label = "user" if plan.scope == Scope.USER else "project"
-                click.echo(
-                    f"OK {plan.skill.dir_name} removed from {get_target_slug(plan.target)} ({scope_label})"
-                )
+                click.echo(f"OK {plan.skill.dir_name} removed from {get_target_slug(plan.target)} ({scope_label})")
         except Exception as exc:
             failed += 1
             click.echo(f"FAIL {plan.skill.dir_name}: {exc}", err=True)
@@ -282,12 +297,18 @@ def list_skills(quiet: bool) -> None:
 
 @cli.command()
 @click.option(
-    "-t", "--target", "targets", multiple=True, default=("auto",),
+    "-t",
+    "--target",
+    "targets",
+    multiple=True,
+    default=("auto",),
     type=click.Choice(_target_choices, case_sensitive=False),
     help="Target CLI(s). Repeatable.",
 )
 @click.option(
-    "-s", "--scope", default="both",
+    "-s",
+    "--scope",
+    default="both",
     type=click.Choice(["user", "project", "both"], case_sensitive=False),
     help="Scope to check.",
 )

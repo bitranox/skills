@@ -30,10 +30,10 @@ def parse_separator_cell(cell):
     s = cell.strip()
     if not s:
         return False, False, False
-    left = s.startswith(':')
-    right = s.endswith(':')
-    inner = s.lstrip(':').rstrip(':')
-    if not inner or not all(c == '-' for c in inner):
+    left = s.startswith(":")
+    right = s.endswith(":")
+    inner = s.lstrip(":").rstrip(":")
+    if not inner or not all(c == "-" for c in inner):
         return False, False, False
     return left, right, True
 
@@ -53,13 +53,13 @@ def build_separator_cell(width, left_align, right_align):
     """
     total = width + 2  # must fill same width as "| content |" minus the pipes
     if left_align and right_align:
-        return ':' + '-' * (total - 2) + ':'
+        return ":" + "-" * (total - 2) + ":"
     elif left_align:
-        return ':' + '-' * (total - 1)
+        return ":" + "-" * (total - 1)
     elif right_align:
-        return '-' * (total - 1) + ':'
+        return "-" * (total - 1) + ":"
     else:
-        return '-' * total
+        return "-" * total
 
 
 def split_table_row(line):
@@ -69,9 +69,9 @@ def split_table_row(line):
     """
     stripped = line.strip()
     # Remove leading and trailing pipe
-    if stripped.startswith('|'):
+    if stripped.startswith("|"):
         stripped = stripped[1:]
-    if stripped.endswith('|'):
+    if stripped.endswith("|"):
         stripped = stripped[:-1]
 
     cells = []
@@ -79,39 +79,39 @@ def split_table_row(line):
     i = 0
     while i < len(stripped):
         ch = stripped[i]
-        if ch == '`':
+        if ch == "`":
             # Count opening backticks
             bt_start = i
-            while i < len(stripped) and stripped[i] == '`':
+            while i < len(stripped) and stripped[i] == "`":
                 i += 1
             bt_count = i - bt_start
-            current.append('`' * bt_count)
+            current.append("`" * bt_count)
             # Find matching closing backticks (same count)
             while i < len(stripped):
-                if stripped[i] == '`':
+                if stripped[i] == "`":
                     close_start = i
-                    while i < len(stripped) and stripped[i] == '`':
+                    while i < len(stripped) and stripped[i] == "`":
                         i += 1
                     close_count = i - close_start
-                    current.append('`' * close_count)
+                    current.append("`" * close_count)
                     if close_count == bt_count:
                         break  # matched
                 else:
                     current.append(stripped[i])
                     i += 1
-        elif ch == '\\' and i + 1 < len(stripped) and stripped[i + 1] == '|':
+        elif ch == "\\" and i + 1 < len(stripped) and stripped[i + 1] == "|":
             # Escaped pipe — not a separator
-            current.append('\\|')
+            current.append("\\|")
             i += 2
-        elif ch == '|':
-            cells.append(''.join(current).strip())
+        elif ch == "|":
+            cells.append("".join(current).strip())
             current = []
             i += 1
         else:
             current.append(ch)
             i += 1
 
-    cells.append(''.join(current).strip())
+    cells.append("".join(current).strip())
     return cells
 
 
@@ -153,13 +153,14 @@ def reformat_table(lines):
     result = []
     for i, row in enumerate(rows):
         if i == 1:
-            parts = ['|' + build_separator_cell(col_widths[j], *alignments[j])
-                      for j in range(num_cols)]
-            result.append(''.join(parts) + '|')
+            parts = [
+                "|" + build_separator_cell(col_widths[j], *alignments[j])
+                for j in range(num_cols)
+            ]
+            result.append("".join(parts) + "|")
         else:
-            parts = ['| ' + row[j].ljust(col_widths[j]) + ' '
-                      for j in range(num_cols)]
-            result.append(''.join(parts) + '|')
+            parts = ["| " + row[j].ljust(col_widths[j]) + " " for j in range(num_cols)]
+            result.append("".join(parts) + "|")
     return result
 
 
@@ -170,10 +171,10 @@ def reformat_file(filepath, *, check_only=False, backup=False):
     Tables inside all other fenced code blocks are skipped.
     Returns True if the file was (or would be) changed.
     """
-    with open(filepath, 'r', encoding='utf-8') as f:
+    with open(filepath, "r", encoding="utf-8") as f:
         original = f.read()
 
-    lines = original.split('\n')
+    lines = original.split("\n")
 
     result = []
     table_lines = []
@@ -190,7 +191,7 @@ def reformat_file(filepath, *, check_only=False, backup=False):
     for line in lines:
         # Detect fenced code block boundaries (``` or ~~~)
         lstripped = line.lstrip()
-        fence_match = re.match(r'^(`{3,}|~{3,})', lstripped)
+        fence_match = re.match(r"^(`{3,}|~{3,})", lstripped)
 
         if fence_match:
             if not in_fence:
@@ -199,17 +200,19 @@ def reformat_file(filepath, *, check_only=False, backup=False):
                 fence_char = fence_match.group(1)[0]
                 fence_len = len(fence_match.group(1))
                 # Check if the code block is tagged as markdown
-                info_string = lstripped[len(fence_match.group(1)):].strip()
-                lang = info_string.split()[0].lower() if info_string else ''
-                in_markdown_fence = lang in ('markdown', 'md')
+                info_string = lstripped[len(fence_match.group(1)) :].strip()
+                lang = info_string.split()[0].lower() if info_string else ""
+                in_markdown_fence = lang in ("markdown", "md")
                 result.append(line)
                 continue
             else:
                 # Closing fence: same char, at least same length, nothing else on line
-                close_match = re.match(r'^(`{3,}|~{3,})\s*$', lstripped)
-                if (close_match
-                        and close_match.group(1)[0] == fence_char
-                        and len(close_match.group(1)) >= fence_len):
+                close_match = re.match(r"^(`{3,}|~{3,})\s*$", lstripped)
+                if (
+                    close_match
+                    and close_match.group(1)[0] == fence_char
+                    and len(close_match.group(1)) >= fence_len
+                ):
                     if in_markdown_fence:
                         flush_table()
                     in_fence = False
@@ -223,7 +226,7 @@ def reformat_file(filepath, *, check_only=False, backup=False):
 
         # Collect table rows (must start with | and contain at least one more |)
         stripped = line.strip()
-        if stripped.startswith('|') and '|' in stripped[1:]:
+        if stripped.startswith("|") and "|" in stripped[1:]:
             table_lines.append(stripped)
         else:
             flush_table()
@@ -231,7 +234,7 @@ def reformat_file(filepath, *, check_only=False, backup=False):
 
     flush_table()
 
-    new_content = '\n'.join(result)
+    new_content = "\n".join(result)
 
     if original == new_content:
         return False
@@ -240,9 +243,9 @@ def reformat_file(filepath, *, check_only=False, backup=False):
         return True
 
     if backup:
-        shutil.copy2(filepath, str(filepath) + '.bak')
+        shutil.copy2(filepath, str(filepath) + ".bak")
 
-    with open(filepath, 'w', encoding='utf-8') as f:
+    with open(filepath, "w", encoding="utf-8") as f:
         f.write(new_content)
     return True
 
@@ -254,42 +257,44 @@ def main():
     files = []
 
     for arg in args:
-        if arg in ('--check', '-c'):
+        if arg in ("--check", "-c"):
             check_only = True
-        elif arg in ('--backup', '-b'):
+        elif arg in ("--backup", "-b"):
             backup = True
-        elif arg in ('--help', '-h'):
+        elif arg in ("--help", "-h"):
             print(__doc__.strip())
             sys.exit(0)
-        elif arg.startswith('-'):
-            print(f'Unknown option: {arg}', file=sys.stderr)
+        elif arg.startswith("-"):
+            print(f"Unknown option: {arg}", file=sys.stderr)
             sys.exit(1)
         else:
             files.append(arg)
 
     if not files:
-        print('Usage: python3 reformat_tables.py [--check] [--backup] <file.md> [...]',
-              file=sys.stderr)
+        print(
+            "Usage: python3 reformat_tables.py [--check] [--backup] <file.md> [...]",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     any_changed = False
     for path in files:
         if not Path(path).is_file():
-            print(f'Error: not a file: {path}', file=sys.stderr)
+            print(f"Error: not a file: {path}", file=sys.stderr)
             sys.exit(1)
         changed = reformat_file(path, check_only=check_only, backup=backup)
         if changed:
             any_changed = True
             if check_only:
-                print(f'Would reformat: {path}')
+                print(f"Would reformat: {path}")
             else:
-                print(f'Reformatted: {path}')
+                print(f"Reformatted: {path}")
         else:
-            print(f'Unchanged: {path}')
+            print(f"Unchanged: {path}")
 
     if check_only and any_changed:
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -26,7 +26,7 @@ class ContainerApp(App):
     def compose(self) -> ComposeResult:
         with Horizontal(classes="with-border"):
             for n in range(10):
-                yield Box(label=f"Box {n+1}")
+                yield Box(label=f"Box {n + 1}")
 
 
 if __name__ == "__main__":

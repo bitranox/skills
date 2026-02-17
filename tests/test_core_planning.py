@@ -8,7 +8,6 @@ import pytest
 
 from bx_skills.core import (
     CLITarget,
-    InstallPlan,
     Scope,
     SkillAction,
     SkillInfo,
@@ -22,9 +21,7 @@ pytestmark = pytest.mark.os_agnostic
 # ── get_active_targets ───────────────────────────────────────────────────────
 
 
-def test_project_only_target_excluded_from_user_scope(
-    sample_target: CLITarget, project_only_target: CLITarget
-) -> None:
+def test_project_only_target_excluded_from_user_scope(sample_target: CLITarget, project_only_target: CLITarget) -> None:
     pairs = get_active_targets([sample_target, project_only_target], [Scope.USER])
     targets_in_pairs = [t.name for t, _ in pairs]
     assert "TestCLI" in targets_in_pairs
@@ -68,9 +65,7 @@ def test_project_only_in_project_scope_included(project_only_target: CLITarget) 
 # ── build_plans ──────────────────────────────────────────────────────────────
 
 
-def test_skip_action_produces_no_plans(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path
-) -> None:
+def test_skip_action_produces_no_plans(sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path) -> None:
     plans = build_plans(
         [sample_skill],
         {sample_skill.dir_name: SkillAction.SKIP},
@@ -80,9 +75,7 @@ def test_skip_action_produces_no_plans(
     assert plans == []
 
 
-def test_keep_action_produces_no_plans(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path
-) -> None:
+def test_keep_action_produces_no_plans(sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path) -> None:
     plans = build_plans(
         [sample_skill],
         {sample_skill.dir_name: SkillAction.KEEP},
@@ -92,9 +85,7 @@ def test_keep_action_produces_no_plans(
     assert plans == []
 
 
-def test_install_action_produces_plan(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path
-) -> None:
+def test_install_action_produces_plan(sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path) -> None:
     plans = build_plans(
         [sample_skill],
         {sample_skill.dir_name: SkillAction.INSTALL},
@@ -106,9 +97,7 @@ def test_install_action_produces_plan(
     assert plans[0].skill is sample_skill
 
 
-def test_update_action_produces_plan(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path
-) -> None:
+def test_update_action_produces_plan(sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path) -> None:
     plans = build_plans(
         [sample_skill],
         {sample_skill.dir_name: SkillAction.UPDATE},
@@ -119,9 +108,7 @@ def test_update_action_produces_plan(
     assert plans[0].action == SkillAction.UPDATE
 
 
-def test_uninstall_only_when_installed(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path
-) -> None:
+def test_uninstall_only_when_installed(sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path) -> None:
     # Not installed → no uninstall plan
     plans = build_plans(
         [sample_skill],
@@ -150,9 +137,7 @@ def test_uninstall_when_installed_produces_plan(
     assert plans[0].action == SkillAction.UNINSTALL
 
 
-def test_missing_action_defaults_to_skip(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path
-) -> None:
+def test_missing_action_defaults_to_skip(sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path) -> None:
     plans = build_plans(
         [sample_skill],
         {},  # no action entry for this skill

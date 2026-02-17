@@ -1,3 +1,3 @@
 """BX Skills Installer TUI."""
 
-__version__ = "0.1.0"
+from bx_skills.__init__conf__ import version as __version__  # noqa: F401  # re-export

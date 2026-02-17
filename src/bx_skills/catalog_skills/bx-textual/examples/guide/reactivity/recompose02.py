@@ -6,7 +6,6 @@ from textual.widgets import Digits
 
 
 class Clock(App):
-
     CSS = """
     Screen {align: center middle}
     Digits {width: auto}

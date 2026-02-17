@@ -46,18 +46,16 @@ def test_ignore_pycache_handles_empty_list() -> None:
 # ── install_skill ────────────────────────────────────────────────────────────
 
 
-def _make_plan(
-    source: Path, dest: Path, action: SkillAction = SkillAction.INSTALL
-) -> InstallPlan:
+def _make_plan(source: Path, dest: Path, action: SkillAction = SkillAction.INSTALL) -> InstallPlan:
+    from bx_skills.core import CLITarget
+
     skill = SkillInfo(
         dir_name="test-skill",
         name="Test Skill",
         description="For testing",
         source_path=source,
     )
-    from tests.conftest import sample_target as _  # noqa: F401
-
-    target_obj = __import__("bx_skills.core", fromlist=["CLITarget"]).CLITarget(
+    target_obj = CLITarget(
         name="TestCLI",
         user_path_tpl=".testcli/skills/{skill}",
         project_path_tpl=".testcli/skills/{skill}",

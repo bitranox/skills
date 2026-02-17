@@ -3,15 +3,26 @@ this class exposes only the gtk constants and some of the "safe" classes.
 we don't want the server to open pop-ups on the client, so we won't expose
 Window() et al.
 """
+
 import gtk
 import pygtk
-pygtk.require('2.0')
+
+pygtk.require("2.0")
 
 
-safe_gtk_classes = set([
-    "Box", "VBox", "HBox", "Frame", "Entry", "Button", "ScrolledWindow",
-    "TextView", "Label",
-])
+safe_gtk_classes = set(
+    [
+        "Box",
+        "VBox",
+        "HBox",
+        "Frame",
+        "Entry",
+        "Button",
+        "ScrolledWindow",
+        "TextView",
+        "Label",
+    ]
+)
 
 
 class SafeGTK(object):

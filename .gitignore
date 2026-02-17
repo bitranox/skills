@@ -183,7 +183,6 @@ uv.lock
 # div
 #  .devcontainer/   --> we need that for github codespaces
 .claude/
-CLAUDE.md
 prompts.md
 .grimp_cache/
 .workdir/

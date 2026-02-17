@@ -3,14 +3,15 @@
 
 Additional context: https://github.com/tomerfiliba-org/rpyc/issues/491#issuecomment-1131843406
 """
+
 import logging
 import threading
 import time
 import rpyc
 
 
-logger = rpyc.setup_logger(namespace='client')
-rpyc.core.protocol.DEFAULT_CONFIG['logger'] = logger
+logger = rpyc.setup_logger(namespace="client")
+rpyc.core.protocol.DEFAULT_CONFIG["logger"] = logger
 
 
 def async_example(connection, event):
@@ -31,11 +32,11 @@ def async_example(connection, event):
 
     bgsrv = rpyc.BgServingThread(connection)
     ares = _async_function(event, block_server_thread=False)
-    value = ares.value
+    _value = ares.value
     event.clear()
-    logger.info('Running buggy blocking example...')
+    logger.info("Running buggy blocking example...")
     ares = _async_function(event, block_server_thread=True)
-    value = ares.value
+    _value = ares.value
     event.clear()
     bgsrv.stop()
 
@@ -45,7 +46,7 @@ def how_to_block_main_thread(connection, event):
     t0 = time.time()
     logger.debug("Running example that blocks main thread of client...")
     value = connection.root.function(event, call_set=True)
-    logger.debug(f"Value returned after {time.time()-t0}s: {value}")
+    logger.debug(f"Value returned after {time.time() - t0}s: {value}")
 
 
 class Event:
@@ -53,13 +54,13 @@ class Event:
         self._evnt = threading.Event()
 
     def __getattr__(self, name):
-        if name in ('wait', 'set', 'clear'):
-            logging.info(f'Event.__getattr__({name})')
+        if name in ("wait", "set", "clear"):
+            logging.info(f"Event.__getattr__({name})")
         return getattr(self._evnt, name)
 
 
 if __name__ == "__main__":
-    logger.info('Printed from main thread')
+    logger.info("Printed from main thread")
     connection = rpyc.connect("localhost", 18812, config=dict(allow_all_attrs=True))
     event = Event()
     async_example(connection, event)

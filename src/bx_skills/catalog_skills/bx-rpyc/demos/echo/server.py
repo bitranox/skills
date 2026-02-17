@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-import inspect
 import logging
+
 # import gevent
 # from gevent import monkey
 # monkey.patch_all()
@@ -24,5 +24,7 @@ class EchoService(rpyc.Service):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    echo_svc = rpyc.OneShotServer(service=EchoService, port=18861, protocol_config={'allow_all_attrs': True})
+    echo_svc = rpyc.OneShotServer(
+        service=EchoService, port=18861, protocol_config={"allow_all_attrs": True}
+    )
     echo_svc.start()

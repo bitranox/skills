@@ -1,21 +1,23 @@
 """Textual TUI application for installing AI coding assistant skills."""
 
+# pyright: reportAttributeAccessIssue=false
+
 from __future__ import annotations
 
+from enum import Enum
 from pathlib import Path
+from typing import ClassVar
 
+from rich.text import Text
 from textual import work
 from textual.app import App, ComposeResult
-from textual.binding import Binding
-from textual.containers import Horizontal, Vertical, VerticalScroll
+from textual.binding import Binding, BindingType
+from textual.containers import VerticalScroll
 from textual.screen import ModalScreen, Screen
-from textual.widget import Widget
 from textual.widgets import (
-    Button,
+    DataTable,
     Footer,
     Label,
-    ListItem,
-    ListView,
     RichLog,
     SelectionList,
     Static,
@@ -33,16 +35,27 @@ from bx_skills.core import (
     build_plans,
     check_installed,
     discover_skills,
-    get_active_targets,
     install_skill,
-    resolve_destination,
     uninstall_skill,
 )
-from bx_skills.theme import CATPPUCCIN_MOCHA, SUBTEXT0, SURFACE1, SURFACE2, TEAL
+from bx_skills.theme import CATPPUCCIN_MOCHA, SUBTEXT0, SURFACE1, TEAL
+
+# ── Cell state for DataTable ─────────────────────────────────────────────────
+
+
+class CellState(Enum):
+    """State of a single cell in the skills DataTable."""
+
+    SELECT = "X"  # will install (new) or update (installed)
+    KEEP = "-"  # installed, will NOT be updated
+    SKIP = " "  # not installed, will NOT be installed
+    DELETE = "D"  # will be deleted
+
 
 # ── CSS ───────────────────────────────────────────────────────────────────────
 
-APP_CSS = """\
+APP_CSS = (
+    """\
 Screen {
     background: $background;
 }
@@ -62,7 +75,9 @@ Screen {
     width: 100%;
     text-align: center;
     padding: 0 0 1 0;
-    color: """ + SUBTEXT0 + """;
+    color: """
+    + SUBTEXT0
+    + """;
     background: $panel;
 }
 
@@ -102,104 +117,45 @@ Screen {
     display: block;
 }
 
-.button-bar {
-    dock: bottom;
-    height: 3;
-    padding: 0 2;
-    align: center middle;
+SelectionList {
+    background: $background;
+    height: 1fr;
 }
 
-.button-bar Button {
-    margin: 0 1;
+SelectionList:focus > .option-list--option-highlighted {
+    background: """
+    + SURFACE1
+    + """;
+    color: $foreground;
+    text-style: bold;
 }
 
-SkillItem {
-    height: auto;
-    padding: 0 1;
+SelectionList > .option-list--option-highlighted {
+    background: $surface;
+    color: $foreground;
 }
 
-SkillItem .skill-row {
-    height: auto;
+SelectionList > .option-list--option-hover {
+    background: $surface;
 }
 
-SkillItem .skill-prefix {
-    width: 6;
-    min-width: 6;
+DataTable {
+    background: $background;
+    height: 1fr;
 }
 
-SkillItem .skill-name {
-    width: 1fr;
+DataTable:focus > .datatable--cursor {
+    background: """
+    + SURFACE1
+    + """;
+    color: $foreground;
+    text-style: bold;
 }
 
-SkillItem .skill-tag {
-    width: auto;
-    min-width: 14;
-    text-align: right;
-}
-
-SkillItem .skill-desc {
-    padding-left: 6;
-    color: """ + SUBTEXT0 + """;
-}
-
-SkillItem.action-install .skill-prefix {
+DataTable > .datatable--header {
+    background: $panel;
     color: $primary;
-}
-
-SkillItem.action-install .skill-name {
-    color: $primary;
-}
-
-SkillItem.action-install .skill-tag {
-    color: $primary;
-}
-
-SkillItem.action-update .skill-prefix {
-    color: $primary;
-}
-
-SkillItem.action-update .skill-name {
-    color: $primary;
-}
-
-SkillItem.action-update .skill-tag {
-    color: $primary;
-}
-
-SkillItem.action-keep .skill-prefix {
-    color: $success 60%;
-}
-
-SkillItem.action-keep .skill-name {
-    color: $success 60%;
-}
-
-SkillItem.action-keep .skill-tag {
-    color: $success 60%;
-}
-
-SkillItem.action-skip .skill-prefix {
-    color: """ + SURFACE2 + """;
-}
-
-SkillItem.action-skip .skill-name {
-    color: """ + SURFACE2 + """;
-}
-
-SkillItem.action-skip .skill-tag {
-    color: """ + SURFACE2 + """;
-}
-
-SkillItem.action-uninstall .skill-prefix {
-    color: $error;
-}
-
-SkillItem.action-uninstall .skill-name {
-    color: $error;
-}
-
-SkillItem.action-uninstall .skill-tag {
-    color: $error;
+    text-style: bold;
 }
 
 HelpScreen {
@@ -234,10 +190,13 @@ RichLog {
     height: 1;
     padding: 0 2;
     text-style: bold;
-    color: """ + TEAL + """;
+    color: """
+    + TEAL
+    + """;
     background: $panel;
 }
 """
+)
 
 
 # ── HelpScreen ────────────────────────────────────────────────────────────────
@@ -248,28 +207,32 @@ HELP_TEXT = """\
   Escape      Previous step / close help
   q           Quit
 
-[bold]Targets & Scope[/bold]
-  Multiple CLIs and scopes can be selected simultaneously.
+[bold]Targets[/bold]
+  Multiple CLIs can be selected simultaneously.
   Detected CLIs are pre-selected based on ~/.<cli-dir>/ existence.
 
 [bold]Skills Screen[/bold]
-  Space       Toggle: install <-> skip (new) or update <-> keep (installed)
-  d           Toggle uninstall for installed skills
-  a           Select all for install/update
-  n           Deselect all (reset to skip/keep)
+  DataTable with User and Project scope columns.
+  Space       Cycle cell state under cursor
+  a           Select all (set all to X)
+  n           Reset to defaults
 
-[bold]Defaults[/bold]
-  Installed skills default to UPDATE (will overwrite with latest).
-  Deselected installed skills are KEPT (no changes).
-  Not-installed skills default to SKIP.
-  Uninstall removes from ALL selected scopes where present.
+[bold]Cell Symbols[/bold]
+  X           Will install (new) or update (installed)  [green]
+  -           Installed, will NOT be updated             [dim]
+  (blank)     Not installed, will NOT be installed
+  D           Will be deleted                            [red]
+
+[bold]Cycling[/bold]
+  Installed skills:  X -> - -> D -> X
+  New skills:        (blank) -> X -> (blank)
 """
 
 
 class HelpScreen(ModalScreen[None]):
     """Modal help overlay."""
 
-    BINDINGS = [
+    BINDINGS: ClassVar[list[BindingType]] = [
         Binding("escape", "dismiss", "Close"),
         Binding("question_mark", "dismiss", "Close", key_display="?"),
     ]
@@ -280,94 +243,14 @@ class HelpScreen(ModalScreen[None]):
             yield Static(HELP_TEXT, classes="help-body")
 
 
-# ── SkillItem widget ──────────────────────────────────────────────────────────
-
-_ACTION_DISPLAY: dict[SkillAction, tuple[str, str, str]] = {
-    SkillAction.INSTALL:   ("[+]", "(new)",       "action-install"),
-    SkillAction.UPDATE:    ("[+]", "(update)",    "action-update"),
-    SkillAction.KEEP:      ("[ ]", "(installed)", "action-keep"),
-    SkillAction.SKIP:      ("[ ]", "",            "action-skip"),
-    SkillAction.UNINSTALL: ("[-]", "(UNINSTALL)", "action-uninstall"),
-}
-
-
-class SkillItem(ListItem):
-    """A two-line list item representing a skill with its current action."""
-
-    def __init__(
-        self,
-        skill: SkillInfo,
-        action: SkillAction,
-        is_installed: bool,
-    ) -> None:
-        super().__init__()
-        self.skill = skill
-        self.action = action
-        self.is_installed = is_installed
-
-    def compose(self) -> ComposeResult:
-        prefix, tag, css_class = _ACTION_DISPLAY[self.action]
-        self.add_class(css_class)
-        with Vertical():
-            with Horizontal(classes="skill-row"):
-                yield Static(prefix, classes="skill-prefix")
-                yield Static(self.skill.name, classes="skill-name")
-                yield Static(tag, classes="skill-tag")
-            yield Static(self.skill.description, classes="skill-desc")
-
-    def _update_display(self) -> None:
-        """Update prefix, tag, and CSS class from current action."""
-        prefix, tag, new_class = _ACTION_DISPLAY[self.action]
-        self.query_one(".skill-prefix", Static).update(prefix)
-        self.query_one(".skill-tag", Static).update(tag)
-        # Swap CSS classes
-        for cls in ("action-install", "action-update", "action-keep",
-                     "action-skip", "action-uninstall"):
-            self.remove_class(cls)
-        self.add_class(new_class)
-
-    def toggle(self) -> None:
-        """Space key: toggle install/skip or update/keep."""
-        if self.action == SkillAction.SKIP:
-            self.action = SkillAction.INSTALL
-        elif self.action == SkillAction.INSTALL:
-            self.action = SkillAction.SKIP
-        elif self.action == SkillAction.UPDATE:
-            self.action = SkillAction.KEEP
-        elif self.action == SkillAction.KEEP:
-            self.action = SkillAction.UPDATE
-        elif self.action == SkillAction.UNINSTALL:
-            self.action = SkillAction.UPDATE
-        self._update_display()
-
-    def toggle_uninstall(self) -> None:
-        """d key: toggle uninstall for installed skills only."""
-        if not self.is_installed:
-            return
-        if self.action == SkillAction.UNINSTALL:
-            self.action = SkillAction.KEEP
-        elif self.action in (SkillAction.UPDATE, SkillAction.KEEP):
-            self.action = SkillAction.UNINSTALL
-        self._update_display()
-
-    def select_all(self) -> None:
-        """Set to INSTALL (new) or UPDATE (installed)."""
-        self.action = SkillAction.UPDATE if self.is_installed else SkillAction.INSTALL
-        self._update_display()
-
-    def deselect_all(self) -> None:
-        """Set to SKIP (new) or KEEP (installed)."""
-        self.action = SkillAction.KEEP if self.is_installed else SkillAction.SKIP
-        self._update_display()
-
-
 # ── Screen 1: TargetsScreen ──────────────────────────────────────────────────
+
 
 class TargetsScreen(Screen):
     """Select which CLI tools to install skills for."""
 
-    BINDINGS = [
-        Binding("enter", "next", "Next"),
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding("enter", "next", "Next", priority=True),
         Binding("escape", "quit_app", "Quit"),
         Binding("q", "quit_app", "Quit", show=False),
         Binding("question_mark", "help", "Help", key_display="?"),
@@ -390,7 +273,7 @@ class TargetsScreen(Screen):
             if target.project_only:
                 parts.append("  [project-level only]")
             label = "".join(parts)
-            selections.append(Selection(label, target, detected))
+            selections.append(Selection(label, target, initial_state=detected))
 
         yield SelectionList[CLITarget](*selections, id="targets-list")
         yield Label("", classes="error-label", id="targets-error")
@@ -406,7 +289,7 @@ class TargetsScreen(Screen):
             return
         error_label.remove_class("visible")
         self.app.selected_targets = selected  # type: ignore[attr-defined]
-        self.app.push_screen(ScopeScreen())
+        self.app.push_screen(SkillsScreen())
 
     def action_quit_app(self) -> None:
         self.app.exit()
@@ -417,11 +300,12 @@ class TargetsScreen(Screen):
 
 # ── Screen 2: ScopeScreen ────────────────────────────────────────────────────
 
+
 class ScopeScreen(Screen):
     """Select user-level and/or project-level scope."""
 
-    BINDINGS = [
-        Binding("enter", "next", "Next"),
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding("enter", "next", "Next", priority=True),
         Binding("escape", "go_back", "Back"),
         Binding("q", "quit_app", "Quit", show=False),
         Binding("question_mark", "help", "Help", key_display="?"),
@@ -436,11 +320,11 @@ class ScopeScreen(Screen):
 
         cwd = Path.cwd()
         yield SelectionList[Scope](
-            Selection("User-level  (global, in ~/)", Scope.USER, True),
+            Selection("User-level  (global, in ~/)", Scope.USER, initial_state=True),
             Selection(
                 f"Project-level  (current directory: {cwd})",
                 Scope.PROJECT,
-                False,
+                initial_state=False,
             ),
             id="scope-list",
         )
@@ -475,8 +359,7 @@ class ScopeScreen(Screen):
         all_project_only = all(t.project_only for t in targets)
         if all_project_only and selected == [Scope.USER]:
             error_label.update(
-                "All selected CLIs are project-level only. "
-                "Select Project-level scope or add other CLI targets."
+                "All selected CLIs are project-level only. Select Project-level scope or add other CLI targets."
             )
             error_label.add_class("visible")
             return
@@ -497,121 +380,167 @@ class ScopeScreen(Screen):
 
 # ── Screen 3: SkillsScreen ───────────────────────────────────────────────────
 
-class SkillsScreen(Screen):
-    """Select skills and choose actions (install/update/keep/skip/uninstall)."""
+_SCOPE_COLUMNS: list[tuple[Scope, str]] = [(Scope.USER, "user"), (Scope.PROJECT, "project")]
 
-    BINDINGS = [
-        Binding("enter", "next", "Next"),
+
+class SkillsScreen(Screen):
+    """Select skills to install/update/delete via a DataTable with per-scope columns."""
+
+    BINDINGS: ClassVar[list[BindingType]] = [
+        Binding("enter", "next", "Next", priority=True),
         Binding("escape", "go_back", "Back"),
         Binding("q", "quit_app", "Quit", show=False),
-        Binding("space", "toggle_skill", "Toggle", key_display="Space"),
-        Binding("d", "uninstall_skill", "Uninstall", key_display="d"),
+        Binding("space", "toggle_cell", "Toggle", priority=True),
         Binding("a", "select_all", "All", key_display="a"),
         Binding("n", "deselect_all", "None", key_display="n"),
         Binding("question_mark", "help", "Help", key_display="?"),
     ]
 
+    def __init__(self) -> None:
+        super().__init__()
+        self._states: dict[tuple[str, Scope], CellState] = {}
+        self._installed_at: dict[tuple[str, Scope], bool] = {}
+        self._skill_order: list[str] = []
+        self._user_col_active: bool = True
+
     def compose(self) -> ComposeResult:
         yield Static("Select Skills", classes="screen-title")
         yield Static(
-            "Space: toggle  |  d: uninstall  |  a: all  |  n: none",
+            "Space: toggle  |  a: all  |  n: none  |  X=install  -=keep  D=delete  \u00b7=skip",
             classes="screen-subtitle",
         )
-
-        skills: list[SkillInfo] = self.app.skills  # type: ignore[attr-defined]
-        targets: list[CLITarget] = self.app.selected_targets  # type: ignore[attr-defined]
-        scopes: list[Scope] = self.app.selected_scopes  # type: ignore[attr-defined]
-        active_pairs = get_active_targets(targets, scopes)
-
-        items: list[SkillItem] = []
-        for skill in skills:
-            installed = any(
-                check_installed(skill, t, s) for t, s in active_pairs
-            )
-            if installed:
-                action = SkillAction.UPDATE
-            else:
-                action = SkillAction.SKIP
-            items.append(SkillItem(skill, action, installed))
-
-        yield ListView(*items, id="skills-list")
+        yield DataTable(id="skills-table", cursor_type="cell")
         yield Label("", classes="nothing-label", id="nothing-label")
-
-        with Horizontal(classes="button-bar"):
-            yield Button("Select All", id="btn-select-all", variant="default")
-            yield Button("Deselect All", id="btn-deselect-all", variant="default")
-
         yield Footer()
 
-    def _get_highlighted_item(self) -> SkillItem | None:
-        lv = self.query_one("#skills-list", ListView)
-        if lv.highlighted_child is not None:
-            return lv.highlighted_child  # type: ignore[return-value]
-        return None
+    def on_mount(self) -> None:
+        skills: list[SkillInfo] = self.app.skills  # type: ignore[attr-defined]
+        targets: list[CLITarget] = self.app.selected_targets  # type: ignore[attr-defined]
+        self._user_col_active = not all(t.project_only for t in targets)
 
-    def _has_actionable(self) -> bool:
-        """Check if any skill has an actionable state (not KEEP/SKIP)."""
-        lv = self.query_one("#skills-list", ListView)
-        for child in lv.children:
-            if isinstance(child, SkillItem):
-                if child.action not in (SkillAction.KEEP, SkillAction.SKIP):
-                    return True
-        return False
+        table = self.query_one("#skills-table", DataTable)
+        table.add_column("Skill", key="skill", width=32)
+        table.add_column("User", key="user", width=8)
+        table.add_column("Project", key="project", width=8)
+        table.add_column("Description", key="desc")
 
-    def action_toggle_skill(self) -> None:
-        item = self._get_highlighted_item()
-        if item:
-            item.toggle()
-            self._update_nothing_label()
+        for skill in skills:
+            self._skill_order.append(skill.dir_name)
+            for scope in (Scope.USER, Scope.PROJECT):
+                installed = any(
+                    check_installed(skill, t, scope) for t in targets if not (scope == Scope.USER and t.project_only)
+                )
+                self._installed_at[(skill.dir_name, scope)] = installed
+                if scope == Scope.USER and not self._user_col_active:
+                    self._states[(skill.dir_name, scope)] = CellState.SKIP
+                elif installed:
+                    self._states[(skill.dir_name, scope)] = CellState.SELECT
+                else:
+                    self._states[(skill.dir_name, scope)] = CellState.SKIP
 
-    def action_uninstall_skill(self) -> None:
-        item = self._get_highlighted_item()
-        if item:
-            item.toggle_uninstall()
-            self._update_nothing_label()
+            table.add_row(
+                Text(skill.dir_name),
+                self._render_cell(skill.dir_name, Scope.USER),
+                self._render_cell(skill.dir_name, Scope.PROJECT),
+                Text(skill.description, style="dim"),
+                key=skill.dir_name,
+            )
 
-    def action_select_all(self) -> None:
-        lv = self.query_one("#skills-list", ListView)
-        for child in lv.children:
-            if isinstance(child, SkillItem):
-                child.select_all()
-        self._update_nothing_label()
+    def _render_cell(self, dir_name: str, scope: Scope) -> Text:
+        """Return styled Rich Text for a cell based on its state."""
+        if scope == Scope.USER and not self._user_col_active:
+            return Text("\u00b7", style="dim", justify="center")
+        state = self._states.get((dir_name, scope), CellState.SKIP)
+        if state == CellState.SELECT:
+            return Text("X", style="bold green", justify="center")
+        if state == CellState.KEEP:
+            return Text("-", style="dim", justify="center")
+        if state == CellState.DELETE:
+            return Text("D", style="bold red", justify="center")
+        return Text(" ", justify="center")
 
-    def action_deselect_all(self) -> None:
-        lv = self.query_one("#skills-list", ListView)
-        for child in lv.children:
-            if isinstance(child, SkillItem):
-                child.deselect_all()
-        self._update_nothing_label()
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "btn-select-all":
-            self.action_select_all()
-        elif event.button.id == "btn-deselect-all":
-            self.action_deselect_all()
-
-    def _update_nothing_label(self) -> None:
-        label = self.query_one("#nothing-label", Label)
-        if not self._has_actionable():
-            label.update("Nothing to do \u2014 select skills to install, update, or uninstall.")
-            label.add_class("visible")
+    def action_toggle_cell(self) -> None:
+        """Cycle the cell state under the cursor."""
+        table = self.query_one("#skills-table", DataTable)
+        coord = table.cursor_coordinate
+        col = coord.column
+        if col not in (1, 2):
+            return
+        scope = Scope.USER if col == 1 else Scope.PROJECT
+        if scope == Scope.USER and not self._user_col_active:
+            return
+        row = coord.row
+        if row >= len(self._skill_order):
+            return
+        dn = self._skill_order[row]
+        installed = self._installed_at.get((dn, scope), False)
+        current = self._states.get((dn, scope), CellState.SKIP)
+        if installed:
+            cycle = [CellState.SELECT, CellState.KEEP, CellState.DELETE]
         else:
-            label.remove_class("visible")
+            cycle = [CellState.SKIP, CellState.SELECT]
+        idx = cycle.index(current) if current in cycle else 0
+        new_state = cycle[(idx + 1) % len(cycle)]
+        self._states[(dn, scope)] = new_state
+        col_key = "user" if col == 1 else "project"
+        table.update_cell(dn, col_key, self._render_cell(dn, scope))
+
+    def _to_skill_action(self, dir_name: str, scope: Scope) -> SkillAction:
+        """Map a CellState to a SkillAction."""
+        state = self._states.get((dir_name, scope), CellState.SKIP)
+        installed = self._installed_at.get((dir_name, scope), False)
+        if state == CellState.SELECT:
+            return SkillAction.UPDATE if installed else SkillAction.INSTALL
+        if state == CellState.KEEP:
+            return SkillAction.KEEP
+        if state == CellState.DELETE:
+            return SkillAction.UNINSTALL
+        return SkillAction.SKIP
 
     def action_next(self) -> None:
-        if not self._has_actionable():
-            self._update_nothing_label()
+        has_actionable = any(
+            self._to_skill_action(dn, scope) not in (SkillAction.KEEP, SkillAction.SKIP)
+            for dn in self._skill_order
+            for scope in (Scope.USER, Scope.PROJECT)
+        )
+        if not has_actionable:
+            label = self.query_one("#nothing-label", Label)
+            label.update("Nothing to do \u2014 select skills to install, update, or uninstall.")
+            label.add_class("visible")
             return
-
-        # Collect actions
-        actions: dict[str, SkillAction] = {}
-        lv = self.query_one("#skills-list", ListView)
-        for child in lv.children:
-            if isinstance(child, SkillItem):
-                actions[child.skill.dir_name] = child.action
-
-        self.app.skill_actions = actions  # type: ignore[attr-defined]
+        self.query_one("#nothing-label", Label).remove_class("visible")
+        plans: list[InstallPlan] = []
+        for scope in (Scope.USER, Scope.PROJECT):
+            scope_actions = {dn: self._to_skill_action(dn, scope) for dn in self._skill_order}
+            plans.extend(
+                build_plans(
+                    self.app.skills,  # type: ignore[attr-defined]
+                    scope_actions,
+                    self.app.selected_targets,  # type: ignore[attr-defined]
+                    [scope],
+                )
+            )
+        self.app._plans = plans  # type: ignore[attr-defined]
         self.app.push_screen(ConfirmScreen())
+
+    def action_select_all(self) -> None:
+        table = self.query_one("#skills-table", DataTable)
+        for dn in self._skill_order:
+            for scope, col_key in _SCOPE_COLUMNS:
+                if scope == Scope.USER and not self._user_col_active:
+                    continue
+                self._states[(dn, scope)] = CellState.SELECT
+                table.update_cell(dn, col_key, self._render_cell(dn, scope))
+
+    def action_deselect_all(self) -> None:
+        table = self.query_one("#skills-table", DataTable)
+        for dn in self._skill_order:
+            for scope, col_key in _SCOPE_COLUMNS:
+                if scope == Scope.USER and not self._user_col_active:
+                    continue
+                installed = self._installed_at.get((dn, scope), False)
+                self._states[(dn, scope)] = CellState.KEEP if installed else CellState.SKIP
+                table.update_cell(dn, col_key, self._render_cell(dn, scope))
 
     def action_go_back(self) -> None:
         self.app.pop_screen()
@@ -625,10 +554,11 @@ class SkillsScreen(Screen):
 
 # ── Screen 4: ConfirmScreen ──────────────────────────────────────────────────
 
+
 class ConfirmScreen(Screen):
     """Review planned operations before executing."""
 
-    BINDINGS = [
+    BINDINGS: ClassVar[list[BindingType]] = [
         Binding("enter", "execute", "Execute"),
         Binding("escape", "go_back", "Back"),
         Binding("q", "quit_app", "Quit", show=False),
@@ -648,25 +578,17 @@ class ConfirmScreen(Screen):
         yield Footer()
 
     def on_mount(self) -> None:
+        plans: list[InstallPlan] = self.app._plans  # type: ignore[attr-defined]
         skills: list[SkillInfo] = self.app.skills  # type: ignore[attr-defined]
-        actions: dict[str, SkillAction] = self.app.skill_actions  # type: ignore[attr-defined]
-        targets: list[CLITarget] = self.app.selected_targets  # type: ignore[attr-defined]
-        scopes: list[Scope] = self.app.selected_scopes  # type: ignore[attr-defined]
-
-        plans = build_plans(skills, actions, targets, scopes)
-        self.app._plans = plans  # type: ignore[attr-defined]
-
         log = self.query_one("#confirm-log", RichLog)
 
         # Group by action type
         installs = [p for p in plans if p.action in (SkillAction.INSTALL, SkillAction.UPDATE)]
         uninstalls = [p for p in plans if p.action == SkillAction.UNINSTALL]
 
-        # Count unchanged
-        keep_count = sum(
-            1 for a in actions.values()
-            if a in (SkillAction.KEEP, SkillAction.SKIP)
-        )
+        # Count skills with no plans at all
+        actionable_skills = {p.skill.dir_name for p in plans}
+        keep_count = sum(1 for s in skills if s.dir_name not in actionable_skills)
 
         if installs:
             log.write("[bold]Will Install/Update:[/bold]")
@@ -692,10 +614,7 @@ class ConfirmScreen(Screen):
         groups: dict[str, list[InstallPlan]] = {}
         for p in plans:
             scope_label = "User" if p.scope == Scope.USER else "Project"
-            if p.scope == Scope.USER:
-                base = "~/"
-            else:
-                base = str(Path.cwd()) + "/"
+            base = "~/" if p.scope == Scope.USER else str(Path.cwd()) + "/"
             tpl = p.target.user_path_tpl if p.scope == Scope.USER else p.target.project_path_tpl
             path_base = tpl.rsplit("/{skill}", 1)[0] + "/"
             key = f"{p.target.name} \u00b7 {scope_label} ({base}{path_base})"
@@ -726,10 +645,11 @@ class ConfirmScreen(Screen):
 
 # ── Screen 5: ResultsScreen ──────────────────────────────────────────────────
 
+
 class ResultsScreen(Screen):
     """Execute plans and show progressive results."""
 
-    BINDINGS = [
+    BINDINGS: ClassVar[list[BindingType]] = [
         Binding("escape", "quit_app", "Quit"),
         Binding("q", "quit_app", "Quit", show=False),
         Binding("question_mark", "help", "Help", key_display="?"),
@@ -763,36 +683,36 @@ class ResultsScreen(Screen):
             try:
                 if plan.action == SkillAction.UNINSTALL:
                     uninstall_skill(plan)
-                    self.call_from_thread(
+                    self.app.call_from_thread(
                         log.write,
                         f"[green]\\[OK][/green] {desc} (uninstalled)",
                     )
                 elif plan.action == SkillAction.INSTALL:
                     install_skill(plan)
-                    self.call_from_thread(
+                    self.app.call_from_thread(
                         log.write,
                         f"[green]\\[OK][/green] {desc} (installed)",
                     )
                 else:  # UPDATE
                     install_skill(plan)
-                    self.call_from_thread(
+                    self.app.call_from_thread(
                         log.write,
                         f"[green]\\[OK][/green] {desc} (updated)",
                     )
                 succeeded += 1
             except Exception as exc:
                 failed += 1
-                self.call_from_thread(
+                self.app.call_from_thread(
                     log.write,
                     f"[red]\\[!!][/red] {desc} - {exc}",
                 )
 
         summary = f"{succeeded} succeeded, {failed} failed"
-        self.call_from_thread(
+        self.app.call_from_thread(
             self.query_one("#results-title", Static).update,
             "Complete",
         )
-        self.call_from_thread(
+        self.app.call_from_thread(
             self.query_one("#results-summary", Static).update,
             summary,
         )
@@ -806,6 +726,7 @@ class ResultsScreen(Screen):
 
 # ── App ───────────────────────────────────────────────────────────────────────
 
+
 class SkillsInstallerApp(App):
     """TUI for installing AI coding assistant skills."""
 
@@ -813,16 +734,17 @@ class SkillsInstallerApp(App):
     SUB_TITLE = "AI Coding Assistant Skills"
     CSS = APP_CSS
 
-    BINDINGS = [
+    BINDINGS: ClassVar[list[BindingType]] = [
         Binding("q", "quit", "Quit", show=False),
     ]
 
-    # State — populated by screens
-    skills: list[SkillInfo] = []
-    selected_targets: list[CLITarget] = []
-    selected_scopes: list[Scope] = []
-    skill_actions: dict[str, SkillAction] = {}
-    _plans: list[InstallPlan] = []
+    def __init__(self) -> None:
+        super().__init__()
+        # State — populated by screens
+        self.skills: list[SkillInfo] = []
+        self.selected_targets: list[CLITarget] = []
+        self.skill_actions: dict[str, SkillAction] = {}  # kept for CLI compat
+        self._plans: list[InstallPlan] = []
 
     def on_mount(self) -> None:
         self.register_theme(CATPPUCCIN_MOCHA)
@@ -831,7 +753,7 @@ class SkillsInstallerApp(App):
         self.skills = discover_skills()
         if not self.skills:
             self.notify(
-                "No skills found in catalog. Check your installation.",
+                "No skills found in catalog_skills. Check your installation.",
                 severity="error",
                 timeout=5,
             )

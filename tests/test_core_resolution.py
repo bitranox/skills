@@ -11,23 +11,17 @@ from bx_skills.core import CLITarget, Scope, SkillInfo, check_installed, resolve
 pytestmark = pytest.mark.os_agnostic
 
 
-def test_user_scope_resolves_under_home(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path
-) -> None:
+def test_user_scope_resolves_under_home(sample_skill: SkillInfo, sample_target: CLITarget, fake_home: Path) -> None:
     dest = resolve_destination(sample_skill, sample_target, Scope.USER)
     assert dest == fake_home / ".testcli" / "skills" / "alpha-skill"
 
 
-def test_project_scope_resolves_under_cwd(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_cwd: Path
-) -> None:
+def test_project_scope_resolves_under_cwd(sample_skill: SkillInfo, sample_target: CLITarget, fake_cwd: Path) -> None:
     dest = resolve_destination(sample_skill, sample_target, Scope.PROJECT)
     assert dest == fake_cwd / ".testcli" / "skills" / "alpha-skill"
 
 
-def test_template_substitutes_skill_dir_name(
-    sample_skill: SkillInfo, fake_home: Path
-) -> None:
+def test_template_substitutes_skill_dir_name(sample_skill: SkillInfo, fake_home: Path) -> None:
     target = CLITarget(
         name="Custom",
         user_path_tpl=".custom/rules/{skill}",
@@ -69,9 +63,7 @@ def test_check_installed_false_when_dir_exists_but_no_skill_md(
     assert check_installed(sample_skill, sample_target, Scope.USER) is False
 
 
-def test_check_installed_project_scope(
-    sample_skill: SkillInfo, sample_target: CLITarget, fake_cwd: Path
-) -> None:
+def test_check_installed_project_scope(sample_skill: SkillInfo, sample_target: CLITarget, fake_cwd: Path) -> None:
     dest = fake_cwd / ".testcli" / "skills" / "alpha-skill"
     dest.mkdir(parents=True)
     (dest / "SKILL.md").write_text("installed", encoding="utf-8")

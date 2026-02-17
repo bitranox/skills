@@ -63,16 +63,12 @@ class TestDetectInstalledTargets:
 
 class TestResolveSkillsByNames:
     def test_found_and_missing(self, catalog_dir: Path) -> None:
-        found, missing = resolve_skills_by_names(
-            ["alpha-skill", "no-such-skill"], catalog_dir
-        )
+        found, missing = resolve_skills_by_names(["alpha-skill", "no-such-skill"], catalog_dir)
         assert len(found) == 1
         assert found[0].dir_name == "alpha-skill"
         assert missing == ["no-such-skill"]
 
     def test_all_found(self, catalog_dir: Path) -> None:
-        found, missing = resolve_skills_by_names(
-            ["alpha-skill", "bravo-skill"], catalog_dir
-        )
+        found, missing = resolve_skills_by_names(["alpha-skill", "bravo-skill"], catalog_dir)
         assert len(found) == 2
         assert missing == []

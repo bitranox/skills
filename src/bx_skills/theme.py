@@ -1,4 +1,4 @@
-"""Catppuccin Mocha theme for the Skills Installer TUI."""
+"""Dark theme for the Skills Installer TUI."""
 
 from __future__ import annotations
 
@@ -6,21 +6,29 @@ from textual.theme import Theme
 
 CATPPUCCIN_MOCHA = Theme(
     name="catppuccin-mocha",
-    primary="#89b4fa",
-    secondary="#cba6f7",
-    accent="#f9e2af",
-    foreground="#cdd6f4",
-    background="#1e1e2e",
-    success="#a6e3a1",
-    warning="#fab387",
-    error="#f38ba8",
-    surface="#313244",
-    panel="#181825",
+    primary="#5fafff",
+    secondary="#af87ff",
+    accent="#ffaf5f",
+    foreground="#d0d0d0",
+    background="#000000",
+    success="#5fff87",
+    warning="#ffaf5f",
+    error="#ff5f87",
+    surface="#1a1a1a",
+    panel="#0d0d0d",
     dark=True,
+    variables={
+        "block-cursor-background": "#333333",
+        "block-cursor-foreground": "#e0e0e0",
+        "block-cursor-text-style": "bold",
+        "block-cursor-blurred-background": "#1a1a1a",
+        "block-cursor-blurred-foreground": "#d0d0d0",
+        "block-cursor-blurred-text-style": "none",
+    },
 )
 
 # Extra palette constants for CSS / Rich markup
-SUBTEXT0 = "#a6adc8"
-SURFACE1 = "#45475a"
-SURFACE2 = "#585b70"
-TEAL = "#94e2d5"
+SUBTEXT0 = "#808080"
+SURFACE1 = "#333333"
+SURFACE2 = "#4a4a4a"
+TEAL = "#5fffaf"

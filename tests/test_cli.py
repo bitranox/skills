@@ -59,7 +59,10 @@ class TestInstall:
         assert "Unknown skill" in result.stderr
 
     def test_all_with_auto_detect(
-        self, cli_runner: CliRunner, fake_home: Path, fake_cwd: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
+        fake_cwd: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         result = cli_runner.invoke(cli, ["install", "--all"])
@@ -67,7 +70,9 @@ class TestInstall:
         assert "installed" in result.output
 
     def test_specific_skills(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         result = cli_runner.invoke(cli, ["install", "alpha-skill"])
@@ -75,13 +80,18 @@ class TestInstall:
         assert "alpha-skill" in result.output
 
     def test_specific_target(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         result = cli_runner.invoke(cli, ["install", "--all", "--target", "claude-code"])
         assert result.exit_code == 0
 
     def test_both_scopes(
-        self, cli_runner: CliRunner, fake_home: Path, fake_cwd: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
+        fake_cwd: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         result = cli_runner.invoke(cli, ["install", "--all", "--scope", "both"])
@@ -90,7 +100,9 @@ class TestInstall:
         assert "project" in result.output
 
     def test_quiet_flag(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         result = cli_runner.invoke(cli, ["install", "--all", "-q"])
@@ -108,7 +120,9 @@ class TestUninstall:
         assert result.exit_code != 0
 
     def test_confirmation_prompt(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         # Install first so there's something to uninstall
         (fake_home / ".claude").mkdir()
@@ -118,7 +132,9 @@ class TestUninstall:
         assert "removed" in result.output
 
     def test_abort_on_no(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         cli_runner.invoke(cli, ["install", "--all", "-q"])
@@ -127,7 +143,9 @@ class TestUninstall:
         assert "Aborted" in result.output
 
     def test_yes_skips_prompt(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         cli_runner.invoke(cli, ["install", "--all", "-q"])
@@ -135,7 +153,9 @@ class TestUninstall:
         assert result.exit_code == 0
 
     def test_noop_when_not_installed(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         result = cli_runner.invoke(cli, ["uninstall", "alpha-skill", "-y"])
@@ -143,7 +163,9 @@ class TestUninstall:
         assert "Nothing to uninstall" in result.output
 
     def test_all_yes(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         cli_runner.invoke(cli, ["install", "--all", "-q"])
@@ -175,7 +197,9 @@ class TestList:
 
 class TestStatus:
     def test_shows_installed_markers(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         cli_runner.invoke(cli, ["install", "alpha-skill", "-q"])
@@ -184,7 +208,9 @@ class TestStatus:
         assert "installed" in result.output
 
     def test_shows_missing(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         result = cli_runner.invoke(cli, ["status", "--target", "claude-code", "--scope", "user"])
@@ -192,7 +218,9 @@ class TestStatus:
         assert "--" in result.output
 
     def test_quiet_mode(
-        self, cli_runner: CliRunner, fake_home: Path,
+        self,
+        cli_runner: CliRunner,
+        fake_home: Path,
     ) -> None:
         (fake_home / ".claude").mkdir()
         result = cli_runner.invoke(cli, ["status", "-q", "--target", "claude-code", "--scope", "user"])

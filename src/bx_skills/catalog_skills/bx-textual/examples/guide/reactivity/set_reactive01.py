@@ -45,7 +45,6 @@ class Greeter(Horizontal):
 
 
 class NameApp(App):
-
     CSS = """
     Screen {
         align: center middle;

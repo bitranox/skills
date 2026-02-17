@@ -25,7 +25,7 @@ def echo_forever(main_event):
         count = 0
         edelta = 0
         cdelta = 0
-        _max = {'edelta': 0, 'cdelta': 0}
+        _max = {"edelta": 0, "cdelta": 0}
         fileno = "unknown"
         addr = "unknown"
         port = "unknown"
@@ -34,8 +34,8 @@ def echo_forever(main_event):
         while main_event.is_set():
             count += 1
             cdelta, edelta, fileno, addr, port = echo_once()
-            _max['cdelta'] = cdelta
-            _max['edelta'] = edelta
+            _max["cdelta"] = cdelta
+            _max["edelta"] = edelta
     except KeyboardInterrupt:
         if main_event.is_set():
             main_event.clear()
@@ -61,15 +61,17 @@ def echo_client_pool(client_limit):
             eid_proc[eid] = pool.apply_async(func=echo_forever, args=(main_event,))
         while True:
             alive = len([r for r in eid_proc.values() if not r.ready()])
-            print('{0}/{1} alive'.format(alive, client_limit))
+            print("{0}/{1} alive".format(alive, client_limit))
             if alive == 1:
-                print('All of the client processes are dead except one. Exiting loop...')
+                print(
+                    "All of the client processes are dead except one. Exiting loop..."
+                )
                 break
             else:
                 time.sleep(1)
         res = [r.get() for r in eid_proc.values() if r.ready()]
-        cdelta = [_max['cdelta'] for _max, tb in res if _max]
-        edelta = [_max['edelta'] for _max, tb in res if _max]
+        cdelta = [_max["cdelta"] for _max, tb in res if _max]
+        edelta = [_max["edelta"] for _max, tb in res if _max]
         if cdelta:
             cdelta = max(cdelta)
         else:

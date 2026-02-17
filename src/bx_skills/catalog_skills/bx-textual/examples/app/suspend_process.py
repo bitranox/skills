@@ -4,7 +4,6 @@ from textual.widgets import Label
 
 
 class SuspendKeysApp(App[None]):
-
     BINDINGS = [Binding("ctrl+z", "suspend_process")]
 
     def compose(self) -> ComposeResult:

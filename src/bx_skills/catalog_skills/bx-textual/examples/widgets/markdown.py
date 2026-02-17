@@ -49,7 +49,6 @@ def loop_last(values: Iterable[T]) -> Iterable[Tuple[bool, T]]:
 
 
 class MarkdownExampleApp(App):
-
     def compose(self) -> ComposeResult:
         markdown = Markdown(EXAMPLE_MARKDOWN)
         markdown.code_indent_guides = False

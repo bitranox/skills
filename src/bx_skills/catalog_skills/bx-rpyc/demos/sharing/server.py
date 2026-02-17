@@ -11,7 +11,8 @@ THREAD_SAFE = True  # Toggles thread safe and unsafe behavior
 
 
 def synchronize(lock):
-    """ Decorator that invokes the lock acquire call before a function call and releases after """
+    """Decorator that invokes the lock acquire call before a function call and releases after"""
+
     def sync_func(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -19,19 +20,22 @@ def synchronize(lock):
             res = func(*args, **kwargs)
             lock.release()
             return res
+
         return wrapper
+
     return sync_func
 
 
 class SharingComponent(object):
-    """ Initialized in the class definition of SharingService and shared by all instances of SharingService """
+    """Initialized in the class definition of SharingService and shared by all instances of SharingService"""
+
     lock = threading.Lock()
 
     def __init__(self):
         self.sequence_id = 0
 
     def sleepy_sequence_id(self):
-        """ increment id and sometimes sleep to force race condition """
+        """increment id and sometimes sleep to force race condition"""
         self.sequence_id += 1
         _expected_sequence_id = self.sequence_id
         if random.randint(0, 1) == 1:
@@ -43,21 +47,22 @@ class SharingComponent(object):
 
     @synchronize(lock)
     def get_sequence_id(self):
-        """ provides a thread-safe execution frame to otherwise unsafe functions """
+        """provides a thread-safe execution frame to otherwise unsafe functions"""
         return self.sleepy_sequence_id()
 
 
 class SharingService(rpyc.Service):
-    """ A class that allows for sharing components between connection instances """
+    """A class that allows for sharing components between connection instances"""
+
     __shared__ = SharingComponent()
 
     @property
     def shared(self):
-        """ convenient access to an otherwise long object name """
+        """convenient access to an otherwise long object name"""
         return SharingService.__shared__
 
     def exposed_echo(self, message):
-        """ example of the potential perils when threading shared state """
+        """example of the potential perils when threading shared state"""
         if THREAD_SAFE:
             seq_id = self.shared.get_sequence_id()
         else:
@@ -70,6 +75,8 @@ class SharingService(rpyc.Service):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    debugging_config = {'allow_all_attrs': True, 'sync_request_timeout': None}
-    echo_svc = rpyc.ThreadedServer(service=SharingService, port=18861, protocol_config=debugging_config)
+    debugging_config = {"allow_all_attrs": True, "sync_request_timeout": None}
+    echo_svc = rpyc.ThreadedServer(
+        service=SharingService, port=18861, protocol_config=debugging_config
+    )
     echo_svc.start()

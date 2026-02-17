@@ -6,7 +6,6 @@ from textual.widgets import Button
 
 
 class SuspendingApp(App[None]):
-
     def compose(self) -> ComposeResult:
         yield Button("Open the editor", id="edit")
 
