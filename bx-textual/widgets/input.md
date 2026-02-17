@@ -36,7 +36,7 @@ You can set `type` to any of the following values:
 
 
 | input.type  | Description                                 |
-| ----------- | ------------------------------------------- |
+|-------------|---------------------------------------------|
 | `"integer"` | Restricts input to integers.                |
 | `"number"`  | Restricts input to a floating point number. |
 | `"text"`    | Allow all text (no restrictions).           |
@@ -195,7 +195,7 @@ If you set `valid_empty=True` then empty values will bypass any validators, and 
 ## Reactive Attributes
 
 | Name              | Type   | Default  | Description                                                     |
-| ----------------- | ------ | -------- | --------------------------------------------------------------- |
+|-------------------|--------|----------|-----------------------------------------------------------------|
 | `cursor_blink`    | `bool` | `True`   | True if cursor blinking is enabled.                             |
 | `value`           | `str`  | `""`     | The value currently in the text input.                          |
 | `cursor_position` | `int`  | `0`      | The index of the cursor in the value string.                    |

@@ -98,7 +98,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name                     | Type | Default | Description                                                        |
-| ------------------------ | ---- | ------- | ------------------------------------------------------------------ |
+|--------------------------|------|---------|--------------------------------------------------------------------|
 | `show_table_of_contents` | bool | True    | Whether a Table of Contents should be displayed with the Markdown. |
 
 ## Messages

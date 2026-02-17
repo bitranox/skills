@@ -149,7 +149,7 @@ Auto-closing tags are recommended when it is clear which tag they are intended t
 Tags may contain any number of the following values:
 
 | Style       | Abbreviation | Description                                                                                                                                               |
-| ----------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `bold`      | `b`          | **Bold text**                                                                                                                                             |
 | `dim`       | `d`          | <span style="opacity: 0.6;">Dim text </span> (slightly transparent)                                                                                       |
 | `italic`    | `i`          | *Italic text*                                                                                                                                             |

@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
+description: Use when creating new skills, editing existing skills, structuring SKILL.md files, writing skill frontmatter, testing skills with subagents, deploying skills, or verifying skills work before deployment
 ---
 
 # Writing Skills
@@ -18,6 +18,19 @@ You write test cases (pressure scenarios with subagents), watch them fail (basel
 **REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill adapts TDD to documentation.
 
 **Official guidance:** For Anthropic's official skill authoring best practices, see anthropic-best-practices.md. This document provides additional patterns and guidelines that complement the TDD-focused approach in this skill.
+
+## Reference Files
+
+| Topic                                                                      | File                              |
+|----------------------------------------------------------------------------|-----------------------------------|
+| Testing methodology — pressure scenarios, RED/GREEN/REFACTOR, meta-testing | testing-skills-with-subagents.md  |
+| Persuasion principles — authority, commitment, scarcity, social proof      | persuasion-principles.md          |
+| Anthropic official best practices — conciseness, freedom, structure        | anthropic-best-practices.md       |
+| Graphviz conventions — node shapes, edge labels, naming patterns           | graphviz-conventions.dot          |
+| Flowchart rendering — SVG output from dot diagrams                         | render-graphs.js                  |
+| Worked example — full test campaign testing CLAUDE.md variants             | examples/CLAUDE_MD_TESTING.md     |
+
+Use the Read tool to load referenced files identified as relevant for full details.
 
 ## What is a Skill?
 
@@ -97,6 +110,77 @@ Use the Read tool to load referenced files identified as relevant for full detai
 ```
 
 Only add this for hub/reference skills with supporting files. Self-contained skills (where everything is in SKILL.md) don't need it — the full body is already loaded when invoked.
+
+**Upstream doc linking:** When hub skills consolidate content from original source documents in subdirectories (e.g., `docs/`, `tutorial/`, `api/`), include a two-tier routing table in SKILL.md:
+1. **Tier 1** — distilled reference files (same directory as SKILL.md)
+2. **Tier 2** — original upstream docs (subdirectory paths for deeper detail)
+
+Don't rely on passive `> Source:` annotations in supporting files — agents treat these as attribution, not as actionable links. The hub must provide an explicit routing table for upstream docs.
+
+```markdown
+## Reference Files
+
+| Topic                                             | Distilled reference          | Upstream source (full detail)     |
+|---------------------------------------------------|------------------------------|-----------------------------------|
+| Core API — Client, Session, request(), stream()   | api-reference.md             | docs/api/full-reference.md        |
+| Config — Settings, env vars, pyproject section     | configuration.md             | docs/guides/configuration.md      |
+| Tutorials — quickstart, first app, deployment      | quick-start.md               | tutorial/getting-started/README.md|
+
+Use the Read tool to load a distilled reference first.
+If it lacks the detail you need, load the upstream source.
+```
+
+The upstream table should work as a comprehensive index so an agent can jump straight to the right file for any specific class, function, or method. Each row needs to list the concrete API symbols the file covers, not just a prose summary.
+
+```markdown
+| Topic                                                     | Upstream source              |
+|-----------------------------------------------------------|------------------------------|
+| ❌ Widgets                                                | docs/widgets.md              |
+| ✅ Widgets — DataTable, Tree, OptionList, Select, Input   | docs/widgets.md              |
+```
+
+**Building routing tables:** For each supporting file, use `grep -E '^#{2,3} ' filename.md` to extract H2/H3 headings. List the 3-5 most important headings, class names, or function names as the topic description for that row. If a file covers more than 5 key terms, pick the ones an agent is most likely to search for and add an "etc." or "and more" suffix.
+
+**Evaluating routing descriptions:** For each row in a routing table, ask: given a realistic user query, could Claude pick the right file from the topic description alone? If two rows sound equally plausible for the same query, the descriptions need more differentiation.
+
+Common failures:
+- Topic names too generic ("API", "Config") — Claude can't distinguish files
+- Overlapping scope — two files both sound relevant for the same query
+- Missing subtopics — key content buried inside a file isn't mentioned in the description
+
+Fix: expand topic descriptions to include 2-3 disambiguating subtopics or keywords.
+
+```markdown
+| Topic                                         | Distilled reference   |
+|-----------------------------------------------|-----------------------|
+| ❌ API                                        | api-reference.md      |
+| ❌ Config                                     | configuration.md      |
+| ✅ Core API — endpoints, auth, rate limits    | api-reference.md      |
+| ✅ Config — env vars, CLI flags, config files | configuration.md      |
+```
+
+**Verifying routing tables:** After writing a routing table, run two checks to confirm it is both complete and accurate:
+
+1. **Coverage check (file → table):** For each referenced file, run `grep -E '^#{2,3} ' filename.md` to extract its headings. For each heading or key term, confirm it appears in the routing table's topic description for that file. Missing terms = content agents can't find through the table.
+2. **Accuracy check (table → file):** For each search term listed in the routing table, run `grep -i "term" filename.md` to confirm the file actually contains it. Mismatches = stale entries that route agents to the wrong file.
+
+A routing table passes when every key term in the file appears in the table (coverage) and every term in the table appears in the file (accuracy). For files with 10+ headings, coverage is sufficient if the top 5 most-queried terms are represented.
+
+Example:
+
+```markdown
+Referenced file `widgets.md` contains headings: DataTable, Tree, Select, Input, OptionList
+
+✅ Coverage check passes — routing table says:
+| Widgets — DataTable, Tree, OptionList, Select, Input | widgets.md |
+
+❌ Coverage check fails — routing table says:
+| Widgets | widgets.md |
+(agent searching for "DataTable" won't find the right file)
+
+✅ Accuracy check passes — grep widgets.md for "DataTable" → found
+❌ Accuracy check fails — routing table lists "TreeView" but file only contains "Tree"
+```
 
 ## SKILL.md Structure
 
@@ -283,7 +367,7 @@ wc -w skills/path/SKILL.md
 - `creating-skills`, `testing-skills`, `debugging-with-logs`
 - Active, describes the action you're taking
 
-### 4. Cross-Referencing Other Skills
+### 5. Cross-Referencing Other Skills
 
 **When writing documentation that references other skills:**
 
@@ -321,7 +405,7 @@ digraph when_flowchart {
 - Linear instructions → Numbered lists
 - Labels without semantic meaning (step1, helper2)
 
-See @graphviz-conventions.dot for graphviz style rules.
+**REFERENCE:** See graphviz-conventions.dot for graphviz style rules.
 
 **Visualizing for your human partner:** Use `render-graphs.js` in this directory to render a skill's flowcharts to SVG:
 ```bash
@@ -451,16 +535,16 @@ Different skill types need different test approaches:
 
 ## Common Rationalizations for Skipping Testing
 
-| Excuse | Reality |
-|--------|---------|
-| "Skill is obviously clear" | Clear to you ≠ clear to other agents. Test it. |
-| "It's just a reference" | References can have gaps, unclear sections. Test retrieval. |
-| "Testing is overkill" | Untested skills have issues. Always. 15 min testing saves hours. |
-| "I'll test if problems emerge" | Problems = agents can't use skill. Test BEFORE deploying. |
-| "Too tedious to test" | Testing is less tedious than debugging bad skill in production. |
-| "I'm confident it's good" | Overconfidence guarantees issues. Test anyway. |
-| "Academic review is enough" | Reading ≠ using. Test application scenarios. |
-| "No time to test" | Deploying untested skill wastes more time fixing it later. |
+| Excuse                         | Reality                                                          |
+|--------------------------------|------------------------------------------------------------------|
+| "Skill is obviously clear"     | Clear to you ≠ clear to other agents. Test it.                   |
+| "It's just a reference"        | References can have gaps, unclear sections. Test retrieval.      |
+| "Testing is overkill"          | Untested skills have issues. Always. 15 min testing saves hours. |
+| "I'll test if problems emerge" | Problems = agents can't use skill. Test BEFORE deploying.        |
+| "Too tedious to test"          | Testing is less tedious than debugging bad skill in production.  |
+| "I'm confident it's good"      | Overconfidence guarantees issues. Test anyway.                   |
+| "Academic review is enough"    | Reading ≠ using. Test application scenarios.                     |
+| "No time to test"              | Deploying untested skill wastes more time fixing it later.       |
 
 **All of these mean: Test before deploying. No exceptions.**
 
@@ -538,6 +622,49 @@ Add to description: symptoms of when you're ABOUT to violate the rule:
 description: use when implementing any feature or bugfix, before writing implementation code
 ```
 
+## Planning Before You Start
+
+**Before writing any skill, plan the work.** Use TaskCreate to build a task list, then execute it step by step. This prevents skipping steps and makes progress visible.
+
+### Step 0: Create a Plan
+
+1. **Identify skill type** — Is this a discipline skill, technique, pattern, or reference? (See "Skill Types" above.) This determines the test approach.
+2. **Choose test approach** — Discipline skills need pressure scenarios with 3+ combined pressures. Technique skills need application scenarios. Reference skills need retrieval scenarios. (See "Testing All Skill Types" below.)
+3. **List pressure scenarios** — Draft 2-3 scenario descriptions before writing anything.
+4. **Estimate scope** — Self-contained SKILL.md or hub with supporting files?
+5. **Create task list** — Use TaskCreate with one task per phase:
+
+```
+TaskCreate: "RED — Write and run baseline pressure scenarios"
+TaskCreate: "GREEN — Write minimal SKILL.md addressing baseline failures"
+TaskCreate: "REFACTOR — Close loopholes from GREEN testing"
+TaskCreate: "Deploy — Commit, push, verify discoverability"
+```
+
+### Using Agent Teams for Skill Creation
+
+For complex skills, use TeamCreate to parallelize work:
+
+```
+TeamCreate: team_name="skill-creation"
+
+Task (subagent_type="general-purpose", team_name="skill-creation"):
+  "Run 3 baseline pressure scenarios WITHOUT the skill, document rationalizations"
+
+Task (subagent_type="general-purpose", team_name="skill-creation"):
+  "Draft SKILL.md structure: frontmatter, overview, core pattern sections"
+```
+
+**Parallelizable work:**
+- Multiple pressure scenarios can run as separate subagents simultaneously
+- Routing table coverage and accuracy checks can run in parallel per file
+- Different test types (pressure, application, retrieval) can run concurrently
+
+**Sequential work (must wait for previous step):**
+- GREEN phase depends on RED phase results (you need baseline failures to address)
+- REFACTOR depends on GREEN test results (you need new rationalizations to counter)
+- Deployment depends on all tests passing
+
 ## RED-GREEN-REFACTOR for Skills
 
 Follow the TDD cycle:
@@ -549,19 +676,51 @@ Run pressure scenario with subagent WITHOUT the skill. Document exact behavior:
 - What rationalizations did they use (verbatim)?
 - Which pressures triggered violations?
 
-This is "watch the test fail" - you must see what agents naturally do before writing the skill.
+**How to dispatch a baseline test:**
+
+```
+Task tool call:
+  subagent_type: "general-purpose"
+  prompt: |
+    IMPORTANT: This is a real scenario. Choose and act.
+    [Your pressure scenario here]
+
+    Choose A, B, or C. Be honest.
+
+  # Do NOT include the skill in the prompt — this is the baseline test.
+  # The subagent must work without skill guidance to reveal natural behavior.
+```
+
+This is "watch the test fail" — you must see what agents naturally do before writing the skill.
 
 ### GREEN: Write Minimal Skill
 
 Write skill that addresses those specific rationalizations. Don't add extra content for hypothetical cases.
 
-Run same scenarios WITH skill. Agent should now comply.
+**How to dispatch a verification test:**
+
+```
+Task tool call:
+  subagent_type: "general-purpose"
+  prompt: |
+    You have access to this skill:
+    [Paste the full SKILL.md content here]
+
+    IMPORTANT: This is a real scenario. Choose and act.
+    [Same pressure scenario as baseline]
+
+    Choose A, B, or C. Be honest.
+
+  # Include the full skill content in the prompt so the subagent can follow it.
+```
+
+Agent should now comply. If agent still fails: skill is unclear or incomplete — revise and re-test.
 
 ### REFACTOR: Close Loopholes
 
 Agent found new rationalization? Add explicit counter. Re-test until bulletproof.
 
-**Testing methodology:** See @testing-skills-with-subagents.md for the complete testing methodology:
+**REQUIRED REFERENCE:** See testing-skills-with-subagents.md for the complete testing methodology:
 - How to write pressure scenarios
 - Pressure types (time, sunk cost, authority, exhaustion)
 - Plugging holes systematically
@@ -599,11 +758,20 @@ helper1, helper2, step3, pattern4
 
 **The deployment checklist below is MANDATORY for EACH skill.**
 
+**Gate enforcement:** Use TaskCreate to track the deployment checklist. Do NOT mark the final deployment task as completed until you have verified the skill is discoverable in a fresh session. Only after the deployment task is completed may you begin the next skill.
+
 Deploying untested skills = deploying untested code. It's a violation of quality standards.
 
 ## Skill Creation Checklist (TDD Adapted)
 
-**IMPORTANT: Use TodoWrite to create todos for EACH checklist item below.**
+**IMPORTANT: Use TaskCreate to create tasks for EACH checklist item below.** For complex skills, use TeamCreate to parallelize testing work across subagents.
+
+**PLAN Phase - Before Writing Anything:**
+- [ ] Identify skill type (discipline, technique, pattern, or reference)
+- [ ] Choose test approach based on skill type (see "Testing All Skill Types")
+- [ ] Draft 2-3 pressure/application/retrieval scenarios
+- [ ] Decide scope: self-contained SKILL.md or hub with supporting files
+- [ ] Create task list with TaskCreate (one task per phase)
 
 **RED Phase - Write Failing Test:**
 - [ ] Create pressure scenarios (3+ combined pressures for discipline skills)
@@ -614,12 +782,14 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 - [ ] Name uses only letters, numbers, hyphens (no parentheses/special chars)
 - [ ] YAML frontmatter with only name and description (max 1024 chars)
 - [ ] Description starts with "Use when..." and includes specific triggers/symptoms
+- [ ] Description does NOT summarize workflow (triggers only — see CSO section)
 - [ ] Description written in third person
 - [ ] Keywords throughout for search (errors, symptoms, tools)
 - [ ] Clear overview with core principle
 - [ ] Address specific baseline failures identified in RED
 - [ ] Code inline OR link to separate file
 - [ ] One excellent example (not multi-language)
+- [ ] Cross-references use skill name with REQUIRED markers (no `@` links)
 - [ ] Run scenarios WITH skill - verify agents now comply
 
 **REFACTOR Phase - Close Loopholes:**
@@ -635,9 +805,20 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 - [ ] Common mistakes section
 - [ ] No narrative storytelling
 - [ ] Supporting files only for tools or heavy reference
+- [ ] Hub skills: routing table with topic descriptions for each supporting file
+- [ ] Hub skills: "Use the Read tool..." instruction in body
+- [ ] Hub skills: routing table passes coverage check (file → table) and accuracy check (table → file)
+- [ ] Token budget: `wc -w SKILL.md` under 500 words (body only)
 
 **Deployment:**
-- [ ] Commit skill to git and push to your fork (if configured)
+- [ ] Place skill in the correct directory:
+  - **Project skills** (shared with team): `<project-root>/.claude/skills/skill-name/SKILL.md`
+  - **Personal skills** (your own): `~/.claude/skills/skill-name/SKILL.md`
+- [ ] Verify frontmatter parses: `head -5 SKILL.md` — confirm `---` delimiters and valid YAML
+- [ ] Check token budget: `wc -w SKILL.md` — target under 500 words for SKILL.md body
+- [ ] Commit skill to git: `git add skills/skill-name/ && git commit -m "Add skill-name skill"`
+- [ ] Push to remote (if configured): `git push`
+- [ ] **Verify discoverability:** Start a fresh Claude session, describe a problem the skill should match, and confirm Claude selects and loads the skill
 - [ ] Consider contributing back via PR (if broadly useful)
 
 ## Discovery Workflow
@@ -645,6 +826,7 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 How future Claude finds your skill:
 
 1. **Encounters problem** ("tests are flaky")
+2. **Searches skills** (description keywords match query)
 3. **Finds SKILL** (description matches)
 4. **Scans overview** (is this relevant?)
 5. **Reads patterns** (quick reference table)

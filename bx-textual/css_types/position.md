@@ -8,7 +8,7 @@ The `<position>` CSS type defines how the `offset` rule is applied.
 A [`<position>`](./position.md) may be any of the following values:
 
 | Value      | Alignment type                                               |
-| ---------- | ------------------------------------------------------------ |
+|------------|--------------------------------------------------------------|
 | `relative` | Offset is applied to widgets default position.               |
 | `absolute` | Offset is applied to the origin (top left) of its container. |
 

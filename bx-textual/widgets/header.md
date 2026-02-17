@@ -58,7 +58,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name   | Type   | Default | Description                                                                                                                                                                                      |
-| ------ | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|--------|--------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `tall` | `bool` | `True`  | Whether the `Header` widget is displayed as tall or not. The tall variant is 3 cells tall by default. The non-tall variant is a single cell tall. This can be toggled by clicking on the header. |
 
 ## Messages

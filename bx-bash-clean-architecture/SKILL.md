@@ -29,22 +29,22 @@ Framework-agnostic, structured Bash architecture optimized for **change**, **tes
 
 **Inner layers never call outer layer functions directly.** Dependencies point inward only.
 
-| Layer | Contains | Rules |
-|-------|----------|-------|
-| **Domain** | Pure functions: validation, computation, transformation | No I/O, no external commands, no `echo` to terminal, no env mutation |
-| **Application** | Use case functions, port contracts (documented function signatures) | Orchestrates domain + ports; receives port function names as arguments |
-| **Adapters** | I/O functions: file, network, system, CLI parsing | Implements port contracts; maps external data to/from domain format |
-| **Composition Root** | `main()` wiring | Binds adapters to ports; entry point |
+| Layer                | Contains                                                            | Rules                                                                  |
+|----------------------|---------------------------------------------------------------------|------------------------------------------------------------------------|
+| **Domain**           | Pure functions: validation, computation, transformation             | No I/O, no external commands, no `echo` to terminal, no env mutation   |
+| **Application**      | Use case functions, port contracts (documented function signatures) | Orchestrates domain + ports; receives port function names as arguments |
+| **Adapters**         | I/O functions: file, network, system, CLI parsing                   | Implements port contracts; maps external data to/from domain format    |
+| **Composition Root** | `main()` wiring                                                     | Binds adapters to ports; entry point                                   |
 
 ## SOLID Adapted to Bash
 
-| Principle | Rule |
-|-----------|------|
-| **SRP** | One responsibility per function; split by use case, never `utils.sh` grab-bags |
-| **OCP** | Extend by adding new adapter functions, not editing core logic |
-| **LSP** | All adapters implementing a port contract must accept the same args and return the same format |
-| **ISP** | Port contracts are narrow: one function per I/O concern |
-| **DIP** | Core functions receive I/O function names as parameters; never hardcode external commands in domain/application |
+| Principle | Rule                                                                                                            |
+|-----------|-----------------------------------------------------------------------------------------------------------------|
+| **SRP**   | One responsibility per function; split by use case, never `utils.sh` grab-bags                                  |
+| **OCP**   | Extend by adding new adapter functions, not editing core logic                                                  |
+| **LSP**   | All adapters implementing a port contract must accept the same args and return the same format                  |
+| **ISP**   | Port contracts are narrow: one function per I/O concern                                                         |
+| **DIP**   | Core functions receive I/O function names as parameters; never hardcode external commands in domain/application |
 
 ## Data Flow
 
@@ -53,13 +53,13 @@ CLI args -> validate (adapter boundary) -> domain functions (pure) -> format out
   (raw)     (composition/adapter)           (no I/O, no side effects)   (adapter boundary)       (external)
 ```
 
-| Use Case | Mechanism | Notes |
-|----------|-----------|-------|
-| Function return values | stdout capture: `result=$(fn args)` | Primary data passing mechanism |
-| Structured data | Associative arrays (`declare -A`) | Bash 4.0+; pass by nameref |
-| Complex returns | Multiple lines on stdout, one field per line | Parse with `read` or `mapfile` |
-| Error signaling | Return code + stderr | `return 1` with `echo "error" >&2` |
-| Cross-function data | Nameref: `declare -n ref="$1"` | Bash 4.3+; avoids globals |
+| Use Case               | Mechanism                                    | Notes                              |
+|------------------------|----------------------------------------------|------------------------------------|
+| Function return values | stdout capture: `result=$(fn args)`          | Primary data passing mechanism     |
+| Structured data        | Associative arrays (`declare -A`)            | Bash 4.0+; pass by nameref         |
+| Complex returns        | Multiple lines on stdout, one field per line | Parse with `read` or `mapfile`     |
+| Error signaling        | Return code + stderr                         | `return 1` with `echo "error" >&2` |
+| Cross-function data    | Nameref: `declare -n ref="$1"`               | Bash 4.3+; avoids globals          |
 
 **Never:** Use global variables for data flow between layers. Globals acceptable only for: constants (`readonly`), configuration set once in composition root, and `trap` cleanup state.
 
@@ -151,12 +151,12 @@ echo "${record[name]}"  # "host" -- I/O happens in adapter/composition
 
 ## Error Handling
 
-| Layer | Style |
-|-------|-------|
-| Domain | `return 1` + descriptive stderr: `echo "error: invalid format" >&2` |
-| Application | Propagate domain return codes; add context |
-| Adapters | Catch external failures, map to domain error codes |
-| Composition | Map to exit codes; final stderr formatting |
+| Layer       | Style                                                               |
+|-------------|---------------------------------------------------------------------|
+| Domain      | `return 1` + descriptive stderr: `echo "error: invalid format" >&2` |
+| Application | Propagate domain return codes; add context                          |
+| Adapters    | Catch external failures, map to domain error codes                  |
+| Composition | Map to exit codes; final stderr formatting                          |
 
 ```bash
 # Domain (pure validation)
@@ -176,27 +176,27 @@ adapter__check_port_open() {
 
 ## Exit Codes
 
-| Code | Meaning |
-|-----:|---------|
-| 0 | Success |
-| 1 | General error |
-| 2 | Invalid input / usage error |
-| 3 | Not found |
-| 4 | Conflict / precondition fail |
-| 70 | Unexpected internal error |
-| 124 | Timeout |
-| 126 | Permission denied |
-| 127 | Command not found (dependency missing) |
+| Code | Meaning                                |
+|-----:|----------------------------------------|
+| 0    | Success                                |
+| 1    | General error                          |
+| 2    | Invalid input / usage error            |
+| 3    | Not found                              |
+| 4    | Conflict / precondition fail           |
+| 70   | Unexpected internal error              |
+| 124  | Timeout                                |
+| 126  | Permission denied                      |
+| 127  | Command not found (dependency missing) |
 
 ## Naming Conventions
 
-| Layer | Prefix | Example |
-|-------|--------|---------|
-| Domain | `domain__` | `domain__validate_email`, `domain__compute_checksum` |
-| Application (use cases) | `uc__` | `uc__deploy_service`, `uc__backup_database` |
-| Adapters | `adapter__` | `adapter__read_file`, `adapter__call_api` |
-| Composition/main | `main`, `compose__` | `main`, `compose__wire_production` |
-| Constants | `UPPER_SNAKE` | `readonly MAX_RETRIES=3` |
+| Layer                   | Prefix              | Example                                              |
+|-------------------------|---------------------|------------------------------------------------------|
+| Domain                  | `domain__`          | `domain__validate_email`, `domain__compute_checksum` |
+| Application (use cases) | `uc__`              | `uc__deploy_service`, `uc__backup_database`          |
+| Adapters                | `adapter__`         | `adapter__read_file`, `adapter__call_api`            |
+| Composition/main        | `main`, `compose__` | `main`, `compose__wire_production`                   |
+| Constants               | `UPPER_SNAKE`       | `readonly MAX_RETRIES=3`                             |
 
 Double underscore separates namespace from function name. Prevents collision with system commands.
 
@@ -235,12 +235,12 @@ readonly _DOMAIN_SH_LOADED=1
 
 ## Testing Strategy
 
-| Type | Purpose |
-|------|---------|
-| **Unit** | Domain functions with direct calls (no mocking needed — they're pure) |
-| **Stub** | Use cases with stub adapter functions (bash functions that return test data) |
-| **Integration** | Real adapters against real files/services |
-| **E2E** | Full script execution with known inputs/outputs |
+| Type            | Purpose                                                                      |
+|-----------------|------------------------------------------------------------------------------|
+| **Unit**        | Domain functions with direct calls (no mocking needed — they're pure)        |
+| **Stub**        | Use cases with stub adapter functions (bash functions that return test data) |
+| **Integration** | Real adapters against real files/services                                    |
+| **E2E**         | Full script execution with known inputs/outputs                              |
 
 ### Stub Adapters for Testing
 

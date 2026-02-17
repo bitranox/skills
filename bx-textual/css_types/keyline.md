@@ -6,7 +6,7 @@ The `<keyline>` CSS type represents a line style used in the [keyline](../styles
 ## Syntax
 
 | Value    | Description                |
-| -------- | -------------------------- |
+|----------|----------------------------|
 | `none`   | No line (disable keyline). |
 | `thin`   | A thin line.               |
 | `heavy`  | A heavy (thicker) line.    |

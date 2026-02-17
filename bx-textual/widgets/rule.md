@@ -123,7 +123,7 @@ Label {
 ## Reactive Attributes
 
 | Name          | Type              | Default        | Description                  |
-| ------------- | ----------------- | -------------- | ---------------------------- |
+|---------------|-------------------|----------------|------------------------------|
 | `orientation` | `RuleOrientation` | `"horizontal"` | The orientation of the rule. |
 | `line_style`  | `LineStyle`       | `"solid"`      | The line style of the rule.  |
 

@@ -59,34 +59,34 @@ Record tool output (pass/fail, coverage %, lint warnings). Use this objective da
 
 Use this rubric to score the project. Each dimension is 0-10, final score is the weighted average.
 
-| Dimension | Weight | What to Check |
-|-----------|--------|---------------|
-| Architecture | 20% | Layer separation, dependency direction, SOLID principles |
-| Type Safety | 15% | See language-specific criteria below |
-| Testing | 20% | Coverage %, test quality, edge cases, isolation |
-| Error Handling | 10% | Consistency, domain exceptions, exit codes |
-| Security | 15% | Input validation, secrets handling, dependency audit |
-| Documentation | 10% | Docstrings/comments, README, inline docs where needed |
-| Maintainability | 10% | DRY, naming, complexity, readability |
+| Dimension       | Weight | What to Check                                            |
+|-----------------|--------|----------------------------------------------------------|
+| Architecture    | 20%    | Layer separation, dependency direction, SOLID principles |
+| Type Safety     | 15%    | See language-specific criteria below                     |
+| Testing         | 20%    | Coverage %, test quality, edge cases, isolation          |
+| Error Handling  | 10%    | Consistency, domain exceptions, exit codes               |
+| Security        | 15%    | Input validation, secrets handling, dependency audit     |
+| Documentation   | 10%    | Docstrings/comments, README, inline docs where needed    |
+| Maintainability | 10%    | DRY, naming, complexity, readability                     |
 
 **Type Safety by language:**
 
-| Language | 0-3 | 4-6 | 7-10 |
-|----------|-----|-----|------|
-| Python | No type hints | Partial hints, no strict checking | Full hints, pyright strict, minimal `type: ignore` |
-| Bash | No input validation, no `set -euo pipefail` | Some validation, inconsistent quoting | `set -euo pipefail`, all vars quoted, `shellcheck` clean |
-| TypeScript | `any` everywhere, no strict | Partial strict, some `any` | Strict mode, no `any`, proper generics |
-| JavaScript | No JSDoc, no validation | Some JSDoc or TypeScript migration started | Full JSDoc with types, or migrated to TypeScript |
+| Language   | 0-3                                         | 4-6                                        | 7-10                                                     |
+|------------|---------------------------------------------|--------------------------------------------|----------------------------------------------------------|
+| Python     | No type hints                               | Partial hints, no strict checking          | Full hints, pyright strict, minimal `type: ignore`       |
+| Bash       | No input validation, no `set -euo pipefail` | Some validation, inconsistent quoting      | `set -euo pipefail`, all vars quoted, `shellcheck` clean |
+| TypeScript | `any` everywhere, no strict                 | Partial strict, some `any`                 | Strict mode, no `any`, proper generics                   |
+| JavaScript | No JSDoc, no validation                     | Some JSDoc or TypeScript migration started | Full JSDoc with types, or migrated to TypeScript         |
 
 **Scoring anchors (all dimensions):**
 
-| Score | Meaning |
-|-------|---------|
-| 0-2 | Absent or fundamentally broken |
-| 3-4 | Present but inconsistent, significant gaps |
-| 5-6 | Adequate, follows conventions most of the time |
-| 7-8 | Good, minor gaps only |
-| 9-10 | Excellent, best practices throughout, no meaningful gaps |
+| Score | Meaning                                                  |
+|-------|----------------------------------------------------------|
+| 0-2   | Absent or fundamentally broken                           |
+| 3-4   | Present but inconsistent, significant gaps               |
+| 5-6   | Adequate, follows conventions most of the time           |
+| 7-8   | Good, minor gaps only                                    |
+| 9-10  | Excellent, best practices throughout, no meaningful gaps |
 
 Present the scorecard as a table with per-dimension scores and the weighted total.
 
@@ -145,13 +145,13 @@ After all issues processed, re-run the rubric. Present before/after scorecard.
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---------|-----|
-| Dump all issues at once | Present ONE at a time, wait for response |
-| Suggest changes to documented-as-intentional items | Read CLAUDE.md first, filter them out |
-| Vague suggested fixes ("improve this") | Write specific, actionable instructions |
-| Skip saving declined items | ALWAYS append to CLAUDE.md |
-| Subjective scoring without rubric | Use the weighted rubric table |
-| Flag items already in "Code Quality" section | Check the section BEFORE analysis |
-| Present MINOR issues before SEVERE | Sort by severity: SEVERE > MEDIUM > MINOR |
-| Re-raise previously declined items | Check CLAUDE.md accepted items list first |
+| Mistake                                            | Fix                                       |
+|----------------------------------------------------|-------------------------------------------|
+| Dump all issues at once                            | Present ONE at a time, wait for response  |
+| Suggest changes to documented-as-intentional items | Read CLAUDE.md first, filter them out     |
+| Vague suggested fixes ("improve this")             | Write specific, actionable instructions   |
+| Skip saving declined items                         | ALWAYS append to CLAUDE.md                |
+| Subjective scoring without rubric                  | Use the weighted rubric table             |
+| Flag items already in "Code Quality" section       | Check the section BEFORE analysis         |
+| Present MINOR issues before SEVERE                 | Sort by severity: SEVERE > MEDIUM > MINOR |
+| Re-raise previously declined items                 | Check CLAUDE.md accepted items list first |

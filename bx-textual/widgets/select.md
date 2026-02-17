@@ -146,9 +146,9 @@ The `Select` widget has a `type_to_search` attribute which allows you to type to
 
 ## Reactive Attributes
 
-| Name       | Type                           | Default                                        | Description                         |
-|------------|--------------------------------|------------------------------------------------|-------------------------------------|
-| `expanded` | `bool`                         | `False`                                        | True to expand the options overlay. |
+| Name       | Type                           | Default          | Description                         |
+|------------|--------------------------------|------------------|-------------------------------------|
+| `expanded` | `bool`                         | `False`          | True to expand the options overlay. |
 | `value`    | `SelectType` \| `_NoSelection` | ``Select.BLANK`` | Current value of the Select.        |
 
 ## Messages

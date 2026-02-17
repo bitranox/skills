@@ -59,7 +59,7 @@ Label {
 ## Reactive Attributes
 
 | Name    | Type  | Default | Description                      |
-| ------- | ----- | ------- | -------------------------------- |
+|---------|-------|---------|----------------------------------|
 | `index` | `int` | `0`     | The currently highlighted index. |
 
 ## Messages

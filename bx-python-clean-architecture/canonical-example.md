@@ -323,14 +323,14 @@ def compose_testing():
 
 ## Key Patterns Demonstrated
 
-| Pattern | Where |
-|---------|-------|
-| **Immutable VOs** | `Money(frozen=True, slots=True)` with invariant validation |
-| **Deterministic lock ordering** | `sorted((from_id, to_id))` in use case and repo |
-| **Outbox** | Events persisted in same transaction via `outbox.add_all()` |
-| **Idempotency** | `run_once(key, fn)` wrapping entire UoW call |
-| **Typed deps** | `TransferDeps(TypedDict)` ensures type-safe access in work function |
-| **UoW** | Transaction-bound typed deps injected into work function |
-| **Factory use cases** | `create_transfer_funds()` returns typed callable with full signature |
-| **TypedDict events** | Extend `DomainEvent` base; versioned with `type` and `v` fields |
-| **Composition root** | Single wiring point, testing vs production |
+| Pattern                         | Where                                                                |
+|---------------------------------|----------------------------------------------------------------------|
+| **Immutable VOs**               | `Money(frozen=True, slots=True)` with invariant validation           |
+| **Deterministic lock ordering** | `sorted((from_id, to_id))` in use case and repo                      |
+| **Outbox**                      | Events persisted in same transaction via `outbox.add_all()`          |
+| **Idempotency**                 | `run_once(key, fn)` wrapping entire UoW call                         |
+| **Typed deps**                  | `TransferDeps(TypedDict)` ensures type-safe access in work function  |
+| **UoW**                         | Transaction-bound typed deps injected into work function             |
+| **Factory use cases**           | `create_transfer_funds()` returns typed callable with full signature |
+| **TypedDict events**            | Extend `DomainEvent` base; versioned with `type` and `v` fields      |
+| **Composition root**            | Single wiring point, testing vs production                           |

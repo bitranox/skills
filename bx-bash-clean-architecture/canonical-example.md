@@ -461,13 +461,13 @@ echo "Results: $PASS passed, $FAIL failed"
 
 ## Key Patterns Demonstrated
 
-| Pattern | Where |
-|---------|-------|
+| Pattern                   | Where                                                                              |
+|---------------------------|------------------------------------------------------------------------------------|
 | **Pure domain functions** | `domain__validate_service_def`, `domain__classify_health`, `domain__build_summary` |
-| **Dependency inversion** | `uc__check_all_services` receives function names for all I/O |
-| **Nameref data passing** | `domain__parse_service` populates caller's associative array |
-| **Port contracts** | Documented function signatures with args/stdout/return spec |
-| **Stub adapters** | `stub__check_tcp_always_healthy` replaces real TCP check in tests |
-| **Composition root** | `main()` wires adapters, parses args, maps exit codes |
-| **Structured exit codes** | Domain errors mapped to exit codes only in `main()` |
-| **Logging to stderr** | `log_info`, `log_error` write to `>&2`; stdout reserved for data |
+| **Dependency inversion**  | `uc__check_all_services` receives function names for all I/O                       |
+| **Nameref data passing**  | `domain__parse_service` populates caller's associative array                       |
+| **Port contracts**        | Documented function signatures with args/stdout/return spec                        |
+| **Stub adapters**         | `stub__check_tcp_always_healthy` replaces real TCP check in tests                  |
+| **Composition root**      | `main()` wires adapters, parses args, maps exit codes                              |
+| **Structured exit codes** | Domain errors mapped to exit codes only in `main()`                                |
+| **Logging to stderr**     | `log_info`, `log_error` write to `>&2`; stdout reserved for data                   |

@@ -40,7 +40,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name          | Type   | Default | Description                          |
-| ------------- | ------ | ------- | ------------------------------------ |
+|---------------|--------|---------|--------------------------------------|
 | `highlighted` | `bool` | `False` | True if this ListItem is highlighted |
 
 ## Messages

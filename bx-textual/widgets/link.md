@@ -45,7 +45,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name   | Type  | Default | Description                               |
-| ------ | ----- | ------- | ----------------------------------------- |
+|--------|-------|---------|-------------------------------------------|
 | `text` | `str` | `""`    | The text of the link.                     |
 | `url`  | `str` | `""`    | The URL to open when the link is clicked. |
 

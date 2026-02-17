@@ -128,7 +128,7 @@ When the user presses the "Markdown" button the view is switched:
 ## Reactive Attributes
 
 | Name      | Type            | Default | Description                                                             |
-| --------- | --------------- | ------- | ----------------------------------------------------------------------- |
+|-----------|-----------------|---------|-------------------------------------------------------------------------|
 | `current` | `str` \| `None` | `None`  | The ID of the currently-visible child. `None` means nothing is visible. |
 
 ## Messages

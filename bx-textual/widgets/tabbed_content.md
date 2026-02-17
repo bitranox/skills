@@ -194,7 +194,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name     | Type  | Default | Description                                                    |
-| -------- | ----- | ------- | -------------------------------------------------------------- |
+|----------|-------|---------|----------------------------------------------------------------|
 | `active` | `str` | `""`    | The `id` attribute of the active tab. Set this to switch tabs. |
 
 

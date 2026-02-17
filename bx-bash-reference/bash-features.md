@@ -21,38 +21,38 @@ All single-character options used with the `set` builtin can also be used at inv
 
 ### Long Options
 
-| Option | Description |
-|---|---|
-| `--debugger` | Arrange for the debugger profile to execute before the shell starts. Turns on extended debugging mode (`extdebug` shopt option). |
-| `--dump-po-strings` | Print all double-quoted strings preceded by `$` on stdout in GNU gettext PO (portable object) file format. Equivalent to `-D` except for the output format. |
-| `--dump-strings` | Equivalent to `-D`. |
-| `--help` | Display a usage message on stdout and exit successfully. |
-| `--init-file FILENAME` | Execute commands from FILENAME (instead of `~/.bashrc`) in an interactive shell. |
-| `--rcfile FILENAME` | Synonym for `--init-file`. |
-| `--login` | Equivalent to `-l`. |
-| `--noediting` | Do not use the GNU Readline library to read command lines when the shell is interactive. |
-| `--noprofile` | Do not load `/etc/profile` or any of `~/.bash_profile`, `~/.bash_login`, or `~/.profile` when invoked as a login shell. |
-| `--norc` | Do not read `~/.bashrc` in an interactive shell. On by default if invoked as `sh`. |
-| `--posix` | Enable POSIX mode. Change Bash behavior where defaults differ from the POSIX standard to match the standard. |
-| `--restricted` | Equivalent to `-r`. Make the shell a restricted shell. |
-| `--verbose` | Equivalent to `-v`. Print shell input lines as they are read. |
-| `--version` | Show version information on stdout and exit successfully. |
+| Option                 | Description                                                                                                                                                 |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--debugger`           | Arrange for the debugger profile to execute before the shell starts. Turns on extended debugging mode (`extdebug` shopt option).                            |
+| `--dump-po-strings`    | Print all double-quoted strings preceded by `$` on stdout in GNU gettext PO (portable object) file format. Equivalent to `-D` except for the output format. |
+| `--dump-strings`       | Equivalent to `-D`.                                                                                                                                         |
+| `--help`               | Display a usage message on stdout and exit successfully.                                                                                                    |
+| `--init-file FILENAME` | Execute commands from FILENAME (instead of `~/.bashrc`) in an interactive shell.                                                                            |
+| `--rcfile FILENAME`    | Synonym for `--init-file`.                                                                                                                                  |
+| `--login`              | Equivalent to `-l`.                                                                                                                                         |
+| `--noediting`          | Do not use the GNU Readline library to read command lines when the shell is interactive.                                                                    |
+| `--noprofile`          | Do not load `/etc/profile` or any of `~/.bash_profile`, `~/.bash_login`, or `~/.profile` when invoked as a login shell.                                     |
+| `--norc`               | Do not read `~/.bashrc` in an interactive shell. On by default if invoked as `sh`.                                                                          |
+| `--posix`              | Enable POSIX mode. Change Bash behavior where defaults differ from the POSIX standard to match the standard.                                                |
+| `--restricted`         | Equivalent to `-r`. Make the shell a restricted shell.                                                                                                      |
+| `--verbose`            | Equivalent to `-v`. Print shell input lines as they are read.                                                                                               |
+| `--version`            | Show version information on stdout and exit successfully.                                                                                                   |
 
 ### Single-Character Options (Invocation-Only)
 
 These options are available at invocation but not with the `set` builtin:
 
-| Option | Description |
-|---|---|
-| `-c` | Read and execute commands from the first non-option argument COMMAND_STRING, then exit. If there are arguments after COMMAND_STRING, the first is assigned to `$0` and remaining arguments are assigned to positional parameters. The assignment to `$0` sets the name of the shell used in warning and error messages. |
-| `-i` | Force the shell to run interactively. |
-| `-l` | Make this shell act as if directly invoked by login. When interactive, equivalent to `exec -l bash`. When non-interactive, reads and executes login shell startup files. `exec bash -l` or `exec bash --login` replaces the current shell with a Bash login shell. |
-| `-r` | Make the shell a restricted shell. |
-| `-s` | If present, or if no arguments remain after option processing, Bash reads commands from stdin. Allows positional parameters to be set when invoking an interactive shell or reading input through a pipe. |
-| `-D` | Print all double-quoted strings preceded by `$` on stdout. These strings are subject to language translation when the current locale is not `C` or `POSIX`. Implies `-n`; no commands are executed. |
-| `[-+]O [SHOPT_OPTION]` | SHOPT_OPTION is a shell option accepted by `shopt`. `-O` sets the value; `+O` unsets it. Without SHOPT_OPTION, prints names and values. With `+O`, output is in a format reusable as input. |
-| `--` | Signals the end of options and disables further option processing. Arguments after `--` are treated as a script filename and arguments. |
-| `-` | Equivalent to `--`. |
+| Option                 | Description                                                                                                                                                                                                                                                                                                             |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `-c`                   | Read and execute commands from the first non-option argument COMMAND_STRING, then exit. If there are arguments after COMMAND_STRING, the first is assigned to `$0` and remaining arguments are assigned to positional parameters. The assignment to `$0` sets the name of the shell used in warning and error messages. |
+| `-i`                   | Force the shell to run interactively.                                                                                                                                                                                                                                                                                   |
+| `-l`                   | Make this shell act as if directly invoked by login. When interactive, equivalent to `exec -l bash`. When non-interactive, reads and executes login shell startup files. `exec bash -l` or `exec bash --login` replaces the current shell with a Bash login shell.                                                      |
+| `-r`                   | Make the shell a restricted shell.                                                                                                                                                                                                                                                                                      |
+| `-s`                   | If present, or if no arguments remain after option processing, Bash reads commands from stdin. Allows positional parameters to be set when invoking an interactive shell or reading input through a pipe.                                                                                                               |
+| `-D`                   | Print all double-quoted strings preceded by `$` on stdout. These strings are subject to language translation when the current locale is not `C` or `POSIX`. Implies `-n`; no commands are executed.                                                                                                                     |
+| `[-+]O [SHOPT_OPTION]` | SHOPT_OPTION is a shell option accepted by `shopt`. `-O` sets the value; `+O` unsets it. Without SHOPT_OPTION, prints names and values. With `+O`, output is in a format reusable as input.                                                                                                                             |
+| `--`                   | Signals the end of options and disables further option processing. Arguments after `--` are treated as a script filename and arguments.                                                                                                                                                                                 |
+| `-`                    | Equivalent to `--`.                                                                                                                                                                                                                                                                                                     |
 
 ### Key Definitions
 
@@ -167,29 +167,29 @@ fi
 
 When running interactively, the shell changes behavior in these ways:
 
-| # | Behavior |
-|---|---|
-| 1 | Startup files are read and executed. |
-| 2 | Job Control is enabled by default. Bash ignores `SIGTTIN`, `SIGTTOU`, and `SIGTSTP`. |
-| 3 | Bash executes the values of the set elements of the `PROMPT_COMMAND` array as commands before printing `$PS1`. |
-| 4 | `PS1` is expanded and displayed before reading the first line of a command. `PS2` before subsequent lines of multi-line commands. `PS0` after reading a command but before executing it. |
-| 5 | Readline is used to read commands from the terminal. |
-| 6 | Bash inspects `ignoreeof` (`set -o`) instead of exiting immediately on EOF. |
-| 7 | Command history and history expansion are enabled by default. On exit, history is saved to `$HISTFILE`. |
-| 8 | Alias expansion is performed by default. |
-| 9 | In the absence of traps, `SIGTERM` is ignored. |
-| 10 | In the absence of traps, `SIGINT` is caught and handled. `SIGINT` will interrupt some builtins. |
-| 11 | An interactive login shell sends `SIGHUP` to all jobs on exit if `huponexit` is enabled. |
-| 12 | The `-n` option has no effect (neither at invocation nor with `set -n`). |
-| 13 | Bash checks for mail periodically based on `MAIL`, `MAILPATH`, and `MAILCHECK`. |
-| 14 | The shell will not exit on expansion errors due to unbound variables after `set -u`. |
-| 15 | The shell will not exit on expansion errors from `${VAR:?WORD}` when VAR is unset/null. |
-| 16 | Redirection errors in builtins will not cause the shell to exit. |
-| 17 | In POSIX mode, a special builtin returning error status will not cause exit. |
-| 18 | A failed `exec` will not cause exit. |
-| 19 | Parser syntax errors will not cause exit. |
-| 20 | If `cdspell` is enabled, the shell attempts spelling correction for `cd` arguments. Only effective in interactive shells. |
-| 21 | The shell checks `TMOUT` and exits if a command is not read within the specified seconds after printing `$PS1`. |
+| #  | Behavior                                                                                                                                                                                 |
+|----|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1  | Startup files are read and executed.                                                                                                                                                     |
+| 2  | Job Control is enabled by default. Bash ignores `SIGTTIN`, `SIGTTOU`, and `SIGTSTP`.                                                                                                     |
+| 3  | Bash executes the values of the set elements of the `PROMPT_COMMAND` array as commands before printing `$PS1`.                                                                           |
+| 4  | `PS1` is expanded and displayed before reading the first line of a command. `PS2` before subsequent lines of multi-line commands. `PS0` after reading a command but before executing it. |
+| 5  | Readline is used to read commands from the terminal.                                                                                                                                     |
+| 6  | Bash inspects `ignoreeof` (`set -o`) instead of exiting immediately on EOF.                                                                                                              |
+| 7  | Command history and history expansion are enabled by default. On exit, history is saved to `$HISTFILE`.                                                                                  |
+| 8  | Alias expansion is performed by default.                                                                                                                                                 |
+| 9  | In the absence of traps, `SIGTERM` is ignored.                                                                                                                                           |
+| 10 | In the absence of traps, `SIGINT` is caught and handled. `SIGINT` will interrupt some builtins.                                                                                          |
+| 11 | An interactive login shell sends `SIGHUP` to all jobs on exit if `huponexit` is enabled.                                                                                                 |
+| 12 | The `-n` option has no effect (neither at invocation nor with `set -n`).                                                                                                                 |
+| 13 | Bash checks for mail periodically based on `MAIL`, `MAILPATH`, and `MAILCHECK`.                                                                                                          |
+| 14 | The shell will not exit on expansion errors due to unbound variables after `set -u`.                                                                                                     |
+| 15 | The shell will not exit on expansion errors from `${VAR:?WORD}` when VAR is unset/null.                                                                                                  |
+| 16 | Redirection errors in builtins will not cause the shell to exit.                                                                                                                         |
+| 17 | In POSIX mode, a special builtin returning error status will not cause exit.                                                                                                             |
+| 18 | A failed `exec` will not cause exit.                                                                                                                                                     |
+| 19 | Parser syntax errors will not cause exit.                                                                                                                                                |
+| 20 | If `cdspell` is enabled, the shell attempts spelling correction for `cd` arguments. Only effective in interactive shells.                                                                |
+| 21 | The shell checks `TMOUT` and exits if a command is not read within the specified seconds after printing `$PS1`.                                                                          |
 
 ---
 
@@ -220,70 +220,70 @@ Unless otherwise specified, primaries that operate on files follow symbolic link
 
 ### File Test Operators
 
-| Operator | True if... |
-|---|---|
-| `-a FILE` | FILE exists. |
-| `-b FILE` | FILE exists and is a block special file. |
-| `-c FILE` | FILE exists and is a character special file. |
-| `-d FILE` | FILE exists and is a directory. |
-| `-e FILE` | FILE exists. |
-| `-f FILE` | FILE exists and is a regular file. |
-| `-g FILE` | FILE exists and its set-group-id bit is set. |
-| `-h FILE` | FILE exists and is a symbolic link. |
-| `-k FILE` | FILE exists and its "sticky" bit is set. |
-| `-p FILE` | FILE exists and is a named pipe (FIFO). |
-| `-r FILE` | FILE exists and is readable. |
-| `-s FILE` | FILE exists and has a size greater than zero. |
-| `-t FD` | File descriptor FD is open and refers to a terminal. |
-| `-u FILE` | FILE exists and its set-user-id bit is set. |
-| `-w FILE` | FILE exists and is writable. |
-| `-x FILE` | FILE exists and is executable. |
-| `-G FILE` | FILE exists and is owned by the effective group id. |
-| `-L FILE` | FILE exists and is a symbolic link. |
+| Operator  | True if...                                                    |
+|-----------|---------------------------------------------------------------|
+| `-a FILE` | FILE exists.                                                  |
+| `-b FILE` | FILE exists and is a block special file.                      |
+| `-c FILE` | FILE exists and is a character special file.                  |
+| `-d FILE` | FILE exists and is a directory.                               |
+| `-e FILE` | FILE exists.                                                  |
+| `-f FILE` | FILE exists and is a regular file.                            |
+| `-g FILE` | FILE exists and its set-group-id bit is set.                  |
+| `-h FILE` | FILE exists and is a symbolic link.                           |
+| `-k FILE` | FILE exists and its "sticky" bit is set.                      |
+| `-p FILE` | FILE exists and is a named pipe (FIFO).                       |
+| `-r FILE` | FILE exists and is readable.                                  |
+| `-s FILE` | FILE exists and has a size greater than zero.                 |
+| `-t FD`   | File descriptor FD is open and refers to a terminal.          |
+| `-u FILE` | FILE exists and its set-user-id bit is set.                   |
+| `-w FILE` | FILE exists and is writable.                                  |
+| `-x FILE` | FILE exists and is executable.                                |
+| `-G FILE` | FILE exists and is owned by the effective group id.           |
+| `-L FILE` | FILE exists and is a symbolic link.                           |
 | `-N FILE` | FILE exists and has been modified since it was last accessed. |
-| `-O FILE` | FILE exists and is owned by the effective user id. |
-| `-S FILE` | FILE exists and is a socket. |
+| `-O FILE` | FILE exists and is owned by the effective user id.            |
+| `-S FILE` | FILE exists and is a socket.                                  |
 
 ### File Comparison Operators
 
-| Operator | True if... |
-|---|---|
-| `FILE1 -ef FILE2` | FILE1 and FILE2 refer to the same device and inode numbers. |
+| Operator          | True if...                                                                            |
+|-------------------|---------------------------------------------------------------------------------------|
+| `FILE1 -ef FILE2` | FILE1 and FILE2 refer to the same device and inode numbers.                           |
 | `FILE1 -nt FILE2` | FILE1 is newer (by modification date) than FILE2, or FILE1 exists and FILE2 does not. |
-| `FILE1 -ot FILE2` | FILE1 is older than FILE2, or FILE2 exists and FILE1 does not. |
+| `FILE1 -ot FILE2` | FILE1 is older than FILE2, or FILE2 exists and FILE1 does not.                        |
 
 ### Variable and Option Test Operators
 
-| Operator | True if... |
-|---|---|
-| `-o OPTNAME` | Shell option OPTNAME is enabled (options as listed for `set -o`). |
+| Operator     | True if...                                                                                                                                                                                                                                            |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `-o OPTNAME` | Shell option OPTNAME is enabled (options as listed for `set -o`).                                                                                                                                                                                     |
 | `-v VARNAME` | Shell variable VARNAME is set (has been assigned a value). If VARNAME is an indexed array subscripted by `@` or `*`, true if the array has any set elements. If associative array subscripted by `@` or `*`, true if an element with that key is set. |
-| `-R VARNAME` | Shell variable VARNAME is set and is a name reference. |
+| `-R VARNAME` | Shell variable VARNAME is set and is a name reference.                                                                                                                                                                                                |
 
 ### String Operators
 
-| Operator | True if... |
-|---|---|
-| `-z STRING` | Length of STRING is zero. |
-| `-n STRING` | Length of STRING is non-zero. |
-| `STRING` | (Unary) Length of STRING is non-zero (same as `-n`). |
-| `STRING1 == STRING2` | Strings are equal. With `[[`, performs pattern matching. |
-| `STRING1 = STRING2` | Strings are equal. Use `=` with `test` for POSIX conformance. |
-| `STRING1 != STRING2` | Strings are not equal. |
-| `STRING1 < STRING2` | STRING1 sorts before STRING2 lexicographically. |
-| `STRING1 > STRING2` | STRING1 sorts after STRING2 lexicographically. |
+| Operator             | True if...                                                    |
+|----------------------|---------------------------------------------------------------|
+| `-z STRING`          | Length of STRING is zero.                                     |
+| `-n STRING`          | Length of STRING is non-zero.                                 |
+| `STRING`             | (Unary) Length of STRING is non-zero (same as `-n`).          |
+| `STRING1 == STRING2` | Strings are equal. With `[[`, performs pattern matching.      |
+| `STRING1 = STRING2`  | Strings are equal. Use `=` with `test` for POSIX conformance. |
+| `STRING1 != STRING2` | Strings are not equal.                                        |
+| `STRING1 < STRING2`  | STRING1 sorts before STRING2 lexicographically.               |
+| `STRING1 > STRING2`  | STRING1 sorts after STRING2 lexicographically.                |
 
 **Note on `=~`**: Within `[[`, the `=~` operator performs regular expression matching (documented under Conditional Constructs). The string to the right is treated as a POSIX extended regular expression.
 
 ### Arithmetic Comparison Operators
 
-| Operator | True if... |
-|---|---|
-| `ARG1 -eq ARG2` | ARG1 is equal to ARG2. |
-| `ARG1 -ne ARG2` | ARG1 is not equal to ARG2. |
-| `ARG1 -lt ARG2` | ARG1 is less than ARG2. |
-| `ARG1 -le ARG2` | ARG1 is less than or equal to ARG2. |
-| `ARG1 -gt ARG2` | ARG1 is greater than ARG2. |
+| Operator        | True if...                             |
+|-----------------|----------------------------------------|
+| `ARG1 -eq ARG2` | ARG1 is equal to ARG2.                 |
+| `ARG1 -ne ARG2` | ARG1 is not equal to ARG2.             |
+| `ARG1 -lt ARG2` | ARG1 is less than ARG2.                |
+| `ARG1 -le ARG2` | ARG1 is less than or equal to ARG2.    |
+| `ARG1 -gt ARG2` | ARG1 is greater than ARG2.             |
 | `ARG1 -ge ARG2` | ARG1 is greater than or equal to ARG2. |
 
 ARG1 and ARG2 may be positive or negative integers. When used with `[[`, they are evaluated as arithmetic expressions. Empty strings from expansion are treated as evaluating to 0.
@@ -304,26 +304,26 @@ Evaluation uses the **largest fixed-width integers** available, with **no overfl
 
 ### Operators by Precedence (Highest to Lowest)
 
-| Precedence | Operator | Description |
-|---|---|---|
-| 1 | `ID++` `ID--` | Variable post-increment, post-decrement |
-| 2 | `++ID` `--ID` | Variable pre-increment, pre-decrement |
-| 3 | `-` `+` | Unary minus, unary plus |
-| 4 | `!` `~` | Logical negation, bitwise negation |
-| 5 | `**` | Exponentiation |
-| 6 | `*` `/` `%` | Multiplication, division, remainder |
-| 7 | `+` `-` | Addition, subtraction |
-| 8 | `<<` `>>` | Left and right bitwise shifts |
-| 9 | `<=` `>=` `<` `>` | Comparison |
-| 10 | `==` `!=` | Equality, inequality |
-| 11 | `&` | Bitwise AND |
-| 12 | `^` | Bitwise exclusive OR (XOR) |
-| 13 | `\|` | Bitwise OR |
-| 14 | `&&` | Logical AND |
-| 15 | `\|\|` | Logical OR |
-| 16 | `expr ? expr : expr` | Conditional (ternary) operator |
-| 17 | `=` `*=` `/=` `%=` `+=` `-=` `<<=` `>>=` `&=` `^=` `\|=` | Assignment operators |
-| 18 | `expr1 , expr2` | Comma (evaluate both, return last) |
+| Precedence | Operator                                                 | Description                             |
+|------------|----------------------------------------------------------|-----------------------------------------|
+| 1          | `ID++` `ID--`                                            | Variable post-increment, post-decrement |
+| 2          | `++ID` `--ID`                                            | Variable pre-increment, pre-decrement   |
+| 3          | `-` `+`                                                  | Unary minus, unary plus                 |
+| 4          | `!` `~`                                                  | Logical negation, bitwise negation      |
+| 5          | `**`                                                     | Exponentiation                          |
+| 6          | `*` `/` `%`                                              | Multiplication, division, remainder     |
+| 7          | `+` `-`                                                  | Addition, subtraction                   |
+| 8          | `<<` `>>`                                                | Left and right bitwise shifts           |
+| 9          | `<=` `>=` `<` `>`                                        | Comparison                              |
+| 10         | `==` `!=`                                                | Equality, inequality                    |
+| 11         | `&`                                                      | Bitwise AND                             |
+| 12         | `^`                                                      | Bitwise exclusive OR (XOR)              |
+| 13         | `\|`                                                     | Bitwise OR                              |
+| 14         | `&&`                                                     | Logical AND                             |
+| 15         | `\|\|`                                                   | Logical OR                              |
+| 16         | `expr ? expr : expr`                                     | Conditional (ternary) operator          |
+| 17         | `=` `*=` `/=` `%=` `+=` `-=` `<<=` `>>=` `&=` `^=` `\|=` | Assignment operators                    |
+| 18         | `expr1 , expr2`                                          | Comma (evaluate both, return last)      |
 
 ### Variable References in Arithmetic
 
@@ -335,12 +335,12 @@ Evaluation uses the **largest fixed-width integers** available, with **no overfl
 
 ### Integer Constants and Number Bases
 
-| Format | Meaning |
-|---|---|
-| Plain number (e.g., `42`) | Base 10 |
-| Leading `0` (e.g., `052`) | Octal |
-| Leading `0x` or `0X` (e.g., `0x2A`) | Hexadecimal |
-| `BASE#N` (e.g., `2#101010`) | Number N in the specified BASE (2-64) |
+| Format                              | Meaning                               |
+|-------------------------------------|---------------------------------------|
+| Plain number (e.g., `42`)           | Base 10                               |
+| Leading `0` (e.g., `052`)           | Octal                                 |
+| Leading `0x` or `0X` (e.g., `0x2A`) | Hexadecimal                           |
+| `BASE#N` (e.g., `2#101010`)         | Number N in the specified BASE (2-64) |
 
 For bases requiring non-digit characters (digits greater than 9), the representation uses: lowercase letters, uppercase letters, `@`, and `_`, in that order. If base is 36 or less, lowercase and uppercase may be used interchangeably for values 10-35.
 
@@ -476,14 +476,14 @@ dirs [-clpv] [+N | -N]
 
 Without options, displays currently remembered directories.
 
-| Option | Description |
-|---|---|
-| `-c` | Clears the directory stack by deleting all elements. |
-| `-l` | Produces a listing using full pathnames (default uses `~` for home). |
-| `-p` | Prints the directory stack with one entry per line. |
-| `-v` | Prints the directory stack with one entry per line, prefixed with its index. |
-| `+N` | Displays the Nth directory counting from the left (starting with zero). |
-| `-N` | Displays the Nth directory counting from the right (starting with zero). |
+| Option | Description                                                                  |
+|--------|------------------------------------------------------------------------------|
+| `-c`   | Clears the directory stack by deleting all elements.                         |
+| `-l`   | Produces a listing using full pathnames (default uses `~` for home).         |
+| `-p`   | Prints the directory stack with one entry per line.                          |
+| `-v`   | Prints the directory stack with one entry per line, prefixed with its index. |
+| `+N`   | Displays the Nth directory counting from the left (starting with zero).      |
+| `-N`   | Displays the Nth directory counting from the right (starting with zero).     |
 
 ### `popd`
 
@@ -493,11 +493,11 @@ popd [-n] [+N | -N]
 
 Removes elements from the directory stack. Elements are numbered from 0 starting at the first directory listed by `dirs`. `popd` alone is equivalent to `popd +0`.
 
-| Option | Description |
-|---|---|
-| `-n` | Suppress the normal directory change when removing directories; only manipulate the stack. |
-| `+N` | Remove the Nth directory counting from the left (starting with zero). |
-| `-N` | Remove the Nth directory counting from the right (starting with zero). |
+| Option | Description                                                                                |
+|--------|--------------------------------------------------------------------------------------------|
+| `-n`   | Suppress the normal directory change when removing directories; only manipulate the stack. |
+| `+N`   | Remove the Nth directory counting from the left (starting with zero).                      |
+| `-N`   | Remove the Nth directory counting from the right (starting with zero).                     |
 
 When no arguments are given, removes the top directory and changes to the new top. If `cd` fails, `popd` returns non-zero. On success, Bash runs `dirs` to show the final stack.
 
@@ -509,12 +509,12 @@ pushd [-n] [+N | -N | DIR]
 
 Adds a directory to the top of the stack, or rotates the stack. With no arguments, exchanges the top two elements.
 
-| Option | Description |
-|---|---|
-| `-n` | Suppress the normal directory change when rotating or adding directories; only manipulate the stack. |
-| `+N` | Rotate the stack so the Nth directory from the left (starting with zero) is at the top. |
-| `-N` | Rotate the stack so the Nth directory from the right (starting with zero) is at the top. |
-| `DIR` | Make DIR the top of the stack. |
+| Option | Description                                                                                          |
+|--------|------------------------------------------------------------------------------------------------------|
+| `-n`   | Suppress the normal directory change when rotating or adding directories; only manipulate the stack. |
+| `+N`   | Rotate the stack so the Nth directory from the left (starting with zero) is at the top.              |
+| `-N`   | Rotate the stack so the Nth directory from the right (starting with zero) is at the top.             |
+| `DIR`  | Make DIR the top of the stack.                                                                       |
 
 After modification (unless `-n` is supplied), `pushd` uses `cd` to change to the top directory. On success, runs `dirs` to show the final stack.
 
@@ -524,35 +524,35 @@ After modification (unless `-n` is supplied), `pushd` uses `cd` to change to the
 
 The following escape sequences can appear in the prompt variables `PS0`, `PS1`, `PS2`, and `PS4`:
 
-| Escape | Description |
-|---|---|
-| `\a` | Bell character (ASCII 07). |
-| `\d` | The date in "Weekday Month Date" format (e.g., "Tue May 26"). |
+| Escape       | Description                                                                                                                                              |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `\a`         | Bell character (ASCII 07).                                                                                                                               |
+| `\d`         | The date in "Weekday Month Date" format (e.g., "Tue May 26").                                                                                            |
 | `\D{FORMAT}` | FORMAT is passed to `strftime(3)` and the result is inserted. An empty FORMAT results in a locale-specific time representation. The braces are required. |
-| `\e` | Escape character (ASCII 033). |
-| `\h` | The hostname, up to the first `.`. |
-| `\H` | The full hostname. |
-| `\j` | The number of jobs currently managed by the shell. |
-| `\l` | The basename of the shell's terminal device name (e.g., "ttys0"). |
-| `\n` | A newline. |
-| `\r` | A carriage return. |
-| `\s` | The name of the shell: the basename of `$0` (portion after the final slash). |
-| `\t` | The time in 24-hour `HH:MM:SS` format. |
-| `\T` | The time in 12-hour `HH:MM:SS` format. |
-| `\@` | The time in 12-hour am/pm format. |
-| `\A` | The time in 24-hour `HH:MM` format. |
-| `\u` | The username of the current user. |
-| `\v` | The Bash version (e.g., 2.00). |
-| `\V` | The Bash release: version + patchlevel (e.g., 2.00.0). |
-| `\w` | The value of `$PWD`, with `$HOME` abbreviated as `~` (uses `$PROMPT_DIRTRIM`). |
-| `\W` | The basename of `$PWD`, with `$HOME` abbreviated as `~`. |
-| `\!` | The history number of this command. |
-| `\#` | The command number of this command. |
-| `\$` | If the effective UID is 0, `#`; otherwise `$`. |
-| `\nnn` | The character whose ASCII code is the octal value nnn. |
-| `\\` | A literal backslash. |
-| `\[` | Begin a sequence of non-printing characters. Use to embed terminal control sequences into the prompt. |
-| `\]` | End a sequence of non-printing characters. |
+| `\e`         | Escape character (ASCII 033).                                                                                                                            |
+| `\h`         | The hostname, up to the first `.`.                                                                                                                       |
+| `\H`         | The full hostname.                                                                                                                                       |
+| `\j`         | The number of jobs currently managed by the shell.                                                                                                       |
+| `\l`         | The basename of the shell's terminal device name (e.g., "ttys0").                                                                                        |
+| `\n`         | A newline.                                                                                                                                               |
+| `\r`         | A carriage return.                                                                                                                                       |
+| `\s`         | The name of the shell: the basename of `$0` (portion after the final slash).                                                                             |
+| `\t`         | The time in 24-hour `HH:MM:SS` format.                                                                                                                   |
+| `\T`         | The time in 12-hour `HH:MM:SS` format.                                                                                                                   |
+| `\@`         | The time in 12-hour am/pm format.                                                                                                                        |
+| `\A`         | The time in 24-hour `HH:MM` format.                                                                                                                      |
+| `\u`         | The username of the current user.                                                                                                                        |
+| `\v`         | The Bash version (e.g., 2.00).                                                                                                                           |
+| `\V`         | The Bash release: version + patchlevel (e.g., 2.00.0).                                                                                                   |
+| `\w`         | The value of `$PWD`, with `$HOME` abbreviated as `~` (uses `$PROMPT_DIRTRIM`).                                                                           |
+| `\W`         | The basename of `$PWD`, with `$HOME` abbreviated as `~`.                                                                                                 |
+| `\!`         | The history number of this command.                                                                                                                      |
+| `\#`         | The command number of this command.                                                                                                                      |
+| `\$`         | If the effective UID is 0, `#`; otherwise `$`.                                                                                                           |
+| `\nnn`       | The character whose ASCII code is the octal value nnn.                                                                                                   |
+| `\\`         | A literal backslash.                                                                                                                                     |
+| `\[`         | Begin a sequence of non-printing characters. Use to embed terminal control sequences into the prompt.                                                    |
+| `\]`         | End a sequence of non-printing characters.                                                                                                               |
 
 ### Command Number vs. History Number
 
@@ -573,23 +573,23 @@ Bash becomes restricted when started with:
 
 A restricted shell behaves identically to `bash` except the following are **disallowed or not performed**:
 
-| Restriction |
-|---|
-| Changing directories with `cd`. |
-| Setting or unsetting `SHELL`, `PATH`, `HISTFILE`, `ENV`, or `BASH_ENV`. |
-| Specifying command names containing slashes. |
-| Specifying a filename containing a slash as an argument to `.` (source). |
-| Using the `-p` option to `.` to specify a search path. |
-| Specifying a filename containing a slash as an argument to `history`. |
+| Restriction                                                                       |
+|-----------------------------------------------------------------------------------|
+| Changing directories with `cd`.                                                   |
+| Setting or unsetting `SHELL`, `PATH`, `HISTFILE`, `ENV`, or `BASH_ENV`.           |
+| Specifying command names containing slashes.                                      |
+| Specifying a filename containing a slash as an argument to `.` (source).          |
+| Using the `-p` option to `.` to specify a search path.                            |
+| Specifying a filename containing a slash as an argument to `history`.             |
 | Specifying a filename containing a slash as an argument to `-p` option of `hash`. |
-| Importing function definitions from the shell environment at startup. |
-| Parsing the value of `SHELLOPTS` from the environment at startup. |
-| Redirecting output using `>`, `>\|`, `<>`, `>&`, `&>`, and `>>`. |
-| Using `exec` to replace the shell with another command. |
-| Adding or deleting builtins with `-f` and `-d` options to `enable`. |
-| Using `enable` to enable disabled shell builtins. |
-| Specifying the `-p` option to `command`. |
-| Turning off restricted mode with `set +r` or `shopt -u restricted_shell`. |
+| Importing function definitions from the shell environment at startup.             |
+| Parsing the value of `SHELLOPTS` from the environment at startup.                 |
+| Redirecting output using `>`, `>\|`, `<>`, `>&`, `&>`, and `>>`.                  |
+| Using `exec` to replace the shell with another command.                           |
+| Adding or deleting builtins with `-f` and `-d` options to `enable`.               |
+| Using `enable` to enable disabled shell builtins.                                 |
+| Specifying the `-p` option to `command`.                                          |
+| Turning off restricted mode with `set +r` or `shopt -u restricted_shell`.         |
 
 ### Important Notes
 
@@ -612,83 +612,83 @@ Enter POSIX mode via `--posix` at invocation or `set -o posix` at runtime. When 
 
 #### Complete List of POSIX Mode Behavior Changes
 
-| # | Behavior Change |
-|---|---|
-| 1 | Bash ensures `POSIXLY_CORRECT` is set. |
-| 2 | Reads and executes POSIX startup files (`$ENV`) rather than normal Bash files. |
-| 3 | Alias expansion is always enabled, even in non-interactive shells. |
-| 4 | Reserved words in recognized contexts do not undergo alias expansion. |
-| 5 | Alias expansion is performed when initially parsing a command substitution (default mode defers it until execution). |
-| 6 | `time` may be used by itself as a simple command, displaying timing statistics for the shell and its children. `TIMEFORMAT` controls the format. |
-| 7 | The parser does not recognize `time` as a reserved word if the next token begins with `-`. |
-| 8 | When parsing `${...}` within double quotes, single quotes are no longer special and cannot quote a closing brace (unless the operator performs pattern removal). |
-| 9 | Redirection operators do not perform filename expansion on the word unless the shell is interactive. |
-| 10 | Redirection operators do not perform word splitting on the word. |
-| 11 | Function names may not be the same as a POSIX special builtin. |
-| 12 | Tilde expansion is only performed on assignments preceding a command name, not all assignments on the line. |
-| 13 | Variable indirection may not be applied to the `#` and `?` special parameters. |
-| 14 | Expanding `*` in a pattern context where the expansion is double-quoted does not treat `$*` as if double-quoted. |
-| 15 | A double quote (`"`) is treated specially in a backquoted command substitution in an expanding here-document body (backslash before `"` escapes it). |
+| #  | Behavior Change                                                                                                                                                                                                               |
+|----|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1  | Bash ensures `POSIXLY_CORRECT` is set.                                                                                                                                                                                        |
+| 2  | Reads and executes POSIX startup files (`$ENV`) rather than normal Bash files.                                                                                                                                                |
+| 3  | Alias expansion is always enabled, even in non-interactive shells.                                                                                                                                                            |
+| 4  | Reserved words in recognized contexts do not undergo alias expansion.                                                                                                                                                         |
+| 5  | Alias expansion is performed when initially parsing a command substitution (default mode defers it until execution).                                                                                                          |
+| 6  | `time` may be used by itself as a simple command, displaying timing statistics for the shell and its children. `TIMEFORMAT` controls the format.                                                                              |
+| 7  | The parser does not recognize `time` as a reserved word if the next token begins with `-`.                                                                                                                                    |
+| 8  | When parsing `${...}` within double quotes, single quotes are no longer special and cannot quote a closing brace (unless the operator performs pattern removal).                                                              |
+| 9  | Redirection operators do not perform filename expansion on the word unless the shell is interactive.                                                                                                                          |
+| 10 | Redirection operators do not perform word splitting on the word.                                                                                                                                                              |
+| 11 | Function names may not be the same as a POSIX special builtin.                                                                                                                                                                |
+| 12 | Tilde expansion is only performed on assignments preceding a command name, not all assignments on the line.                                                                                                                   |
+| 13 | Variable indirection may not be applied to the `#` and `?` special parameters.                                                                                                                                                |
+| 14 | Expanding `*` in a pattern context where the expansion is double-quoted does not treat `$*` as if double-quoted.                                                                                                              |
+| 15 | A double quote (`"`) is treated specially in a backquoted command substitution in an expanding here-document body (backslash before `"` escapes it).                                                                          |
 | 16 | Command substitutions do not set the `?` special parameter. Exit status of a simple command without a command word is the exit status of the last command substitution, but not until after all assignments and redirections. |
-| 17 | Literal tildes as the first character in `PATH` elements are not expanded. |
-| 18 | Command lookup finds POSIX special builtins before shell functions (including `type` and `command` output). |
-| 19 | The shell will not execute a function whose name contains slashes, even if defined before entering POSIX mode. |
-| 20 | When a hashed command no longer exists, Bash re-searches `$PATH`. (Also available with `shopt -s checkhash`.) |
-| 21 | Bash will not insert a command without the execute bit into the hash table, even as a last-ditch `$PATH` search result. |
-| 22 | Job control message for non-zero exit: `Done(status)`. |
-| 23 | Job control message for stopped job: `Stopped(SIGNAME)`. |
-| 24 | Interactive shell does not perform job notifications between commands separated by `;` or newline. Non-interactive shells print status after foreground job completion. |
-| 25 | Interactive shell waits until the next prompt before printing background job status changes. Non-interactive shells print after foreground job completion. |
-| 26 | Jobs are permanently removed from the table after user notification via `wait` or `jobs`. Status remains available via `wait` with a PID argument. |
-| 27 | `vi` editing mode invokes `vi` directly when `v` is pressed (ignores `$VISUAL` and `$EDITOR`). |
-| 28 | Prompt expansion enables POSIX `PS1`/`PS2` expansions: `!` = history number, `!!` = literal `!`. Parameter expansion on `PS1`/`PS2` regardless of `promptvars`. |
-| 29 | Default history file is `~/.sh_history`. |
-| 30 | `!` does not introduce history expansion within double-quoted strings, even with `histexpand` enabled. |
-| 31 | When printing function definitions (e.g., via `type`), `function` keyword is omitted unless necessary. |
-| 32 | Non-interactive shells exit on syntax errors in arithmetic expansion. |
-| 33 | Non-interactive shells exit on parameter expansion errors. |
-| 34 | Non-interactive shells exit if a POSIX special builtin returns error status (incorrect options, redirection errors, variable assignment errors, etc.). |
-| 35 | Non-interactive shells exit on variable assignment errors when no command name follows. |
-| 36 | Non-interactive shells exit on variable assignment errors preceding a special builtin. For other simple commands, execution of that command is aborted but the shell continues. |
-| 37 | Non-interactive shells exit if the iteration variable in `for` or selection variable in `select` is readonly or has an invalid name. |
-| 38 | Non-interactive shells exit if FILENAME in `. FILENAME` is not found. |
-| 39 | Non-interactive shells exit on syntax errors in scripts read with `.` / `source` or strings processed by `eval`. |
-| 40 | Non-interactive shells exit if `export`, `readonly`, or `unset` receive an argument that is not a valid identifier (when not operating on functions). |
-| 41 | Assignment statements preceding POSIX special builtins persist in the shell environment after the builtin completes. |
-| 42 | `command` does not prevent builtins that take assignment statements from expanding them as such. (In non-POSIX mode, declaration commands lose assignment expansion when preceded by `command`.) |
-| 43 | Enables `inherit_errexit`: subshells for command substitutions inherit `-e` from the parent (normally Bash clears it). |
-| 44 | Enables `shift_verbose`: numeric arguments to `shift` that exceed positional parameter count produce an error. |
-| 45 | Enables `interactive_comments`. |
-| 46 | `.` and `source` do not search the current directory if the filename is not found via `PATH`. |
-| 47 | `alias` does not display definitions with a leading `alias ` unless `-p` is supplied. |
-| 48 | `bg` uses the required format (no current/previous job indication). |
-| 49 | `cd` in logical mode fails if the constructed pathname does not refer to an existing directory (no fallback to physical mode). |
-| 50 | `cd` attempts the supplied directory name if the constructed pathname exceeds `PATH_MAX`. |
-| 51 | With `xpg_echo` enabled, `echo` does not interpret arguments as options; displays each argument after converting escape sequences. |
-| 52 | `export` and `readonly` output uses POSIX-required format. |
-| 53 | `fc` history listing does not indicate modified entries. |
-| 54 | Default editor for `fc` is `ed`. |
-| 55 | `fc` treats extra arguments as an error. |
-| 56 | `fc -s` with too many arguments prints an error and returns failure. |
-| 57 | `kill -l` prints signal names on a single line, separated by spaces, without `SIG` prefix. |
-| 58 | `kill` does not accept signal names with `SIG` prefix. |
-| 59 | `kill` returns failure if any pid/job argument is invalid or sending the signal fails. (Default mode returns success if the signal was sent to any specified process.) |
-| 60 | `printf` uses `double` (via `strtod`) for floating point conversion. The `L` modifier forces `long double`. |
-| 61 | `pwd` verifies the printed value matches the current directory, even without `-P`. |
-| 62 | `read` may be interrupted by a trapped signal; trap handler executes and `read` returns exit status > 128. |
-| 63 | `set` without options does not display shell function names and definitions. |
-| 64 | `set` without options displays variable values without quotes unless they contain metacharacters. |
-| 65 | `test` compares strings using the current locale for `<` and `>`. |
-| 66 | `test -t` requires an argument (Bash normally accommodates historical optional-argument behavior). |
-| 67 | `trap` displays signal names without `SIG` prefix. |
-| 68 | `trap` first argument is only treated as a signal spec if it consists solely of digits that form a valid signal number. Use `-` to reset to original disposition. |
-| 69 | `trap -p` without arguments displays signals with SIG_DFL disposition and those ignored at startup, not just trapped signals. |
-| 70 | `type` and `command` do not report non-executable files as found (though the shell may still try to execute them as a last resort). |
-| 71 | `ulimit` uses 512-byte block size for `-c` and `-f`. |
-| 72 | `unset -v` returns a fatal error when attempting to unset a readonly or non-unsettable variable (causes non-interactive shell to exit). |
-| 73 | `unset` on a variable in a preceding assignment statement also attempts to unset a same-named variable in the current or previous scope. |
-| 74 | `SIGCHLD` arrival with a trap set does not interrupt `wait`. The trap runs once per exiting child. |
-| 75 | Exited background process status is removed from the list after `wait` returns it. |
+| 17 | Literal tildes as the first character in `PATH` elements are not expanded.                                                                                                                                                    |
+| 18 | Command lookup finds POSIX special builtins before shell functions (including `type` and `command` output).                                                                                                                   |
+| 19 | The shell will not execute a function whose name contains slashes, even if defined before entering POSIX mode.                                                                                                                |
+| 20 | When a hashed command no longer exists, Bash re-searches `$PATH`. (Also available with `shopt -s checkhash`.)                                                                                                                 |
+| 21 | Bash will not insert a command without the execute bit into the hash table, even as a last-ditch `$PATH` search result.                                                                                                       |
+| 22 | Job control message for non-zero exit: `Done(status)`.                                                                                                                                                                        |
+| 23 | Job control message for stopped job: `Stopped(SIGNAME)`.                                                                                                                                                                      |
+| 24 | Interactive shell does not perform job notifications between commands separated by `;` or newline. Non-interactive shells print status after foreground job completion.                                                       |
+| 25 | Interactive shell waits until the next prompt before printing background job status changes. Non-interactive shells print after foreground job completion.                                                                    |
+| 26 | Jobs are permanently removed from the table after user notification via `wait` or `jobs`. Status remains available via `wait` with a PID argument.                                                                            |
+| 27 | `vi` editing mode invokes `vi` directly when `v` is pressed (ignores `$VISUAL` and `$EDITOR`).                                                                                                                                |
+| 28 | Prompt expansion enables POSIX `PS1`/`PS2` expansions: `!` = history number, `!!` = literal `!`. Parameter expansion on `PS1`/`PS2` regardless of `promptvars`.                                                               |
+| 29 | Default history file is `~/.sh_history`.                                                                                                                                                                                      |
+| 30 | `!` does not introduce history expansion within double-quoted strings, even with `histexpand` enabled.                                                                                                                        |
+| 31 | When printing function definitions (e.g., via `type`), `function` keyword is omitted unless necessary.                                                                                                                        |
+| 32 | Non-interactive shells exit on syntax errors in arithmetic expansion.                                                                                                                                                         |
+| 33 | Non-interactive shells exit on parameter expansion errors.                                                                                                                                                                    |
+| 34 | Non-interactive shells exit if a POSIX special builtin returns error status (incorrect options, redirection errors, variable assignment errors, etc.).                                                                        |
+| 35 | Non-interactive shells exit on variable assignment errors when no command name follows.                                                                                                                                       |
+| 36 | Non-interactive shells exit on variable assignment errors preceding a special builtin. For other simple commands, execution of that command is aborted but the shell continues.                                               |
+| 37 | Non-interactive shells exit if the iteration variable in `for` or selection variable in `select` is readonly or has an invalid name.                                                                                          |
+| 38 | Non-interactive shells exit if FILENAME in `. FILENAME` is not found.                                                                                                                                                         |
+| 39 | Non-interactive shells exit on syntax errors in scripts read with `.` / `source` or strings processed by `eval`.                                                                                                              |
+| 40 | Non-interactive shells exit if `export`, `readonly`, or `unset` receive an argument that is not a valid identifier (when not operating on functions).                                                                         |
+| 41 | Assignment statements preceding POSIX special builtins persist in the shell environment after the builtin completes.                                                                                                          |
+| 42 | `command` does not prevent builtins that take assignment statements from expanding them as such. (In non-POSIX mode, declaration commands lose assignment expansion when preceded by `command`.)                              |
+| 43 | Enables `inherit_errexit`: subshells for command substitutions inherit `-e` from the parent (normally Bash clears it).                                                                                                        |
+| 44 | Enables `shift_verbose`: numeric arguments to `shift` that exceed positional parameter count produce an error.                                                                                                                |
+| 45 | Enables `interactive_comments`.                                                                                                                                                                                               |
+| 46 | `.` and `source` do not search the current directory if the filename is not found via `PATH`.                                                                                                                                 |
+| 47 | `alias` does not display definitions with a leading `alias ` unless `-p` is supplied.                                                                                                                                         |
+| 48 | `bg` uses the required format (no current/previous job indication).                                                                                                                                                           |
+| 49 | `cd` in logical mode fails if the constructed pathname does not refer to an existing directory (no fallback to physical mode).                                                                                                |
+| 50 | `cd` attempts the supplied directory name if the constructed pathname exceeds `PATH_MAX`.                                                                                                                                     |
+| 51 | With `xpg_echo` enabled, `echo` does not interpret arguments as options; displays each argument after converting escape sequences.                                                                                            |
+| 52 | `export` and `readonly` output uses POSIX-required format.                                                                                                                                                                    |
+| 53 | `fc` history listing does not indicate modified entries.                                                                                                                                                                      |
+| 54 | Default editor for `fc` is `ed`.                                                                                                                                                                                              |
+| 55 | `fc` treats extra arguments as an error.                                                                                                                                                                                      |
+| 56 | `fc -s` with too many arguments prints an error and returns failure.                                                                                                                                                          |
+| 57 | `kill -l` prints signal names on a single line, separated by spaces, without `SIG` prefix.                                                                                                                                    |
+| 58 | `kill` does not accept signal names with `SIG` prefix.                                                                                                                                                                        |
+| 59 | `kill` returns failure if any pid/job argument is invalid or sending the signal fails. (Default mode returns success if the signal was sent to any specified process.)                                                        |
+| 60 | `printf` uses `double` (via `strtod`) for floating point conversion. The `L` modifier forces `long double`.                                                                                                                   |
+| 61 | `pwd` verifies the printed value matches the current directory, even without `-P`.                                                                                                                                            |
+| 62 | `read` may be interrupted by a trapped signal; trap handler executes and `read` returns exit status > 128.                                                                                                                    |
+| 63 | `set` without options does not display shell function names and definitions.                                                                                                                                                  |
+| 64 | `set` without options displays variable values without quotes unless they contain metacharacters.                                                                                                                             |
+| 65 | `test` compares strings using the current locale for `<` and `>`.                                                                                                                                                             |
+| 66 | `test -t` requires an argument (Bash normally accommodates historical optional-argument behavior).                                                                                                                            |
+| 67 | `trap` displays signal names without `SIG` prefix.                                                                                                                                                                            |
+| 68 | `trap` first argument is only treated as a signal spec if it consists solely of digits that form a valid signal number. Use `-` to reset to original disposition.                                                             |
+| 69 | `trap -p` without arguments displays signals with SIG_DFL disposition and those ignored at startup, not just trapped signals.                                                                                                 |
+| 70 | `type` and `command` do not report non-executable files as found (though the shell may still try to execute them as a last resort).                                                                                           |
+| 71 | `ulimit` uses 512-byte block size for `-c` and `-f`.                                                                                                                                                                          |
+| 72 | `unset -v` returns a fatal error when attempting to unset a readonly or non-unsettable variable (causes non-interactive shell to exit).                                                                                       |
+| 73 | `unset` on a variable in a preceding assignment statement also attempts to unset a same-named variable in the current or previous scope.                                                                                      |
+| 74 | `SIGCHLD` arrival with a trap set does not interrupt `wait`. The trap runs once per exiting child.                                                                                                                            |
+| 75 | Exited background process status is removed from the list after `wait` returns it.                                                                                                                                            |
 
 #### Additional POSIX Behavior Not Implemented Even in POSIX Mode
 

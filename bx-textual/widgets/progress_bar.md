@@ -264,7 +264,7 @@ ETAStatus {
 The progress bar is composed of three sub-widgets that can be styled independently:
 
 | Widget name        | ID            | Description                                                      |
-| ------------------ | ------------- | ---------------------------------------------------------------- |
+|--------------------|---------------|------------------------------------------------------------------|
 | `Bar`              | `#bar`        | The bar that visually represents the progress made.              |
 | `PercentageStatus` | `#percentage` | [Label](./label.md) that shows the percentage of completion.     |
 | `ETAStatus`        | `#eta`        | [Label](./label.md) that shows the estimated time to completion. |

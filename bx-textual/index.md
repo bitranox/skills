@@ -129,20 +129,20 @@ Subdirectories mirror the doc structure:
 
 # Documentation
 
-| Section | Description |
-|---------|-------------|
-| [Getting Started](getting_started.md) | Installation and first steps with Textual |
-| [Tutorial](tutorial.md) | Step-by-step tutorial for building your first app |
-| [Guide](guide/index.md) | In-depth guide to building Textual applications |
-| [Widgets](widgets/index.md) | Reference for all built-in widgets |
-| [Styles](styles/index.md) | CSS styles for customizing your app's appearance |
-| [Events](events/index.md) | Events reference for handling user interactions |
-| [CSS Types](css_types/index.md) | Data types accepted by CSS style rules |
-| [API Reference](api/index.md) | Module-level API reference |
-| [How-To](how-to/index.md) | Practical how-to articles on various topics |
-| [Widget Gallery](widget_gallery.md) | Visual overview of all built-in widgets |
-| [Reference](reference/index.md) | Cross-cutting reference material |
-| [FAQ](FAQ.md) | Frequently asked questions |
-| [Help](help.md) | Getting help and reporting issues |
-| [Roadmap](roadmap.md) | Project roadmap and planned features |
-| [Linux Console](linux-console.md) | Notes on running Textual in the Linux console |
+| Section                               | Description                                       |
+|---------------------------------------|---------------------------------------------------|
+| [Getting Started](getting_started.md) | Installation and first steps with Textual         |
+| [Tutorial](tutorial.md)               | Step-by-step tutorial for building your first app |
+| [Guide](guide/index.md)               | In-depth guide to building Textual applications   |
+| [Widgets](widgets/index.md)           | Reference for all built-in widgets                |
+| [Styles](styles/index.md)             | CSS styles for customizing your app's appearance  |
+| [Events](events/index.md)             | Events reference for handling user interactions   |
+| [CSS Types](css_types/index.md)       | Data types accepted by CSS style rules            |
+| [API Reference](api/index.md)         | Module-level API reference                        |
+| [How-To](how-to/index.md)             | Practical how-to articles on various topics       |
+| [Widget Gallery](widget_gallery.md)   | Visual overview of all built-in widgets           |
+| [Reference](reference/index.md)       | Cross-cutting reference material                  |
+| [FAQ](FAQ.md)                         | Frequently asked questions                        |
+| [Help](help.md)                       | Getting help and reporting issues                 |
+| [Roadmap](roadmap.md)                 | Project roadmap and planned features              |
+| [Linux Console](linux-console.md)     | Notes on running Textual in the Linux console     |

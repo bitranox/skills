@@ -14,7 +14,7 @@ text-overflow: clip | fold | ellipsis;
 ### Values
 
 | Value      | Description                                                                                          |
-| ---------- | ---------------------------------------------------------------------------------------------------- |
+|------------|------------------------------------------------------------------------------------------------------|
 | `clip`     | Overflowing text will be clipped (the overflow portion is removed from the output).                  |
 | `fold`     | Overflowing text will fold on to the next line(s).                                                   |
 | `ellipsis` | Overflowing text will be truncated and the last visible character will be replaced with an ellipsis. |

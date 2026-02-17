@@ -47,13 +47,13 @@ expect(result).toBeDefined();
 
 ## Quick Patterns
 
-| Scenario | Pattern |
-|----------|---------|
-| Wait for event | `waitFor(() => events.find(e => e.type === 'DONE'))` |
-| Wait for state | `waitFor(() => machine.state === 'ready')` |
-| Wait for count | `waitFor(() => items.length >= 5)` |
-| Wait for file | `waitFor(() => fs.existsSync(path))` |
-| Complex condition | `waitFor(() => obj.ready && obj.value > 10)` |
+| Scenario          | Pattern                                              |
+|-------------------|------------------------------------------------------|
+| Wait for event    | `waitFor(() => events.find(e => e.type === 'DONE'))` |
+| Wait for state    | `waitFor(() => machine.state === 'ready')`           |
+| Wait for count    | `waitFor(() => items.length >= 5)`                   |
+| Wait for file     | `waitFor(() => fs.existsSync(path))`                 |
+| Complex condition | `waitFor(() => obj.ready && obj.value > 10)`         |
 
 ## Implementation
 

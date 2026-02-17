@@ -56,7 +56,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name          | Type   | Default | Description                                                  |
-| ------------- | ------ | ------- | ------------------------------------------------------------ |
+|---------------|--------|---------|--------------------------------------------------------------|
 | `max_lines`   | `int`  | `None`  | Maximum number of lines in the log or `None` for no maximum. |
 | `auto_scroll` | `bool` | `False` | Scroll to end of log when new lines are added.               |
 

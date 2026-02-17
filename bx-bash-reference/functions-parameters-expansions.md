@@ -32,10 +32,10 @@ function fname [()] compound-command [redirections]
 
 ### Exit Status
 
-| Situation | Exit Status |
-|---|---|
+| Situation           | Exit Status                                                           |
+|---------------------|-----------------------------------------------------------------------|
 | Function definition | Zero (unless syntax error or readonly function with same name exists) |
-| Function execution | Exit status of the last command executed in the body |
+| Function execution  | Exit status of the last command executed in the body                  |
 
 ### Deleting Functions
 
@@ -51,11 +51,11 @@ When the function completes, positional parameters and `$#` are restored to thei
 
 ### Traps in Functions
 
-| Trap | Inherited? |
-|---|---|
-| `DEBUG` | No, unless function has `trace` attribute (`declare -t`) or `-o functrace` is enabled |
-| `RETURN` | No, unless function has `trace` attribute or `-o functrace` is enabled |
-| `ERR` | No, unless `-o errtrace` is enabled |
+| Trap     | Inherited?                                                                            |
+|----------|---------------------------------------------------------------------------------------|
+| `DEBUG`  | No, unless function has `trace` attribute (`declare -t`) or `-o functrace` is enabled |
+| `RETURN` | No, unless function has `trace` attribute or `-o functrace` is enabled                |
+| `ERR`    | No, unless `-o errtrace` is enabled                                                   |
 
 ### The `return` Builtin
 
@@ -140,12 +140,12 @@ name=[value]
 
 ### The `+=` Operator
 
-| Variable Type | Behavior of `+=` |
-|---|---|
-| String | Appends expanded value to current value |
-| Integer (`declare -i`) | Adds arithmetic result of value to current value |
-| Indexed array (compound assignment) | Appends new values starting at max_index + 1 |
-| Associative array (compound assignment) | Adds new key-value pairs |
+| Variable Type                           | Behavior of `+=`                                 |
+|-----------------------------------------|--------------------------------------------------|
+| String                                  | Appends expanded value to current value          |
+| Integer (`declare -i`)                  | Adds arithmetic result of value to current value |
+| Indexed array (compound assignment)     | Appends new values starting at max_index + 1     |
+| Associative array (compound assignment) | Adds new key-value pairs                         |
 
 ### Nameref Variables
 
@@ -186,17 +186,17 @@ ${10} ${11} ...      # Multi-digit: braces REQUIRED
 
 Special parameters may only be referenced; assignment to them is not allowed.
 
-| Parameter | Name | Description |
-|---|---|---|
-| `$*` | Star | Expands to all positional parameters starting from 1. Unquoted: each parameter is a separate word subject to further splitting and globbing. **In double quotes** (`"$*"`): expands to a single word with parameters separated by the first character of `IFS`. If `IFS` is unset, separated by spaces. If `IFS` is null, joined with no separator. Equivalent to `"$1c$2c..."` where `c` is `IFS[0]`. |
-| `$@` | At | Expands to all positional parameters starting from 1. **In double quotes** (`"$@"`): each parameter expands to a separate word -- equivalent to `"$1" "$2" ...`. In non-word-splitting contexts (e.g., assignments), expands to a single word with parameters separated by spaces. When there are no positional parameters, `"$@"` and `$@` expand to nothing (removed). If the double-quoted expansion occurs within a word, the first parameter joins with the beginning and the last parameter joins with the end of the original word. |
-| `$#` | Hash | Number of positional parameters (decimal). |
-| `$?` | Question | Exit status of the most recently executed command. |
-| `$-` | Hyphen | Current option flags (as specified upon invocation, by `set`, or set by the shell itself, such as `-i`). |
-| `$$` | Dollar | Process ID of the shell. In a subshell, expands to the PID of the **invoking** shell, not the subshell. |
-| `$!` | Bang | Process ID of the job most recently placed into the background (via `&` or the `bg` builtin). |
-| `$0` | Zero | Name of the shell or shell script. Set at shell initialization. With a file of commands: set to the filename. With `-c`: set to the first argument after the command string (if present). Otherwise: set to the filename used to invoke Bash. |
-| `$_` | Underscore | Context-dependent: at shell startup, set to the pathname used to invoke the shell. Subsequently, expands to the last argument of the previous simple command executed in the foreground (after expansion). Also set to the full pathname of each command executed and placed in the environment exported to that command. When checking mail, expands to the name of the mail file. |
+| Parameter | Name       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|-----------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `$*`      | Star       | Expands to all positional parameters starting from 1. Unquoted: each parameter is a separate word subject to further splitting and globbing. **In double quotes** (`"$*"`): expands to a single word with parameters separated by the first character of `IFS`. If `IFS` is unset, separated by spaces. If `IFS` is null, joined with no separator. Equivalent to `"$1c$2c..."` where `c` is `IFS[0]`.                                                                                                                                     |
+| `$@`      | At         | Expands to all positional parameters starting from 1. **In double quotes** (`"$@"`): each parameter expands to a separate word -- equivalent to `"$1" "$2" ...`. In non-word-splitting contexts (e.g., assignments), expands to a single word with parameters separated by spaces. When there are no positional parameters, `"$@"` and `$@` expand to nothing (removed). If the double-quoted expansion occurs within a word, the first parameter joins with the beginning and the last parameter joins with the end of the original word. |
+| `$#`      | Hash       | Number of positional parameters (decimal).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `$?`      | Question   | Exit status of the most recently executed command.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `$-`      | Hyphen     | Current option flags (as specified upon invocation, by `set`, or set by the shell itself, such as `-i`).                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `$$`      | Dollar     | Process ID of the shell. In a subshell, expands to the PID of the **invoking** shell, not the subshell.                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `$!`      | Bang       | Process ID of the job most recently placed into the background (via `&` or the `bg` builtin).                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `$0`      | Zero       | Name of the shell or shell script. Set at shell initialization. With a file of commands: set to the filename. With `-c`: set to the first argument after the command string (if present). Otherwise: set to the filename used to invoke Bash.                                                                                                                                                                                                                                                                                              |
+| `$_`      | Underscore | Context-dependent: at shell startup, set to the pathname used to invoke the shell. Subsequently, expands to the last argument of the previous simple command executed in the foreground (after expansion). Also set to the full pathname of each command executed and placed in the environment exported to that command. When checking mail, expands to the name of the mail file.                                                                                                                                                        |
 
 ### `$*` vs `$@` Quick Reference
 
@@ -220,17 +220,17 @@ for w in "$@"; do echo "[$w]"; done  # [hello world] [foo bar]  (preserves each)
 
 Expansions are performed in this order after the command line is split into tokens:
 
-| Step | Expansion | Can increase word count? |
-|---|---|---|
-| 1 | Brace expansion | Yes |
-| 2 | Tilde expansion | No |
-| 2 | Parameter and variable expansion | No (except `"$@"`, `"${arr[@]}"`) |
-| 2 | Arithmetic expansion | No |
-| 2 | Command substitution | No |
-| 2 | Process substitution (where supported) | No |
-| 3 | Word splitting | Yes |
-| 4 | Filename expansion | Yes |
-| 5 | Quote removal (always last) | No |
+| Step | Expansion                              | Can increase word count?          |
+|------|----------------------------------------|-----------------------------------|
+| 1    | Brace expansion                        | Yes                               |
+| 2    | Tilde expansion                        | No                                |
+| 2    | Parameter and variable expansion       | No (except `"$@"`, `"${arr[@]}"`) |
+| 2    | Arithmetic expansion                   | No                                |
+| 2    | Command substitution                   | No                                |
+| 2    | Process substitution (where supported) | No                                |
+| 3    | Word splitting                         | Yes                               |
+| 4    | Filename expansion                     | Yes                               |
+| 5    | Quote removal (always last)            | No                                |
 
 Steps 2 are performed left-to-right simultaneously (including process substitution on supported systems). Quote removal removes quote characters from the original word, not ones produced by other expansions.
 
@@ -261,10 +261,10 @@ chown root /usr/{ucb/{ex,edit},lib/{ex?.?*,how_ex}}
 {x..y[..incr]}
 ```
 
-| Component | Description |
-|---|---|
-| `x`, `y` | Integers or single letters (both must be same type) |
-| `incr` | Optional integer increment (default: 1 or -1 as appropriate) |
+| Component | Description                                                  |
+|-----------|--------------------------------------------------------------|
+| `x`, `y`  | Integers or single letters (both must be same type)          |
+| `incr`    | Optional integer increment (default: 1 or -1 as appropriate) |
 
 ```bash
 echo {1..5}         # 1 2 3 4 5
@@ -295,18 +295,18 @@ All characters from the unquoted `~` up to the first unquoted slash (or end of w
 
 ### Tilde Prefix Table
 
-| Prefix | Expansion |
-|---|---|
-| `~` | `$HOME` (if unset: home directory of the executing user) |
-| `~/foo` | `$HOME/foo` |
-| `~user/foo` | Home directory of `user` + `/foo` |
-| `~+` | `$PWD` |
-| `~+/foo` | `$PWD/foo` |
-| `~-` | `$OLDPWD` (if set) |
-| `~-/foo` | `${OLDPWD-'~-'}/foo` |
-| `~N` | Same as `dirs +N` |
-| `~+N` | Same as `dirs +N` |
-| `~-N` | Same as `dirs -N` |
+| Prefix      | Expansion                                                |
+|-------------|----------------------------------------------------------|
+| `~`         | `$HOME` (if unset: home directory of the executing user) |
+| `~/foo`     | `$HOME/foo`                                              |
+| `~user/foo` | Home directory of `user` + `/foo`                        |
+| `~+`        | `$PWD`                                                   |
+| `~+/foo`    | `$PWD/foo`                                               |
+| `~-`        | `$OLDPWD` (if set)                                       |
+| `~-/foo`    | `${OLDPWD-'~-'}/foo`                                     |
+| `~N`        | Same as `dirs +N`                                        |
+| `~+N`       | Same as `dirs +N`                                        |
+| `~-N`       | Same as `dirs -N`                                        |
 
 ### Rules
 
@@ -440,14 +440,14 @@ ${parameter:offset:length}
 
 Extracts up to `length` characters starting at position `offset`. Both `offset` and `length` are arithmetic expressions.
 
-| Condition | Behavior |
-|---|---|
-| `offset` omitted | Treated as 0 |
-| `length` omitted (no colon) | Extends to end of value |
-| `length` omitted (colon present) | Treated as 0 |
-| Negative `offset` | Offset from the end of the value (**must be separated from `:` by a space** to avoid confusion with `:-`) |
-| Negative `length` (strings) | Interpreted as offset from the end; expansion is characters between `offset` and that position |
-| Negative `length` (`@`, `*`, arrays) | Expansion error |
+| Condition                            | Behavior                                                                                                  |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| `offset` omitted                     | Treated as 0                                                                                              |
+| `length` omitted (no colon)          | Extends to end of value                                                                                   |
+| `length` omitted (colon present)     | Treated as 0                                                                                              |
+| Negative `offset`                    | Offset from the end of the value (**must be separated from `:` by a space** to avoid confusion with `:-`) |
+| Negative `length` (strings)          | Interpreted as offset from the end; expansion is characters between `offset` and that position            |
+| Negative `length` (`@`, `*`, arrays) | Expansion error                                                                                           |
 
 ```bash
 string=01234567890abcdefgh
@@ -524,12 +524,12 @@ ${!name[*]}
 ${#parameter}
 ```
 
-| Parameter | Result |
-|---|---|
-| Ordinary variable | Length in characters of its value |
-| `*` or `@` | Number of positional parameters |
-| Array subscripted with `*` or `@` | Number of elements in the array |
-| Array with negative subscript | Index relative to one greater than max index (counts back from end; -1 = last element) |
+| Parameter                         | Result                                                                                 |
+|-----------------------------------|----------------------------------------------------------------------------------------|
+| Ordinary variable                 | Length in characters of its value                                                      |
+| `*` or `@`                        | Number of positional parameters                                                        |
+| Array subscripted with `*` or `@` | Number of elements in the array                                                        |
+| Array with negative subscript     | Index relative to one greater than max index (counts back from end; -1 = last element) |
 
 ```bash
 var="hello"
@@ -640,18 +640,18 @@ ${parameter@operator}
 
 Each operator is a single letter:
 
-| Operator | Description | Example |
-|---|---|---|
-| `U` | Convert all to uppercase | `${var@U}` |
-| `u` | Convert first character to uppercase (if alphabetic) | `${var@u}` |
-| `L` | Convert all to lowercase | `${var@L}` |
-| `Q` | Quote the value in a format reusable as input | `${var@Q}` |
-| `E` | Expand backslash escape sequences (as with `$'...'`) | `${var@E}` |
-| `P` | Expand as a prompt string | `${var@P}` |
-| `A` | Produce an assignment statement or `declare` command that recreates the variable with its attributes and value | `${var@A}` |
-| `K` | Print indexed and associative arrays as quoted key-value pairs (reusable as input) | `${arr@K}` |
-| `a` | Produce flag values representing the variable's attributes | `${var@a}` |
-| `k` | Like `K`, but expands keys and values to separate words after word splitting | `${arr@k}` |
+| Operator | Description                                                                                                    | Example    |
+|----------|----------------------------------------------------------------------------------------------------------------|------------|
+| `U`      | Convert all to uppercase                                                                                       | `${var@U}` |
+| `u`      | Convert first character to uppercase (if alphabetic)                                                           | `${var@u}` |
+| `L`      | Convert all to lowercase                                                                                       | `${var@L}` |
+| `Q`      | Quote the value in a format reusable as input                                                                  | `${var@Q}` |
+| `E`      | Expand backslash escape sequences (as with `$'...'`)                                                           | `${var@E}` |
+| `P`      | Expand as a prompt string                                                                                      | `${var@P}` |
+| `A`      | Produce an assignment statement or `declare` command that recreates the variable with its attributes and value | `${var@A}` |
+| `K`      | Print indexed and associative arrays as quoted key-value pairs (reusable as input)                             | `${arr@K}` |
+| `a`      | Produce flag values representing the variable's attributes                                                     | `${var@a}` |
+| `k`      | Like `K`, but expands keys and values to separate words after word splitting                                   | `${arr@k}` |
 
 - With `@` or `*`: applied to each positional parameter or array member in turn.
 - Result is subject to word splitting and filename expansion.
@@ -668,36 +668,36 @@ echo ${num@A}    # declare -i num='42'
 
 ### Complete Parameter Expansion Quick Reference
 
-| Syntax | Description |
-|---|---|
-| `${parameter}` | Value of parameter |
-| `${!parameter}` | Indirect expansion |
-| `${!prefix*}` / `${!prefix@}` | Variable names starting with prefix |
-| `${!name[@]}` / `${!name[*]}` | Array indices/keys |
-| `${#parameter}` | Length of value (or count of elements) |
-| `${parameter:-word}` | Default value (unset or null) |
-| `${parameter-word}` | Default value (unset only) |
-| `${parameter:=word}` | Assign default (unset or null) |
-| `${parameter=word}` | Assign default (unset only) |
-| `${parameter:?word}` | Error if unset or null |
-| `${parameter?word}` | Error if unset |
-| `${parameter:+word}` | Alternate value if set and not null |
-| `${parameter+word}` | Alternate value if set |
-| `${parameter:offset}` | Substring from offset to end |
-| `${parameter:offset:length}` | Substring from offset for length chars |
-| `${parameter#pattern}` | Remove shortest prefix match |
-| `${parameter##pattern}` | Remove longest prefix match |
-| `${parameter%pattern}` | Remove shortest suffix match |
-| `${parameter%%pattern}` | Remove longest suffix match |
-| `${parameter/pattern/string}` | Replace first match |
-| `${parameter//pattern/string}` | Replace all matches |
-| `${parameter/#pattern/string}` | Replace match at beginning |
-| `${parameter/%pattern/string}` | Replace match at end |
-| `${parameter^pattern}` | Uppercase first matching char |
-| `${parameter^^pattern}` | Uppercase all matching chars |
-| `${parameter,pattern}` | Lowercase first matching char |
-| `${parameter,,pattern}` | Lowercase all matching chars |
-| `${parameter@operator}` | Transformation (U, u, L, Q, E, P, A, K, a, k) |
+| Syntax                         | Description                                   |
+|--------------------------------|-----------------------------------------------|
+| `${parameter}`                 | Value of parameter                            |
+| `${!parameter}`                | Indirect expansion                            |
+| `${!prefix*}` / `${!prefix@}`  | Variable names starting with prefix           |
+| `${!name[@]}` / `${!name[*]}`  | Array indices/keys                            |
+| `${#parameter}`                | Length of value (or count of elements)        |
+| `${parameter:-word}`           | Default value (unset or null)                 |
+| `${parameter-word}`            | Default value (unset only)                    |
+| `${parameter:=word}`           | Assign default (unset or null)                |
+| `${parameter=word}`            | Assign default (unset only)                   |
+| `${parameter:?word}`           | Error if unset or null                        |
+| `${parameter?word}`            | Error if unset                                |
+| `${parameter:+word}`           | Alternate value if set and not null           |
+| `${parameter+word}`            | Alternate value if set                        |
+| `${parameter:offset}`          | Substring from offset to end                  |
+| `${parameter:offset:length}`   | Substring from offset for length chars        |
+| `${parameter#pattern}`         | Remove shortest prefix match                  |
+| `${parameter##pattern}`        | Remove longest prefix match                   |
+| `${parameter%pattern}`         | Remove shortest suffix match                  |
+| `${parameter%%pattern}`        | Remove longest suffix match                   |
+| `${parameter/pattern/string}`  | Replace first match                           |
+| `${parameter//pattern/string}` | Replace all matches                           |
+| `${parameter/#pattern/string}` | Replace match at beginning                    |
+| `${parameter/%pattern/string}` | Replace match at end                          |
+| `${parameter^pattern}`         | Uppercase first matching char                 |
+| `${parameter^^pattern}`        | Uppercase all matching chars                  |
+| `${parameter,pattern}`         | Lowercase first matching char                 |
+| `${parameter,,pattern}`        | Lowercase all matching chars                  |
+| `${parameter@operator}`        | Transformation (U, u, L, Q, E, P, A, K, a, k) |
 
 ---
 
@@ -812,11 +812,11 @@ After parameter expansion, command substitution, and arithmetic expansion (when 
 
 ### IFS Rules
 
-| IFS Value | Behavior |
-|---|---|
-| Default (unset) | Behaves as if `IFS=$' \t\n'`; space, tab, newline delimit fields |
-| Null (`IFS=''`) | No word splitting occurs (implicit null arguments still removed) |
-| Whitespace only | Any sequence of IFS whitespace delimits a field; no null fields from whitespace |
+| IFS Value               | Behavior                                                                                                                  |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Default (unset)         | Behaves as if `IFS=$' \t\n'`; space, tab, newline delimit fields                                                          |
+| Null (`IFS=''`)         | No word splitting occurs (implicit null arguments still removed)                                                          |
+| Whitespace only         | Any sequence of IFS whitespace delimits a field; no null fields from whitespace                                           |
 | Contains non-whitespace | Non-whitespace char + any adjacent IFS whitespace = one delimiter. Adjacent non-whitespace delimiters produce null fields |
 
 **IFS whitespace** is space, tab, and newline -- always considered IFS whitespace even if not in the locale's space category.
@@ -828,12 +828,12 @@ After parameter expansion, command substitution, and arithmetic expansion (when 
 
 ### Null Arguments
 
-| Type | Behavior |
-|---|---|
-| Explicit null (`""` or `''`) | Retained; passed to commands as empty strings |
-| Implicit null (expansion of unset/null parameter, unquoted) | Removed |
-| Implicit null (expansion of unset/null parameter, within double quotes) | Retained as empty string |
-| Quoted null as part of a non-null word | Null portion removed: `-d''` becomes `-d` |
+| Type                                                                    | Behavior                                      |
+|-------------------------------------------------------------------------|-----------------------------------------------|
+| Explicit null (`""` or `''`)                                            | Retained; passed to commands as empty strings |
+| Implicit null (expansion of unset/null parameter, unquoted)             | Removed                                       |
+| Implicit null (expansion of unset/null parameter, within double quotes) | Retained as empty string                      |
+| Quoted null as part of a non-null word                                  | Null portion removed: `-d''` becomes `-d`     |
 
 ---
 
@@ -843,17 +843,17 @@ After word splitting, unless `set -f` (noglob) is active, Bash scans each word f
 
 ### Shell Options Affecting Globbing
 
-| Option | Effect |
-|---|---|
-| `nullglob` | No matches: word is removed |
-| `failglob` | No matches: error message, command not executed |
-| `nocaseglob` | Case-insensitive matching |
-| `dotglob` | Patterns match files beginning with `.` (but `.` and `..` still require explicit pattern match) |
-| `globskipdots` | `.` and `..` never match, even with leading `.` in pattern |
-| `globstar` | `**` matches all files and zero or more directories/subdirectories; `**/` matches only directories |
-| `globasciiranges` | Range expressions in bracket expressions use C locale ordering |
-| `extglob` | Enable extended pattern matching operators |
-| `set -f` / `set -o noglob` | Disable filename expansion entirely |
+| Option                     | Effect                                                                                             |
+|----------------------------|----------------------------------------------------------------------------------------------------|
+| `nullglob`                 | No matches: word is removed                                                                        |
+| `failglob`                 | No matches: error message, command not executed                                                    |
+| `nocaseglob`               | Case-insensitive matching                                                                          |
+| `dotglob`                  | Patterns match files beginning with `.` (but `.` and `..` still require explicit pattern match)    |
+| `globskipdots`             | `.` and `..` never match, even with leading `.` in pattern                                         |
+| `globstar`                 | `**` matches all files and zero or more directories/subdirectories; `**/` matches only directories |
+| `globasciiranges`          | Range expressions in bracket expressions use C locale ordering                                     |
+| `extglob`                  | Enable extended pattern matching operators                                                         |
+| `set -f` / `set -o noglob` | Disable filename expansion entirely                                                                |
 
 ### GLOBIGNORE Variable
 
@@ -883,21 +883,21 @@ Characters match themselves unless they are special pattern characters. NUL cann
 
 ### Basic Pattern Characters
 
-| Character | Meaning |
-|---|---|
-| `*` | Matches any string, including the null string. With `globstar` in filename context: `**` matches all files and zero or more directories; `**/` matches only directories. |
-| `?` | Matches any single character. |
-| `[...]` | Bracket expression: matches any one of the enclosed characters. |
+| Character | Meaning                                                                                                                                                                  |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `*`       | Matches any string, including the null string. With `globstar` in filename context: `**` matches all files and zero or more directories; `**/` matches only directories. |
+| `?`       | Matches any single character.                                                                                                                                            |
+| `[...]`   | Bracket expression: matches any one of the enclosed characters.                                                                                                          |
 
 ### Bracket Expressions `[...]`
 
-| Syntax | Meaning |
-|---|---|
-| `[abc]` | Matches `a`, `b`, or `c` |
-| `[a-z]` | Range expression: any character between `a` and `z` (collation-dependent) |
-| `[!...]` or `[^...]` | Negation: matches any character NOT in the set |
-| `[-...]` or `[...-]` | Literal `-`: include as first or last character |
-| `[]...]` | Literal `]`: include as first character |
+| Syntax               | Meaning                                                                   |
+|----------------------|---------------------------------------------------------------------------|
+| `[abc]`              | Matches `a`, `b`, or `c`                                                  |
+| `[a-z]`              | Range expression: any character between `a` and `z` (collation-dependent) |
+| `[!...]` or `[^...]` | Negation: matches any character NOT in the set                            |
+| `[-...]` or `[...-]` | Literal `-`: include as first or last character                           |
+| `[]...]`             | Literal `]`: include as first character                                   |
 
 #### Character Classes
 
@@ -907,22 +907,22 @@ Characters match themselves unless they are special pattern characters. NUL cann
 
 Available POSIX classes:
 
-| Class | Matches |
-|---|---|
-| `alnum` | Letters and digits |
-| `alpha` | Letters |
-| `ascii` | ASCII characters |
-| `blank` | Space and tab |
-| `cntrl` | Control characters |
-| `digit` | Digits |
-| `graph` | Non-space printable characters |
-| `lower` | Lowercase letters |
-| `print` | Printable characters including space |
-| `punct` | Punctuation |
-| `space` | Whitespace characters |
-| `upper` | Uppercase letters |
-| `word` | Letters, digits, and `_` |
-| `xdigit` | Hexadecimal digits |
+| Class    | Matches                              |
+|----------|--------------------------------------|
+| `alnum`  | Letters and digits                   |
+| `alpha`  | Letters                              |
+| `ascii`  | ASCII characters                     |
+| `blank`  | Space and tab                        |
+| `cntrl`  | Control characters                   |
+| `digit`  | Digits                               |
+| `graph`  | Non-space printable characters       |
+| `lower`  | Lowercase letters                    |
+| `print`  | Printable characters including space |
+| `punct`  | Punctuation                          |
+| `space`  | Whitespace characters                |
+| `upper`  | Uppercase letters                    |
+| `word`   | Letters, digits, and `_`             |
+| `xdigit` | Hexadecimal digits                   |
 
 ```bash
 [[:space:]][[:upper:]!].[-[:lower:]]
@@ -953,13 +953,13 @@ Matches the collating symbol `symbol`.
 
 Enable with `shopt -s extglob`. These operators use pattern-lists (patterns separated by `|`):
 
-| Pattern | Meaning |
-|---|---|
-| `?(pattern-list)` | Matches **zero or one** occurrence of the given patterns |
+| Pattern           | Meaning                                                    |
+|-------------------|------------------------------------------------------------|
+| `?(pattern-list)` | Matches **zero or one** occurrence of the given patterns   |
 | `*(pattern-list)` | Matches **zero or more** occurrences of the given patterns |
-| `+(pattern-list)` | Matches **one or more** occurrences of the given patterns |
-| `@(pattern-list)` | Matches **exactly one** of the given patterns |
-| `!(pattern-list)` | Matches anything **except** one of the given patterns |
+| `+(pattern-list)` | Matches **one or more** occurrences of the given patterns  |
+| `@(pattern-list)` | Matches **exactly one** of the given patterns              |
+| `!(pattern-list)` | Matches anything **except** one of the given patterns      |
 
 ```bash
 shopt -s extglob

@@ -13,7 +13,7 @@ scrollbar-visibility: hidden | visible;
 ### Values
 
 | Value               | Description                                          |
-| ------------------- | ---------------------------------------------------- |
+|---------------------|------------------------------------------------------|
 | `hidden`            | The widget's scrollbars will be hidden.              |
 | `visible` (default) | The widget's scrollbars will be displayed as normal. |
 

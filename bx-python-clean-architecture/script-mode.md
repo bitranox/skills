@@ -45,14 +45,14 @@ If you don't need deps, **omit** the PEP 723 block and stay stdlib-only.
 
 ## Exit Codes
 
-| Code | Meaning |
-|-----:|---------|
-| 0 | Success |
-| 2 | Invalid input / usage error |
-| 3 | Not found |
-| 4 | Conflict / precondition fail |
-| 70 | Unexpected internal error |
-| 124 | Timeout / cancelled |
+| Code | Meaning                      |
+|-----:|------------------------------|
+| 0    | Success                      |
+| 2    | Invalid input / usage error  |
+| 3    | Not found                    |
+| 4    | Conflict / precondition fail |
+| 70   | Unexpected internal error    |
+| 124  | Timeout / cancelled          |
 
 ---
 

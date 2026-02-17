@@ -5,7 +5,7 @@ The `<hatch>` CSS type represents a character used in the [hatch](../styles/hatc
 ## Syntax
 
 | Value        | Description                    |
-| ------------ | ------------------------------ |
+|--------------|--------------------------------|
 | `cross`      | A diagonal crossed line.       |
 | `horizontal` | A horizontal line.             |
 | `left`       | A left leaning diagonal line.  |

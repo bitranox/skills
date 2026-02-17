@@ -197,11 +197,11 @@ Next failing test for next feature.
 
 ## Good Tests
 
-| Quality | Good | Bad |
-|---------|------|-----|
-| **Minimal** | One thing. "and" in name? Split it. | `test('validates email and domain and whitespace')` |
-| **Clear** | Name describes behavior | `test('test1')` |
-| **Shows intent** | Demonstrates desired API | Obscures what code should do |
+| Quality          | Good                                | Bad                                                 |
+|------------------|-------------------------------------|-----------------------------------------------------|
+| **Minimal**      | One thing. "and" in name? Split it. | `test('validates email and domain and whitespace')` |
+| **Clear**        | Name describes behavior             | `test('test1')`                                     |
+| **Shows intent** | Demonstrates desired API            | Obscures what code should do                        |
 
 ## Why Order Matters
 
@@ -255,19 +255,19 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 
 ## Common Rationalizations
 
-| Excuse | Reality |
-|--------|---------|
-| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
-| "I'll test after" | Tests passing immediately prove nothing. |
-| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
-| "Already manually tested" | Ad-hoc ≠ systematic. No record, can't re-run. |
-| "Deleting X hours is wasteful" | Sunk cost fallacy. Keeping unverified code is technical debt. |
-| "Keep as reference, write tests first" | You'll adapt it. That's testing after. Delete means delete. |
-| "Need to explore first" | Fine. Throw away exploration, start with TDD. |
-| "Test hard = design unclear" | Listen to test. Hard to test = hard to use. |
-| "TDD will slow me down" | TDD faster than debugging. Pragmatic = test-first. |
-| "Manual test faster" | Manual doesn't prove edge cases. You'll re-test every change. |
-| "Existing code has no tests" | You're improving it. Add tests for existing code. |
+| Excuse                                 | Reality                                                                 |
+|----------------------------------------|-------------------------------------------------------------------------|
+| "Too simple to test"                   | Simple code breaks. Test takes 30 seconds.                              |
+| "I'll test after"                      | Tests passing immediately prove nothing.                                |
+| "Tests after achieve same goals"       | Tests-after = "what does this do?" Tests-first = "what should this do?" |
+| "Already manually tested"              | Ad-hoc ≠ systematic. No record, can't re-run.                           |
+| "Deleting X hours is wasteful"         | Sunk cost fallacy. Keeping unverified code is technical debt.           |
+| "Keep as reference, write tests first" | You'll adapt it. That's testing after. Delete means delete.             |
+| "Need to explore first"                | Fine. Throw away exploration, start with TDD.                           |
+| "Test hard = design unclear"           | Listen to test. Hard to test = hard to use.                             |
+| "TDD will slow me down"                | TDD faster than debugging. Pragmatic = test-first.                      |
+| "Manual test faster"                   | Manual doesn't prove edge cases. You'll re-test every change.           |
+| "Existing code has no tests"           | You're improving it. Add tests for existing code.                       |
 
 ## Red Flags - STOP and Start Over
 
@@ -341,12 +341,12 @@ Can't check all boxes? You skipped TDD. Start over.
 
 ## When Stuck
 
-| Problem | Solution |
-|---------|----------|
+| Problem                | Solution                                                             |
+|------------------------|----------------------------------------------------------------------|
 | Don't know how to test | Write wished-for API. Write assertion first. Ask your human partner. |
-| Test too complicated | Design too complicated. Simplify interface. |
-| Must mock everything | Code too coupled. Use dependency injection. |
-| Test setup huge | Extract helpers. Still complex? Simplify design. |
+| Test too complicated   | Design too complicated. Simplify interface.                          |
+| Must mock everything   | Code too coupled. Use dependency injection.                          |
+| Test setup huge        | Extract helpers. Still complex? Simplify design.                     |
 
 ## Debugging Integration
 

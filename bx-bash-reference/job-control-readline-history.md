@@ -29,15 +29,15 @@ Job control is the ability to selectively stop (suspend) and resume process exec
 
 **Job specifications (jobspecs):**
 
-| Jobspec | Meaning |
-|---------|---------|
-| `%n` | Job number n |
-| `%ce` | Job whose command name begins with "ce" |
-| `%?ce` | Job containing "ce" anywhere in its command line |
-| `%%` | Current job |
-| `%+` | Current job (synonym for `%%`) |
-| `%` | Current job (bare `%` with no spec) |
-| `%-` | Previous job |
+| Jobspec | Meaning                                          |
+|---------|--------------------------------------------------|
+| `%n`    | Job number n                                     |
+| `%ce`   | Job whose command name begins with "ce"          |
+| `%?ce`  | Job containing "ce" anywhere in its command line |
+| `%%`    | Current job                                      |
+| `%+`    | Current job (synonym for `%%`)                   |
+| `%`     | Current job (bare `%` with no spec)              |
+| `%-`    | Previous job                                     |
 
 - **Current job**: becomes current when started in background, stopped in foreground, or resumed in background
 - **Previous job**: the job that was current before the current one became current
@@ -95,13 +95,13 @@ jobs -x COMMAND [ARGUMENTS]
 
 **Options (first form):**
 
-| Option | Effect |
-|--------|--------|
-| `-l` | List process IDs in addition to normal info |
-| `-n` | Show only jobs whose status changed since last notification |
-| `-p` | List only the process group leader's PID |
-| `-r` | Show only running jobs |
-| `-s` | Show only stopped jobs |
+| Option | Effect                                                      |
+|--------|-------------------------------------------------------------|
+| `-l`   | List process IDs in addition to normal info                 |
+| `-n`   | Show only jobs whose status changed since last notification |
+| `-p`   | List only the process group leader's PID                    |
+| `-r`   | Show only running jobs                                      |
+| `-s`   | Show only stopped jobs                                      |
 
 - With JOBSPEC: restrict output to that job
 - Without JOBSPEC: list all jobs
@@ -136,12 +136,12 @@ wait [-fn] [-p VARNAME] [ID ...]
 
 Wait until each child process specified by ID (PID or jobspec) exits.
 
-| Option | Effect |
-|--------|--------|
-| (none) | Wait for all running background jobs and last process substitution (if PID matches `$!`); return 0 |
-| `-n` | Wait for any one of the IDs (or any job/process substitution if no IDs) to complete; return its exit status |
-| `-p` | Assign the completed job/process identifier to VARNAME (useful with `-n`); variable is unset initially |
-| `-f` | When job control is enabled, wait for each ID to terminate (not just change state) |
+| Option | Effect                                                                                                      |
+|--------|-------------------------------------------------------------------------------------------------------------|
+| (none) | Wait for all running background jobs and last process substitution (if PID matches `$!`); return 0          |
+| `-n`   | Wait for any one of the IDs (or any job/process substitution if no IDs) to complete; return its exit status |
+| `-p`   | Assign the completed job/process identifier to VARNAME (useful with `-n`); variable is unset initially      |
+| `-f`   | When job control is enabled, wait for each ID to terminate (not just change state)                          |
 
 **Return**: exit status of last ID; 127 if no IDs specify active children; >128 if interrupted by signal.
 
@@ -177,11 +177,11 @@ Suspend this shell until it receives SIGCONT. A login shell or shell without job
 
 Controls how the shell interacts with job control for simple single-word commands (without redirections):
 
-| Value | Behavior |
-|-------|----------|
-| `exact` | Word must match stopped job name exactly |
-| `substring` | Word must match a substring of stopped job name (like `%?string`) |
-| Any other value (e.g. `prefix`) | Word must be a prefix of stopped job name (like `%string`) |
+| Value                           | Behavior                                                          |
+|---------------------------------|-------------------------------------------------------------------|
+| `exact`                         | Word must match stopped job name exactly                          |
+| `substring`                     | Word must match a substring of stopped job name (like `%?string`) |
+| Any other value (e.g. `prefix`) | Word must be a prefix of stopped job name (like `%string`)        |
 
 If more than one job matches, the most recently accessed job is selected. The "name" is the command line as displayed by `jobs`.
 
@@ -213,24 +213,24 @@ Press RET at any cursor position to accept the entire line.
 
 #### 8.2.1 Bare Essentials
 
-| Key | Action |
-|-----|--------|
-| `C-b` | Move back one character |
-| `C-f` | Move forward one character |
-| DEL / Backspace | Delete character to left of cursor |
-| `C-d` | Delete character under cursor |
-| Printing chars | Insert at cursor |
+| Key                | Action                                               |
+|--------------------|------------------------------------------------------|
+| `C-b`              | Move back one character                              |
+| `C-f`              | Move forward one character                           |
+| DEL / Backspace    | Delete character to left of cursor                   |
+| `C-d`              | Delete character under cursor                        |
+| Printing chars     | Insert at cursor                                     |
 | `C-_` or `C-x C-u` | Undo last editing command (repeatable to empty line) |
 
 #### 8.2.2 Movement Commands
 
-| Key | Action |
-|-----|--------|
-| `C-a` | Move to start of line |
-| `C-e` | Move to end of line |
+| Key   | Action                                     |
+|-------|--------------------------------------------|
+| `C-a` | Move to start of line                      |
+| `C-e` | Move to end of line                        |
 | `M-f` | Move forward one word (letters and digits) |
-| `M-b` | Move backward one word |
-| `C-l` | Clear screen, reprint current line at top |
+| `M-b` | Move backward one word                     |
+| `C-l` | Clear screen, reprint current line at top  |
 
 Convention: Control operates on characters, Meta operates on words.
 
@@ -242,18 +242,18 @@ Consecutive kills accumulate into the kill ring together. The kill ring is not l
 
 **Kill commands:**
 
-| Key | Action |
-|-----|--------|
-| `C-k` | Kill from cursor to end of line |
-| `M-d` | Kill from cursor to end of current/next word |
+| Key     | Action                                             |
+|---------|----------------------------------------------------|
+| `C-k`   | Kill from cursor to end of line                    |
+| `M-d`   | Kill from cursor to end of current/next word       |
 | `M-DEL` | Kill from cursor to start of current/previous word |
-| `C-w` | Kill from cursor to previous whitespace |
+| `C-w`   | Kill from cursor to previous whitespace            |
 
 **Yank commands:**
 
-| Key | Action |
-|-----|--------|
-| `C-y` | Yank most recently killed text at cursor |
+| Key   | Action                                                 |
+|-------|--------------------------------------------------------|
+| `C-y` | Yank most recently killed text at cursor               |
 | `M-y` | Rotate kill-ring, yank new top (only after C-y or M-y) |
 
 #### 8.2.4 Numeric Arguments
@@ -268,14 +268,14 @@ Pass numeric arguments to Readline commands as repeat counts or direction modifi
 
 **Incremental search:**
 
-| Key | Action |
-|-----|--------|
-| `C-r` | Search backward incrementally |
-| `C-s` | Search forward incrementally |
-| `C-g` | Abort search, restore original line |
-| ESC or `C-j` | Terminate search (configurable via `isearch-terminators`) |
-| RET | Terminate search and execute found line |
-| Movement command | Terminate search, make found line current, begin editing |
+| Key              | Action                                                    |
+|------------------|-----------------------------------------------------------|
+| `C-r`            | Search backward incrementally                             |
+| `C-s`            | Search forward incrementally                              |
+| `C-g`            | Abort search, restore original line                       |
+| ESC or `C-j`     | Terminate search (configurable via `isearch-terminators`) |
+| RET              | Terminate search and execute found line                   |
+| Movement command | Terminate search, make found line current, begin editing  |
 
 - Typing `C-r`/`C-s` again during search finds next match
 - Two `C-r`s without intervening characters reuses last search string
@@ -312,57 +312,57 @@ set VARIABLE VALUE
 
 #### All Readline Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `active-region-start-color` | Terminal standout mode | Terminal escape sequence for active region text color. Reset on terminal type change. Example: `\e[01;33m` |
-| `active-region-end-color` | Terminal standout restore | Terminal escape sequence to restore normal display after active region. Reset on terminal type change. Example: `\e[0m` |
-| `bell-style` | `audible` | Controls terminal bell: `none`, `visible`, or `audible` |
-| `bind-tty-special-chars` | `on` | Bind kernel terminal driver special control chars to Readline equivalents (overrides defaults) |
-| `blink-matching-paren` | `off` | Briefly move cursor to opening paren when closing paren inserted |
-| `colored-completion-prefix` | `off` | Display common completion prefix in different color (from `LS_COLORS`; custom suffix `readline-colored-completion-prefix`) |
-| `colored-stats` | `off` | Display completions with colors by file type (from `LS_COLORS`) |
-| `comment-begin` | `"#"` | String inserted by `insert-comment` command |
-| `completion-display-width` | `-1` | Screen columns for completion display. 0 = one per line. Ignored if < 0 or > terminal width |
-| `completion-ignore-case` | `off` | Case-insensitive filename matching and completion |
-| `completion-map-case` | `off` | When `completion-ignore-case` is on, treat `-` and `_` as equivalent |
-| `completion-prefix-display-length` | 0 | Max length of common prefix displayed without modification. Longer prefixes replaced with ellipsis (or `___` for filenames starting with `.`) |
-| `completion-query-items` | `100` | Threshold for asking user before displaying completions. 0 = never ask. Negative treated as 0 |
-| `convert-meta` | `on` (but `off` for multibyte locales) | Convert 8th-bit-set chars to ESC-prefixed sequences. Depends on `LC_CTYPE`. Affects key bindings (see `force-meta-prefix`) |
-| `disable-completion` | `off` | Inhibit word completion; completion chars act as `self-insert` |
-| `echo-control-characters` | `on` | Echo character corresponding to keyboard-generated signal |
-| `editing-mode` | `emacs` | Default keybinding set: `emacs` or `vi` |
-| `emacs-mode-string` | `@` | String displayed before prompt in emacs mode when `show-mode-in-prompt` is on. Supports `\1`/`\2` for non-printing sequences |
-| `enable-active-region` | `on` | Highlight text between point and mark using `active-region-start-color`. Shows bracketed-paste and search matches |
-| `enable-bracketed-paste` | `on` | Terminal inserts paste as single string; prevents executing bindings in pasted text |
-| `enable-keypad` | `off` | Enable application keypad (needed for arrow keys on some systems) |
-| `enable-meta-key` | `on` | Enable meta modifier key if terminal supports it |
-| `expand-tilde` | `off` | Perform tilde expansion during word completion |
-| `force-meta-prefix` | `off` | When on, `\M-`C bindings always use ESC C (two-char meta prefix). When off, behavior depends on `convert-meta` |
-| `history-preserve-point` | `off` | Place cursor at same position on each retrieved history line |
-| `history-size` | `$HISTSIZE` | Max history entries. 0 = delete all, no new saves. < 0 = unlimited. Non-numeric = 500 |
-| `horizontal-scroll-mode` | `off` | Scroll long lines horizontally instead of wrapping. Auto-set to on for terminals of height 1 |
-| `input-meta` | `off` (but `on` for multibyte locales) | Enable 8-bit input (don't clear 8th bit). Synonym: `meta-flag`. Depends on `LC_CTYPE` |
-| `isearch-terminators` | ESC, `C-j` | Characters that terminate incremental search without executing as a command |
-| `keymap` | `emacs` | Current keymap. Built-in names: `emacs`, `emacs-standard`, `emacs-meta`, `emacs-ctlx`, `vi`, `vi-move`, `vi-command`, `vi-insert`. `vi` = `vi-command` = `vi-move`; `emacs` = `emacs-standard` |
-| `keyseq-timeout` | `500` | Milliseconds to wait for ambiguous key sequence input. <= 0 or non-numeric = wait for another key press |
-| `mark-directories` | `on` | Append slash to completed directory names |
-| `mark-modified-lines` | `off` | Display `*` at start of modified history lines |
-| `mark-symlinked-directories` | `off` | Append slash to completed symlinks-to-directories (subject to `mark-directories`) |
-| `match-hidden-files` | `on` | Match dotfiles during filename completion. Off = user must type leading `.` |
-| `menu-complete-display-prefix` | `off` | Display common prefix before cycling through menu completions |
-| `output-meta` | `off` (but `on` for multibyte locales) | Display 8th-bit-set chars directly instead of meta-prefixed. Depends on `LC_CTYPE` |
-| `page-completions` | `on` | Use internal pager (like `more`) for completion display |
-| `prefer-visible-bell` | (see `bell-style`) | Alias for `bell-style` |
-| `print-completions-horizontally` | `off` | Sort completions horizontally rather than vertically down the screen |
-| `revert-all-at-newline` | `off` | Undo all changes to history lines before returning on `accept-line` |
-| `search-ignore-case` | `off` | Case-insensitive incremental and non-incremental history searches |
-| `show-all-if-ambiguous` | `off` | List matches immediately on ambiguous completion instead of ringing bell |
-| `show-all-if-unmodified` | `off` | List matches immediately when no partial completion possible (no common prefix) |
-| `show-mode-in-prompt` | `off` | Add editing mode indicator string before prompt |
-| `skip-completed-text` | `off` | When completing mid-word, skip chars after point that match completion (avoids duplication like "Makefilefile") |
-| `vi-cmd-mode-string` | `(cmd)` | String displayed before prompt in vi command mode when `show-mode-in-prompt` is on. Supports `\1`/`\2` |
-| `vi-ins-mode-string` | `(ins)` | String displayed before prompt in vi insertion mode when `show-mode-in-prompt` is on. Supports `\1`/`\2` |
-| `visible-stats` | `off` | Append file type character when listing completions |
+| Variable                           | Default                                | Description                                                                                                                                                                                    |
+|------------------------------------|----------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `active-region-start-color`        | Terminal standout mode                 | Terminal escape sequence for active region text color. Reset on terminal type change. Example: `\e[01;33m`                                                                                     |
+| `active-region-end-color`          | Terminal standout restore              | Terminal escape sequence to restore normal display after active region. Reset on terminal type change. Example: `\e[0m`                                                                        |
+| `bell-style`                       | `audible`                              | Controls terminal bell: `none`, `visible`, or `audible`                                                                                                                                        |
+| `bind-tty-special-chars`           | `on`                                   | Bind kernel terminal driver special control chars to Readline equivalents (overrides defaults)                                                                                                 |
+| `blink-matching-paren`             | `off`                                  | Briefly move cursor to opening paren when closing paren inserted                                                                                                                               |
+| `colored-completion-prefix`        | `off`                                  | Display common completion prefix in different color (from `LS_COLORS`; custom suffix `readline-colored-completion-prefix`)                                                                     |
+| `colored-stats`                    | `off`                                  | Display completions with colors by file type (from `LS_COLORS`)                                                                                                                                |
+| `comment-begin`                    | `"#"`                                  | String inserted by `insert-comment` command                                                                                                                                                    |
+| `completion-display-width`         | `-1`                                   | Screen columns for completion display. 0 = one per line. Ignored if < 0 or > terminal width                                                                                                    |
+| `completion-ignore-case`           | `off`                                  | Case-insensitive filename matching and completion                                                                                                                                              |
+| `completion-map-case`              | `off`                                  | When `completion-ignore-case` is on, treat `-` and `_` as equivalent                                                                                                                           |
+| `completion-prefix-display-length` | 0                                      | Max length of common prefix displayed without modification. Longer prefixes replaced with ellipsis (or `___` for filenames starting with `.`)                                                  |
+| `completion-query-items`           | `100`                                  | Threshold for asking user before displaying completions. 0 = never ask. Negative treated as 0                                                                                                  |
+| `convert-meta`                     | `on` (but `off` for multibyte locales) | Convert 8th-bit-set chars to ESC-prefixed sequences. Depends on `LC_CTYPE`. Affects key bindings (see `force-meta-prefix`)                                                                     |
+| `disable-completion`               | `off`                                  | Inhibit word completion; completion chars act as `self-insert`                                                                                                                                 |
+| `echo-control-characters`          | `on`                                   | Echo character corresponding to keyboard-generated signal                                                                                                                                      |
+| `editing-mode`                     | `emacs`                                | Default keybinding set: `emacs` or `vi`                                                                                                                                                        |
+| `emacs-mode-string`                | `@`                                    | String displayed before prompt in emacs mode when `show-mode-in-prompt` is on. Supports `\1`/`\2` for non-printing sequences                                                                   |
+| `enable-active-region`             | `on`                                   | Highlight text between point and mark using `active-region-start-color`. Shows bracketed-paste and search matches                                                                              |
+| `enable-bracketed-paste`           | `on`                                   | Terminal inserts paste as single string; prevents executing bindings in pasted text                                                                                                            |
+| `enable-keypad`                    | `off`                                  | Enable application keypad (needed for arrow keys on some systems)                                                                                                                              |
+| `enable-meta-key`                  | `on`                                   | Enable meta modifier key if terminal supports it                                                                                                                                               |
+| `expand-tilde`                     | `off`                                  | Perform tilde expansion during word completion                                                                                                                                                 |
+| `force-meta-prefix`                | `off`                                  | When on, `\M-`C bindings always use ESC C (two-char meta prefix). When off, behavior depends on `convert-meta`                                                                                 |
+| `history-preserve-point`           | `off`                                  | Place cursor at same position on each retrieved history line                                                                                                                                   |
+| `history-size`                     | `$HISTSIZE`                            | Max history entries. 0 = delete all, no new saves. < 0 = unlimited. Non-numeric = 500                                                                                                          |
+| `horizontal-scroll-mode`           | `off`                                  | Scroll long lines horizontally instead of wrapping. Auto-set to on for terminals of height 1                                                                                                   |
+| `input-meta`                       | `off` (but `on` for multibyte locales) | Enable 8-bit input (don't clear 8th bit). Synonym: `meta-flag`. Depends on `LC_CTYPE`                                                                                                          |
+| `isearch-terminators`              | ESC, `C-j`                             | Characters that terminate incremental search without executing as a command                                                                                                                    |
+| `keymap`                           | `emacs`                                | Current keymap. Built-in names: `emacs`, `emacs-standard`, `emacs-meta`, `emacs-ctlx`, `vi`, `vi-move`, `vi-command`, `vi-insert`. `vi` = `vi-command` = `vi-move`; `emacs` = `emacs-standard` |
+| `keyseq-timeout`                   | `500`                                  | Milliseconds to wait for ambiguous key sequence input. <= 0 or non-numeric = wait for another key press                                                                                        |
+| `mark-directories`                 | `on`                                   | Append slash to completed directory names                                                                                                                                                      |
+| `mark-modified-lines`              | `off`                                  | Display `*` at start of modified history lines                                                                                                                                                 |
+| `mark-symlinked-directories`       | `off`                                  | Append slash to completed symlinks-to-directories (subject to `mark-directories`)                                                                                                              |
+| `match-hidden-files`               | `on`                                   | Match dotfiles during filename completion. Off = user must type leading `.`                                                                                                                    |
+| `menu-complete-display-prefix`     | `off`                                  | Display common prefix before cycling through menu completions                                                                                                                                  |
+| `output-meta`                      | `off` (but `on` for multibyte locales) | Display 8th-bit-set chars directly instead of meta-prefixed. Depends on `LC_CTYPE`                                                                                                             |
+| `page-completions`                 | `on`                                   | Use internal pager (like `more`) for completion display                                                                                                                                        |
+| `prefer-visible-bell`              | (see `bell-style`)                     | Alias for `bell-style`                                                                                                                                                                         |
+| `print-completions-horizontally`   | `off`                                  | Sort completions horizontally rather than vertically down the screen                                                                                                                           |
+| `revert-all-at-newline`            | `off`                                  | Undo all changes to history lines before returning on `accept-line`                                                                                                                            |
+| `search-ignore-case`               | `off`                                  | Case-insensitive incremental and non-incremental history searches                                                                                                                              |
+| `show-all-if-ambiguous`            | `off`                                  | List matches immediately on ambiguous completion instead of ringing bell                                                                                                                       |
+| `show-all-if-unmodified`           | `off`                                  | List matches immediately when no partial completion possible (no common prefix)                                                                                                                |
+| `show-mode-in-prompt`              | `off`                                  | Add editing mode indicator string before prompt                                                                                                                                                |
+| `skip-completed-text`              | `off`                                  | When completing mid-word, skip chars after point that match completion (avoids duplication like "Makefilefile")                                                                                |
+| `vi-cmd-mode-string`               | `(cmd)`                                | String displayed before prompt in vi command mode when `show-mode-in-prompt` is on. Supports `\1`/`\2`                                                                                         |
+| `vi-ins-mode-string`               | `(ins)`                                | String displayed before prompt in vi insertion mode when `show-mode-in-prompt` is on. Supports `\1`/`\2`                                                                                       |
+| `visible-stats`                    | `off`                                  | Append file type character when listing completions                                                                                                                                            |
 
 #### Key Bindings Syntax
 
@@ -396,29 +396,29 @@ Example:
 
 **Escape sequences (GNU Emacs style):**
 
-| Sequence | Meaning |
-|----------|---------|
-| `\C-` | Control prefix |
-| `\M-` | Meta prefix (behavior depends on `force-meta-prefix` and `convert-meta`) |
-| `\e` | Escape character |
-| `\\` | Backslash |
-| `\"` | Double quote |
-| `\'` | Single quote |
+| Sequence | Meaning                                                                  |
+|----------|--------------------------------------------------------------------------|
+| `\C-`    | Control prefix                                                           |
+| `\M-`    | Meta prefix (behavior depends on `force-meta-prefix` and `convert-meta`) |
+| `\e`     | Escape character                                                         |
+| `\\`     | Backslash                                                                |
+| `\"`     | Double quote                                                             |
+| `\'`     | Single quote                                                             |
 
 **Additional backslash escapes:**
 
-| Sequence | Meaning |
-|----------|---------|
-| `\a` | Alert (bell) |
-| `\b` | Backspace |
-| `\d` | Delete |
-| `\f` | Form feed |
-| `\n` | Newline |
-| `\r` | Carriage return |
-| `\t` | Horizontal tab |
-| `\v` | Vertical tab |
-| `\NNN` | Octal value (1-3 digits) |
-| `\xHH` | Hexadecimal value (1-2 hex digits) |
+| Sequence | Meaning                            |
+|----------|------------------------------------|
+| `\a`     | Alert (bell)                       |
+| `\b`     | Backspace                          |
+| `\d`     | Delete                             |
+| `\f`     | Form feed                          |
+| `\n`     | Newline                            |
+| `\r`     | Carriage return                    |
+| `\t`     | Horizontal tab                     |
+| `\v`     | Vertical tab                       |
+| `\NNN`   | Octal value (1-3 digits)           |
+| `\xHH`   | Hexadecimal value (1-2 hex digits) |
 
 **Macros:** Enclose in single or double quotes. Unquoted text = function name. Backslash escapes are expanded in macro body. Backslash quotes any other character including `"` and `'`.
 
@@ -480,159 +480,159 @@ List bindings: `bind -P` (verbose) or `bind -p` (terse, suitable for inputrc).
 
 #### 8.4.1 Commands For Moving
 
-| Command | Default Key | Description |
-|---------|-------------|-------------|
-| `beginning-of-line` | `C-a` | Move to start of line (also Home key) |
-| `end-of-line` | `C-e` | Move to end of line (also End key) |
-| `forward-char` | `C-f` | Move forward one character (also right arrow) |
-| `backward-char` | `C-b` | Move back one character (also left arrow) |
-| `forward-word` | `M-f` | Move forward to end of next word (letters/digits) |
-| `backward-word` | `M-b` | Move back to start of current/previous word (letters/digits) |
-| `shell-forward-word` | `M-C-f` | Move forward to end of next word (delimited by non-quoted shell metacharacters) |
-| `shell-backward-word` | `M-C-b` | Move back to start of current/previous word (shell metachar boundaries) |
-| `previous-screen-line` | (unbound) | Move to same screen column on previous physical screen line |
-| `next-screen-line` | (unbound) | Move to same screen column on next physical screen line |
-| `clear-display` | `M-C-l` | Clear screen and scrollback buffer, redraw current line at top |
-| `clear-screen` | `C-l` | Clear screen, redraw current line at top. With numeric arg: refresh line without clearing |
-| `redraw-current-line` | (unbound) | Refresh current line |
+| Command                | Default Key | Description                                                                               |
+|------------------------|-------------|-------------------------------------------------------------------------------------------|
+| `beginning-of-line`    | `C-a`       | Move to start of line (also Home key)                                                     |
+| `end-of-line`          | `C-e`       | Move to end of line (also End key)                                                        |
+| `forward-char`         | `C-f`       | Move forward one character (also right arrow)                                             |
+| `backward-char`        | `C-b`       | Move back one character (also left arrow)                                                 |
+| `forward-word`         | `M-f`       | Move forward to end of next word (letters/digits)                                         |
+| `backward-word`        | `M-b`       | Move back to start of current/previous word (letters/digits)                              |
+| `shell-forward-word`   | `M-C-f`     | Move forward to end of next word (delimited by non-quoted shell metacharacters)           |
+| `shell-backward-word`  | `M-C-b`     | Move back to start of current/previous word (shell metachar boundaries)                   |
+| `previous-screen-line` | (unbound)   | Move to same screen column on previous physical screen line                               |
+| `next-screen-line`     | (unbound)   | Move to same screen column on next physical screen line                                   |
+| `clear-display`        | `M-C-l`     | Clear screen and scrollback buffer, redraw current line at top                            |
+| `clear-screen`         | `C-l`       | Clear screen, redraw current line at top. With numeric arg: refresh line without clearing |
+| `redraw-current-line`  | (unbound)   | Refresh current line                                                                      |
 
 #### 8.4.2 Commands For Manipulating The History
 
-| Command | Default Key | Description |
-|---------|-------------|-------------|
-| `accept-line` | Newline / Return | Accept line, add to history per HISTCONTROL/HISTIGNORE. Modified history lines restored to original |
-| `previous-history` | `C-p` | Fetch previous history entry (also up arrow) |
-| `next-history` | `C-n` | Fetch next history entry (also down arrow) |
-| `beginning-of-history` | `M-<` | Move to first line in history |
-| `end-of-history` | `M->` | Move to end of input history (current line being entered) |
-| `reverse-search-history` | `C-r` | Incremental backward search. Sets region to matched text (active) |
-| `forward-search-history` | `C-s` | Incremental forward search. Sets region to matched text (active) |
-| `non-incremental-reverse-search-history` | `M-p` | Non-incremental backward search; string may match anywhere in line |
-| `non-incremental-forward-search-history` | `M-n` | Non-incremental forward search; string may match anywhere in line |
-| `history-search-backward` | (unbound) | Search backward; string from start-of-line to point must match at beginning of history line (may bind to Page Down) |
-| `history-search-forward` | (unbound) | Search forward; string must match at beginning of history line (may bind to Page Up) |
-| `history-substring-search-backward` | (unbound) | Search backward; string may match anywhere in history line |
-| `history-substring-search-forward` | (unbound) | Search forward; string may match anywhere in history line |
-| `yank-nth-arg` | `M-C-y` | Insert first arg of previous command (word 1). With arg N: insert Nth word (0-based). Negative N: from end. Uses `!N` expansion |
-| `yank-last-arg` | `M-.` or `M-_` | Insert last arg of previous command. With numeric arg: like `yank-nth-arg`. Successive calls move back through history. Negative arg reverses direction. Uses `!$` expansion |
-| `operate-and-get-next` | `C-o` | Accept line and fetch next history line for editing. Numeric arg specifies history entry |
-| `fetch-history` | (unbound) | With numeric arg: fetch that history entry. Without: move to first entry |
+| Command                                  | Default Key      | Description                                                                                                                                                                  |
+|------------------------------------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accept-line`                            | Newline / Return | Accept line, add to history per HISTCONTROL/HISTIGNORE. Modified history lines restored to original                                                                          |
+| `previous-history`                       | `C-p`            | Fetch previous history entry (also up arrow)                                                                                                                                 |
+| `next-history`                           | `C-n`            | Fetch next history entry (also down arrow)                                                                                                                                   |
+| `beginning-of-history`                   | `M-<`            | Move to first line in history                                                                                                                                                |
+| `end-of-history`                         | `M->`            | Move to end of input history (current line being entered)                                                                                                                    |
+| `reverse-search-history`                 | `C-r`            | Incremental backward search. Sets region to matched text (active)                                                                                                            |
+| `forward-search-history`                 | `C-s`            | Incremental forward search. Sets region to matched text (active)                                                                                                             |
+| `non-incremental-reverse-search-history` | `M-p`            | Non-incremental backward search; string may match anywhere in line                                                                                                           |
+| `non-incremental-forward-search-history` | `M-n`            | Non-incremental forward search; string may match anywhere in line                                                                                                            |
+| `history-search-backward`                | (unbound)        | Search backward; string from start-of-line to point must match at beginning of history line (may bind to Page Down)                                                          |
+| `history-search-forward`                 | (unbound)        | Search forward; string must match at beginning of history line (may bind to Page Up)                                                                                         |
+| `history-substring-search-backward`      | (unbound)        | Search backward; string may match anywhere in history line                                                                                                                   |
+| `history-substring-search-forward`       | (unbound)        | Search forward; string may match anywhere in history line                                                                                                                    |
+| `yank-nth-arg`                           | `M-C-y`          | Insert first arg of previous command (word 1). With arg N: insert Nth word (0-based). Negative N: from end. Uses `!N` expansion                                              |
+| `yank-last-arg`                          | `M-.` or `M-_`   | Insert last arg of previous command. With numeric arg: like `yank-nth-arg`. Successive calls move back through history. Negative arg reverses direction. Uses `!$` expansion |
+| `operate-and-get-next`                   | `C-o`            | Accept line and fetch next history line for editing. Numeric arg specifies history entry                                                                                     |
+| `fetch-history`                          | (unbound)        | With numeric arg: fetch that history entry. Without: move to first entry                                                                                                     |
 
 #### 8.4.3 Commands For Changing Text
 
-| Command | Default Key | Description |
-|---------|-------------|-------------|
-| `end-of-file` | usually `C-d` | EOF indicator. If read with no chars on line and point at beginning, returns EOF |
-| `delete-char` | `C-d` | Delete character at point (also Delete key). See `end-of-file` for empty-line behavior |
-| `backward-delete-char` | Rubout | Delete character behind cursor. With numeric arg: kill (save to kill ring) instead of delete |
-| `forward-backward-delete-char` | (unbound) | Delete char under cursor; at end of line, delete char behind cursor |
-| `quoted-insert` | `C-q` or `C-v` | Insert next character verbatim |
-| `self-insert` | `a, b, A, 1, !, ...` | Insert the typed character |
-| `bracketed-paste-begin` | (bound to bracketed paste escape) | Insert pasted text as unit via `self-insert`; sets active region to inserted text |
-| `transpose-chars` | `C-t` | Drag char before cursor over char at cursor. At end of line: transpose last two chars. Negative args have no effect |
-| `transpose-words` | `M-t` | Drag word before point past word after point. At end of line: transpose last two words |
-| `shell-transpose-words` | `M-C-t` | Like `transpose-words` but uses shell metacharacter word boundaries |
-| `upcase-word` | `M-u` | Uppercase current/following word. Negative arg: previous word without moving cursor |
-| `downcase-word` | `M-l` | Lowercase current/following word. Negative arg: previous word without moving cursor |
-| `capitalize-word` | `M-c` | Capitalize current/following word. Negative arg: previous word without moving cursor |
-| `overwrite-mode` | (unbound, may bind to Insert key) | Toggle overwrite mode. Emacs mode only. Positive arg: overwrite. Non-positive: insert. `self-insert` replaces; `backward-delete-char` replaces with space |
+| Command                        | Default Key                       | Description                                                                                                                                               |
+|--------------------------------|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `end-of-file`                  | usually `C-d`                     | EOF indicator. If read with no chars on line and point at beginning, returns EOF                                                                          |
+| `delete-char`                  | `C-d`                             | Delete character at point (also Delete key). See `end-of-file` for empty-line behavior                                                                    |
+| `backward-delete-char`         | Rubout                            | Delete character behind cursor. With numeric arg: kill (save to kill ring) instead of delete                                                              |
+| `forward-backward-delete-char` | (unbound)                         | Delete char under cursor; at end of line, delete char behind cursor                                                                                       |
+| `quoted-insert`                | `C-q` or `C-v`                    | Insert next character verbatim                                                                                                                            |
+| `self-insert`                  | `a, b, A, 1, !, ...`              | Insert the typed character                                                                                                                                |
+| `bracketed-paste-begin`        | (bound to bracketed paste escape) | Insert pasted text as unit via `self-insert`; sets active region to inserted text                                                                         |
+| `transpose-chars`              | `C-t`                             | Drag char before cursor over char at cursor. At end of line: transpose last two chars. Negative args have no effect                                       |
+| `transpose-words`              | `M-t`                             | Drag word before point past word after point. At end of line: transpose last two words                                                                    |
+| `shell-transpose-words`        | `M-C-t`                           | Like `transpose-words` but uses shell metacharacter word boundaries                                                                                       |
+| `upcase-word`                  | `M-u`                             | Uppercase current/following word. Negative arg: previous word without moving cursor                                                                       |
+| `downcase-word`                | `M-l`                             | Lowercase current/following word. Negative arg: previous word without moving cursor                                                                       |
+| `capitalize-word`              | `M-c`                             | Capitalize current/following word. Negative arg: previous word without moving cursor                                                                      |
+| `overwrite-mode`               | (unbound, may bind to Insert key) | Toggle overwrite mode. Emacs mode only. Positive arg: overwrite. Non-positive: insert. `self-insert` replaces; `backward-delete-char` replaces with space |
 
 #### 8.4.4 Killing And Yanking
 
-| Command | Default Key | Description |
-|---------|-------------|-------------|
-| `kill-line` | `C-k` | Kill from point to end of line. Negative arg: kill backward to beginning |
-| `backward-kill-line` | `C-x Rubout` | Kill backward from cursor to beginning of line. Negative arg: kill forward to end |
-| `unix-line-discard` | `C-u` | Kill backward from cursor to beginning of line |
-| `kill-whole-line` | (unbound) | Kill all characters on current line regardless of point position |
-| `kill-word` | `M-d` | Kill from point to end of current/next word (same boundaries as `forward-word`) |
-| `backward-kill-word` | `M-DEL` | Kill word behind point (same boundaries as `backward-word`) |
-| `shell-kill-word` | `M-C-d` | Kill from point to end of current/next word (shell metachar boundaries) |
-| `shell-backward-kill-word` | (unbound) | Kill word behind point (shell metachar boundaries) |
-| `unix-word-rubout` | `C-w` | Kill word behind point using whitespace boundary; save to kill ring |
-| `unix-filename-rubout` | (unbound) | Kill word behind point using whitespace and `/` boundaries; save to kill ring |
-| `delete-horizontal-space` | (unbound) | Delete all spaces and tabs around point |
-| `kill-region` | (unbound) | Kill text in current region |
-| `copy-region-as-kill` | (unbound) | Copy region text to kill buffer (no delete) |
-| `copy-backward-word` | (unbound) | Copy word before point to kill buffer (same boundaries as `backward-word`) |
-| `copy-forward-word` | (unbound) | Copy word after point to kill buffer (same boundaries as `forward-word`) |
-| `yank` | `C-y` | Yank top of kill ring at point |
-| `yank-pop` | `M-y` | Rotate kill-ring, yank new top (only after `yank` or `yank-pop`) |
+| Command                    | Default Key  | Description                                                                       |
+|----------------------------|--------------|-----------------------------------------------------------------------------------|
+| `kill-line`                | `C-k`        | Kill from point to end of line. Negative arg: kill backward to beginning          |
+| `backward-kill-line`       | `C-x Rubout` | Kill backward from cursor to beginning of line. Negative arg: kill forward to end |
+| `unix-line-discard`        | `C-u`        | Kill backward from cursor to beginning of line                                    |
+| `kill-whole-line`          | (unbound)    | Kill all characters on current line regardless of point position                  |
+| `kill-word`                | `M-d`        | Kill from point to end of current/next word (same boundaries as `forward-word`)   |
+| `backward-kill-word`       | `M-DEL`      | Kill word behind point (same boundaries as `backward-word`)                       |
+| `shell-kill-word`          | `M-C-d`      | Kill from point to end of current/next word (shell metachar boundaries)           |
+| `shell-backward-kill-word` | (unbound)    | Kill word behind point (shell metachar boundaries)                                |
+| `unix-word-rubout`         | `C-w`        | Kill word behind point using whitespace boundary; save to kill ring               |
+| `unix-filename-rubout`     | (unbound)    | Kill word behind point using whitespace and `/` boundaries; save to kill ring     |
+| `delete-horizontal-space`  | (unbound)    | Delete all spaces and tabs around point                                           |
+| `kill-region`              | (unbound)    | Kill text in current region                                                       |
+| `copy-region-as-kill`      | (unbound)    | Copy region text to kill buffer (no delete)                                       |
+| `copy-backward-word`       | (unbound)    | Copy word before point to kill buffer (same boundaries as `backward-word`)        |
+| `copy-forward-word`        | (unbound)    | Copy word after point to kill buffer (same boundaries as `forward-word`)          |
+| `yank`                     | `C-y`        | Yank top of kill ring at point                                                    |
+| `yank-pop`                 | `M-y`        | Rotate kill-ring, yank new top (only after `yank` or `yank-pop`)                  |
 
 #### 8.4.5 Specifying Numeric Arguments
 
-| Command | Default Key | Description |
-|---------|-------------|-------------|
-| `digit-argument` | `M-0` through `M-9`, `M--` | Add digit to accumulating argument or start new one. `M--` starts negative |
-| `universal-argument` | (unbound) | Specify argument. Followed by digits (optional leading minus): those digits define arg. Followed by non-digit/non-minus: multiply argument count by 4. Initial count is 1; first call = 4, second = 16, etc. |
+| Command              | Default Key                | Description                                                                                                                                                                                                  |
+|----------------------|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `digit-argument`     | `M-0` through `M-9`, `M--` | Add digit to accumulating argument or start new one. `M--` starts negative                                                                                                                                   |
+| `universal-argument` | (unbound)                  | Specify argument. Followed by digits (optional leading minus): those digits define arg. Followed by non-digit/non-minus: multiply argument count by 4. Initial count is 1; first call = 4, second = 16, etc. |
 
 #### 8.4.6 Letting Readline Type For You (Completion)
 
-| Command | Default Key | Description |
-|---------|-------------|-------------|
-| `complete` | TAB | Attempt completion. Bash order: programmable completions, then variable (`$`), username (`~`), hostname (`@`), command (aliases/functions/builtins), then filename |
-| `possible-completions` | `M-?` | List possible completions. Column width: `completion-display-width`, then `$COLUMNS`, then screen width |
-| `insert-completions` | `M-*` | Insert all completions separated by spaces |
-| `menu-complete` | (unbound) | Replace word with single match; repeat to cycle through matches. Bell at end of list, restores original. Arg N moves N positions forward; negative moves backward. Intended for TAB binding |
-| `menu-complete-backward` | (unbound) | Like `menu-complete` but cycles backward |
-| `export-completions` | (unbound) | Write completions to output: count N, word, S:E offsets, then each match one per line. 0 matches = just "0" and S:E. 1 match = single line. Multiple = common prefix line then matches |
-| `delete-char-or-list` | (unbound) | Delete char at point (not at beginning/end). At end of line: `possible-completions` |
-| `complete-filename` | `M-/` | Filename completion |
-| `possible-filename-completions` | `C-x /` | List possible filename completions |
-| `complete-username` | `M-~` | Username completion |
-| `possible-username-completions` | `C-x ~` | List possible username completions |
-| `complete-variable` | `M-$` | Shell variable completion |
-| `possible-variable-completions` | `C-x $` | List possible variable completions |
-| `complete-hostname` | `M-@` | Hostname completion |
-| `possible-hostname-completions` | `C-x @` | List possible hostname completions |
-| `complete-command` | `M-!` | Command name completion (aliases, reserved words, functions, builtins, executables) |
-| `possible-command-completions` | `C-x !` | List possible command completions |
-| `dynamic-complete-history` | `M-TAB` | Complete against history list entries |
-| `dabbrev-expand` | (unbound) | Menu completion against history list lines |
-| `complete-into-braces` | `M-{` | Filename completion, insert list in braces for brace expansion |
+| Command                         | Default Key | Description                                                                                                                                                                                 |
+|---------------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `complete`                      | TAB         | Attempt completion. Bash order: programmable completions, then variable (`$`), username (`~`), hostname (`@`), command (aliases/functions/builtins), then filename                          |
+| `possible-completions`          | `M-?`       | List possible completions. Column width: `completion-display-width`, then `$COLUMNS`, then screen width                                                                                     |
+| `insert-completions`            | `M-*`       | Insert all completions separated by spaces                                                                                                                                                  |
+| `menu-complete`                 | (unbound)   | Replace word with single match; repeat to cycle through matches. Bell at end of list, restores original. Arg N moves N positions forward; negative moves backward. Intended for TAB binding |
+| `menu-complete-backward`        | (unbound)   | Like `menu-complete` but cycles backward                                                                                                                                                    |
+| `export-completions`            | (unbound)   | Write completions to output: count N, word, S:E offsets, then each match one per line. 0 matches = just "0" and S:E. 1 match = single line. Multiple = common prefix line then matches      |
+| `delete-char-or-list`           | (unbound)   | Delete char at point (not at beginning/end). At end of line: `possible-completions`                                                                                                         |
+| `complete-filename`             | `M-/`       | Filename completion                                                                                                                                                                         |
+| `possible-filename-completions` | `C-x /`     | List possible filename completions                                                                                                                                                          |
+| `complete-username`             | `M-~`       | Username completion                                                                                                                                                                         |
+| `possible-username-completions` | `C-x ~`     | List possible username completions                                                                                                                                                          |
+| `complete-variable`             | `M-$`       | Shell variable completion                                                                                                                                                                   |
+| `possible-variable-completions` | `C-x $`     | List possible variable completions                                                                                                                                                          |
+| `complete-hostname`             | `M-@`       | Hostname completion                                                                                                                                                                         |
+| `possible-hostname-completions` | `C-x @`     | List possible hostname completions                                                                                                                                                          |
+| `complete-command`              | `M-!`       | Command name completion (aliases, reserved words, functions, builtins, executables)                                                                                                         |
+| `possible-command-completions`  | `C-x !`     | List possible command completions                                                                                                                                                           |
+| `dynamic-complete-history`      | `M-TAB`     | Complete against history list entries                                                                                                                                                       |
+| `dabbrev-expand`                | (unbound)   | Menu completion against history list lines                                                                                                                                                  |
+| `complete-into-braces`          | `M-{`       | Filename completion, insert list in braces for brace expansion                                                                                                                              |
 
 #### 8.4.7 Keyboard Macros
 
-| Command | Default Key | Description |
-|---------|-------------|-------------|
-| `start-kbd-macro` | `C-x (` | Begin recording keyboard macro |
-| `end-kbd-macro` | `C-x )` | Stop recording and save macro |
-| `call-last-kbd-macro` | `C-x e` | Re-execute last defined macro |
-| `print-last-kbd-macro` | (unbound) | Print last macro in inputrc format |
+| Command                | Default Key | Description                        |
+|------------------------|-------------|------------------------------------|
+| `start-kbd-macro`      | `C-x (`     | Begin recording keyboard macro     |
+| `end-kbd-macro`        | `C-x )`     | Stop recording and save macro      |
+| `call-last-kbd-macro`  | `C-x e`     | Re-execute last defined macro      |
+| `print-last-kbd-macro` | (unbound)   | Print last macro in inputrc format |
 
 #### 8.4.8 Miscellaneous Commands
 
-| Command | Default Key | Description |
-|---------|-------------|-------------|
-| `re-read-init-file` | `C-x C-r` | Re-read inputrc file |
-| `abort` | `C-g` | Abort current editing command, ring bell |
-| `do-lowercase-version` | `M-A, M-B, M-X, ...` | Run command bound to metafied lowercase equivalent |
-| `prefix-meta` | ESC | Metafy next character typed. `ESC f` = `M-f` |
-| `undo` | `C-_` or `C-x C-u` | Incremental undo, separately remembered per line |
-| `revert-line` | `M-r` | Undo all changes to current line (back to initial state) |
-| `tilde-expand` | `M-&` | Perform tilde expansion on current word |
-| `set-mark` | `C-@` | Set mark to point. With numeric arg: set mark to that position |
-| `exchange-point-and-mark` | `C-x C-x` | Swap point with mark |
-| `character-search` | `C-]` | Read a character, move to its next occurrence. Negative arg: search previous |
-| `character-search-backward` | `M-C-]` | Read a character, move to its previous occurrence. Negative arg: search subsequent |
-| `skip-csi-sequence` | (unbound, usually bound to `ESC [`) | Consume multi-key CSI sequence (e.g., Home, End keys) |
-| `insert-comment` | `M-#` | Insert `comment-begin` value at line start, accept line. With numeric arg: toggle (remove if present). When comment removed, line is executed |
-| `dump-functions` | (unbound) | Print all functions and bindings. With numeric arg: inputrc-compatible format |
-| `dump-variables` | (unbound) | Print all settable variables and values. With numeric arg: inputrc format |
-| `dump-macros` | (unbound) | Print all macro bindings. With numeric arg: inputrc format |
-| `execute-named-command` | `M-x` | Read command name from input, execute it. Passes numeric arg if supplied |
-| `spell-correct-word` | `C-x s` | Spelling correction on current word as directory/filename (like `cdspell`). Shell metachar word boundaries |
-| `glob-complete-word` | `M-g` | Treat word before point as glob pattern (implicit `*` appended), generate completion matches |
-| `glob-expand-word` | `C-x *` | Treat word as glob pattern, insert matching filenames. Numeric arg: append `*` first |
-| `glob-list-expansions` | `C-x g` | Display glob expansions. Numeric arg: append `*` first |
-| `shell-expand-line` | `M-C-e` | Expand line: alias, history, `$'...'`/`$"..."`, tilde, parameter/variable, arithmetic, command/process substitution, word splitting, quote removal. Explicit arg suppresses command/process substitution |
-| `history-expand-line` | `M-^` | Perform history expansion on current line |
-| `magic-space` | (unbound) | Perform history expansion on current line and insert a space |
-| `alias-expand-line` | (unbound) | Perform alias expansion on current line |
-| `history-and-alias-expand-line` | (unbound) | Perform history and alias expansion on current line |
-| `insert-last-argument` | `M-.` or `M-_` | Synonym for `yank-last-arg` |
-| `edit-and-execute-command` | `C-x C-e` | Open current line in editor (`$VISUAL`, `$EDITOR`, or `emacs`), execute result |
-| `display-shell-version` | `C-x C-v` | Display Bash version information |
+| Command                         | Default Key                         | Description                                                                                                                                                                                              |
+|---------------------------------|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `re-read-init-file`             | `C-x C-r`                           | Re-read inputrc file                                                                                                                                                                                     |
+| `abort`                         | `C-g`                               | Abort current editing command, ring bell                                                                                                                                                                 |
+| `do-lowercase-version`          | `M-A, M-B, M-X, ...`                | Run command bound to metafied lowercase equivalent                                                                                                                                                       |
+| `prefix-meta`                   | ESC                                 | Metafy next character typed. `ESC f` = `M-f`                                                                                                                                                             |
+| `undo`                          | `C-_` or `C-x C-u`                  | Incremental undo, separately remembered per line                                                                                                                                                         |
+| `revert-line`                   | `M-r`                               | Undo all changes to current line (back to initial state)                                                                                                                                                 |
+| `tilde-expand`                  | `M-&`                               | Perform tilde expansion on current word                                                                                                                                                                  |
+| `set-mark`                      | `C-@`                               | Set mark to point. With numeric arg: set mark to that position                                                                                                                                           |
+| `exchange-point-and-mark`       | `C-x C-x`                           | Swap point with mark                                                                                                                                                                                     |
+| `character-search`              | `C-]`                               | Read a character, move to its next occurrence. Negative arg: search previous                                                                                                                             |
+| `character-search-backward`     | `M-C-]`                             | Read a character, move to its previous occurrence. Negative arg: search subsequent                                                                                                                       |
+| `skip-csi-sequence`             | (unbound, usually bound to `ESC [`) | Consume multi-key CSI sequence (e.g., Home, End keys)                                                                                                                                                    |
+| `insert-comment`                | `M-#`                               | Insert `comment-begin` value at line start, accept line. With numeric arg: toggle (remove if present). When comment removed, line is executed                                                            |
+| `dump-functions`                | (unbound)                           | Print all functions and bindings. With numeric arg: inputrc-compatible format                                                                                                                            |
+| `dump-variables`                | (unbound)                           | Print all settable variables and values. With numeric arg: inputrc format                                                                                                                                |
+| `dump-macros`                   | (unbound)                           | Print all macro bindings. With numeric arg: inputrc format                                                                                                                                               |
+| `execute-named-command`         | `M-x`                               | Read command name from input, execute it. Passes numeric arg if supplied                                                                                                                                 |
+| `spell-correct-word`            | `C-x s`                             | Spelling correction on current word as directory/filename (like `cdspell`). Shell metachar word boundaries                                                                                               |
+| `glob-complete-word`            | `M-g`                               | Treat word before point as glob pattern (implicit `*` appended), generate completion matches                                                                                                             |
+| `glob-expand-word`              | `C-x *`                             | Treat word as glob pattern, insert matching filenames. Numeric arg: append `*` first                                                                                                                     |
+| `glob-list-expansions`          | `C-x g`                             | Display glob expansions. Numeric arg: append `*` first                                                                                                                                                   |
+| `shell-expand-line`             | `M-C-e`                             | Expand line: alias, history, `$'...'`/`$"..."`, tilde, parameter/variable, arithmetic, command/process substitution, word splitting, quote removal. Explicit arg suppresses command/process substitution |
+| `history-expand-line`           | `M-^`                               | Perform history expansion on current line                                                                                                                                                                |
+| `magic-space`                   | (unbound)                           | Perform history expansion on current line and insert a space                                                                                                                                             |
+| `alias-expand-line`             | (unbound)                           | Perform alias expansion on current line                                                                                                                                                                  |
+| `history-and-alias-expand-line` | (unbound)                           | Perform history and alias expansion on current line                                                                                                                                                      |
+| `insert-last-argument`          | `M-.` or `M-_`                      | Synonym for `yank-last-arg`                                                                                                                                                                              |
+| `edit-and-execute-command`      | `C-x C-e`                           | Open current line in editor (`$VISUAL`, `$EDITOR`, or `emacs`), execute result                                                                                                                           |
+| `display-shell-version`         | `C-x C-v`                           | Display Bash version information                                                                                                                                                                         |
 
 ### 8.5 Readline vi Mode
 
@@ -725,58 +725,58 @@ complete -pr [-DEI] [NAME ...]
 
 **Completion options (`-o COMP-OPTION`):**
 
-| Option | Effect |
-|--------|--------|
-| `bashdefault` | Fall back to default Bash completions if no matches |
-| `default` | Fall back to Readline default filename completion if no matches |
-| `dirnames` | Fall back to directory name completion if no matches |
-| `filenames` | Treat completions as filenames (add slash to dirs, quote special chars, suppress trailing spaces). Use with `-F` |
-| `fullquote` | Quote all completed words even if not filenames |
-| `noquote` | Don't quote completed filenames (quoting is default) |
-| `nosort` | Don't sort completions alphabetically |
-| `nospace` | Don't append space after completion at end of line |
-| `plusdirs` | Add directory name completion matches to other results |
+| Option        | Effect                                                                                                           |
+|---------------|------------------------------------------------------------------------------------------------------------------|
+| `bashdefault` | Fall back to default Bash completions if no matches                                                              |
+| `default`     | Fall back to Readline default filename completion if no matches                                                  |
+| `dirnames`    | Fall back to directory name completion if no matches                                                             |
+| `filenames`   | Treat completions as filenames (add slash to dirs, quote special chars, suppress trailing spaces). Use with `-F` |
+| `fullquote`   | Quote all completed words even if not filenames                                                                  |
+| `noquote`     | Don't quote completed filenames (quoting is default)                                                             |
+| `nosort`      | Don't sort completions alphabetically                                                                            |
+| `nospace`     | Don't append space after completion at end of line                                                               |
+| `plusdirs`    | Add directory name completion matches to other results                                                           |
 
 **Action options (`-A ACTION`):**
 
-| Action | Short | Generates |
-|--------|-------|-----------|
-| `alias` | `-a` | Alias names |
-| `arrayvar` | | Array variable names |
-| `binding` | | Readline key binding names |
-| `builtin` | `-b` | Shell builtin names |
-| `command` | `-c` | Command names |
-| `directory` | `-d` | Directory names |
-| `disabled` | | Disabled shell builtins |
-| `enabled` | | Enabled shell builtins |
-| `export` | `-e` | Exported variable names |
-| `file` | `-f` | File and directory names |
-| `function` | | Shell function names |
-| `group` | `-g` | Group names |
-| `helptopic` | | Help topics (accepted by `help`) |
-| `hostname` | | Hostnames (from `$HOSTFILE`) |
-| `job` | `-j` | Job names (if job control active) |
-| `keyword` | `-k` | Shell reserved words |
-| `running` | | Running job names |
-| `service` | `-s` | Service names |
-| `setopt` | | Valid `set -o` option arguments |
-| `shopt` | | Shell option names for `shopt` |
-| `signal` | | Signal names |
-| `stopped` | | Stopped job names |
-| `user` | `-u` | User names |
-| `variable` | `-v` | All shell variable names |
+| Action      | Short | Generates                         |
+|-------------|-------|-----------------------------------|
+| `alias`     | `-a`  | Alias names                       |
+| `arrayvar`  |       | Array variable names              |
+| `binding`   |       | Readline key binding names        |
+| `builtin`   | `-b`  | Shell builtin names               |
+| `command`   | `-c`  | Command names                     |
+| `directory` | `-d`  | Directory names                   |
+| `disabled`  |       | Disabled shell builtins           |
+| `enabled`   |       | Enabled shell builtins            |
+| `export`    | `-e`  | Exported variable names           |
+| `file`      | `-f`  | File and directory names          |
+| `function`  |       | Shell function names              |
+| `group`     | `-g`  | Group names                       |
+| `helptopic` |       | Help topics (accepted by `help`)  |
+| `hostname`  |       | Hostnames (from `$HOSTFILE`)      |
+| `job`       | `-j`  | Job names (if job control active) |
+| `keyword`   | `-k`  | Shell reserved words              |
+| `running`   |       | Running job names                 |
+| `service`   | `-s`  | Service names                     |
+| `setopt`    |       | Valid `set -o` option arguments   |
+| `shopt`     |       | Shell option names for `shopt`    |
+| `signal`    |       | Signal names                      |
+| `stopped`   |       | Stopped job names                 |
+| `user`      | `-u`  | User names                        |
+| `variable`  | `-v`  | All shell variable names          |
 
 **Other options:**
 
-| Option | Description |
-|--------|-------------|
-| `-C COMMAND` | Execute COMMAND in subshell; output = completions. Args: $1=command, $2=word, $3=preceding word |
-| `-F FUNCTION` | Execute FUNCTION in current shell. Must set `COMPREPLY` array. Args: $1=command, $2=word, $3=preceding word |
-| `-G GLOBPAT` | Pathname expansion pattern to generate completions |
-| `-P PREFIX` | Prepend to each completion after all other processing |
-| `-S SUFFIX` | Append to each completion after all other processing |
-| `-W WORDLIST` | Split by IFS (honors quoting), expand each word, prefix-match against word being completed |
-| `-X FILTERPAT` | Pattern filter: matching completions removed. Leading `!` negates. `&` = word being completed |
+| Option         | Description                                                                                                 |
+|----------------|-------------------------------------------------------------------------------------------------------------|
+| `-C COMMAND`   | Execute COMMAND in subshell; output = completions. Args: $1=command, $2=word, $3=preceding word             |
+| `-F FUNCTION`  | Execute FUNCTION in current shell. Must set `COMPREPLY` array. Args: $1=command, $2=word, $3=preceding word |
+| `-G GLOBPAT`   | Pathname expansion pattern to generate completions                                                          |
+| `-P PREFIX`    | Prepend to each completion after all other processing                                                       |
+| `-S SUFFIX`    | Append to each completion after all other processing                                                        |
+| `-W WORDLIST`  | Split by IFS (honors quoting), expand each word, prefix-match against word being completed                  |
+| `-X FILTERPAT` | Pattern filter: matching completions removed. Leading `!` negates. `&` = word being completed               |
 
 #### compopt
 
@@ -843,12 +843,12 @@ fc -s [PAT=REP] [COMMAND]
 - Without LAST: set to current command (listing) or FIRST (editing)
 - Without FIRST: set to previous command (editing) or -16 (listing)
 
-| Option | Effect |
-|--------|--------|
-| `-l` | List commands on stdout |
-| `-n` | Suppress command numbers when listing |
-| `-r` | Reverse listing order |
-| `-e ENAME` | Use ENAME as editor |
+| Option     | Effect                                |
+|------------|---------------------------------------|
+| `-l`       | List commands on stdout               |
+| `-n`       | Suppress command numbers when listing |
+| `-r`       | Reverse listing order                 |
+| `-e ENAME` | Use ENAME as editor                   |
 
 Without `-l`: invoke editor on file containing commands. Editor selection: `${FCEDIT:-${EDITOR:-vi}}`. After editing, read and execute edited commands.
 
@@ -873,17 +873,17 @@ Without options: display history with numbers. `*` prefix = modified entry. Argu
 
 If `HISTTIMEFORMAT` set and non-null: used as `strftime(3)` format string for timestamps (no intervening space).
 
-| Option | Effect |
-|--------|--------|
-| `-c` | Clear history list. May combine with other options to replace |
-| `-d OFFSET` | Delete entry at OFFSET. Positive = as displayed. Negative = relative to end (-1 = current `history -d` command) |
-| `-d START-END` | Delete range START to END inclusive. Positive/negative interpreted as above |
-| `-a` | Append new history lines (since session start, not yet appended) to history file |
-| `-n` | Read lines not already read from history file; add to current list |
-| `-r` | Read history file, append contents to history list |
-| `-w` | Write current history list to history file (overwrite) |
-| `-p` | Perform history substitution on ARGs; display result without storing in history |
-| `-s` | Add ARGs to history list as single entry. Removes last command first |
+| Option         | Effect                                                                                                          |
+|----------------|-----------------------------------------------------------------------------------------------------------------|
+| `-c`           | Clear history list. May combine with other options to replace                                                   |
+| `-d OFFSET`    | Delete entry at OFFSET. Positive = as displayed. Negative = relative to end (-1 = current `history -d` command) |
+| `-d START-END` | Delete range START to END inclusive. Positive/negative interpreted as above                                     |
+| `-a`           | Append new history lines (since session start, not yet appended) to history file                                |
+| `-n`           | Read lines not already read from history file; add to current list                                              |
+| `-r`           | Read history file, append contents to history list                                                              |
+| `-w`           | Write current history list to history file (overwrite)                                                          |
+| `-p`           | Perform history substitution on ARGs; display result without storing in history                                 |
+| `-s`           | Add ARGs to history list as single entry. Removes last command first                                            |
 
 - With `-w`/`-r`/`-a`/`-n` and FILENAME: use FILENAME as history file
 - Without FILENAME: use `$HISTFILE`; if unset/null, options have no effect
@@ -921,16 +921,16 @@ History expansion introduces words from the history list into input. Enabled by 
 
 #### 9.3.1 Event Designators
 
-| Designator | Meaning |
-|------------|---------|
-| `!` | Start history substitution (except when followed by space, tab, newline, CR, `=`, or metacharacters) |
-| `!N` | History entry N |
-| `!-N` | History entry minus N (relative to current) |
-| `!!` | Previous entry (synonym for `!-1`) |
-| `!string` | Most recent command starting with string |
-| `!?string[?]` | Most recent command containing string. Trailing `?` optional if string is followed by newline. Missing string: reuse last search string (error if none) |
-| `^string1^string2^` | Quick substitution: repeat last command, replace string1 with string2. Equivalent to `!!:s^string1^string2^` |
-| `!#` | Entire command line typed so far |
+| Designator          | Meaning                                                                                                                                                 |
+|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `!`                 | Start history substitution (except when followed by space, tab, newline, CR, `=`, or metacharacters)                                                    |
+| `!N`                | History entry N                                                                                                                                         |
+| `!-N`               | History entry minus N (relative to current)                                                                                                             |
+| `!!`                | Previous entry (synonym for `!-1`)                                                                                                                      |
+| `!string`           | Most recent command starting with string                                                                                                                |
+| `!?string[?]`       | Most recent command containing string. Trailing `?` optional if string is followed by newline. Missing string: reuse last search string (error if none) |
+| `^string1^string2^` | Quick substitution: repeat last command, replace string1 with string2. Equivalent to `!!:s^string1^string2^`                                            |
+| `!#`                | Entire command line typed so far                                                                                                                        |
 
 #### 9.3.2 Word Designators
 
@@ -943,17 +943,17 @@ Words numbered from 0 (usually the command word). Arguments begin at word 1. Ins
 - `!!:$` -- last word of preceding command (shortened to `!$`)
 - `!fi:2` -- second argument of most recent command starting with "fi"
 
-| Designator | Meaning |
-|------------|---------|
-| `0` | The command word (0th word) |
-| `N` | The Nth word |
-| `^` | The first argument (word 1) |
-| `$` | The last word. Expands to word 0 if only one word in line |
-| `%` | First word matched by most recent `?string?` search (closest to end of line) |
-| `X-Y` | Range of words. `-Y` abbreviates `0-Y` |
-| `*` | All words except 0th. Synonym for `1-$`. Not an error with one word (expands to empty) |
-| `X*` | Abbreviates `X-$` |
-| `X-` | Like `X*` but omits last word. Missing X defaults to 0 |
+| Designator | Meaning                                                                                |
+|------------|----------------------------------------------------------------------------------------|
+| `0`        | The command word (0th word)                                                            |
+| `N`        | The Nth word                                                                           |
+| `^`        | The first argument (word 1)                                                            |
+| `$`        | The last word. Expands to word 0 if only one word in line                              |
+| `%`        | First word matched by most recent `?string?` search (closest to end of line)           |
+| `X-Y`      | Range of words. `-Y` abbreviates `0-Y`                                                 |
+| `*`        | All words except 0th. Synonym for `1-$`. Not an error with one word (expands to empty) |
+| `X*`       | Abbreviates `X-$`                                                                      |
+| `X-`       | Like `X*` but omits last word. Missing X defaults to 0                                 |
 
 If word designator supplied without event specification, previous command is used (like `!!`).
 
@@ -961,16 +961,16 @@ If word designator supplied without event specification, previous command is use
 
 After the optional word designator, add one or more modifiers each preceded by `:`.
 
-| Modifier | Effect |
-|----------|--------|
-| `h` | Remove trailing filename component (head: like `dirname`) |
-| `t` | Remove all leading filename components (tail: like `basename`) |
-| `r` | Remove trailing `.SUFFIX` (root/basename without extension) |
-| `e` | Remove all but trailing suffix (extension only) |
-| `p` | Print but do not execute |
-| `q` | Quote substituted words, escaping further substitutions |
-| `x` | Quote like `q` but break into words at spaces/tabs/newlines. `q` and `x` are mutually exclusive; last one supplied wins |
+| Modifier     | Effect                                                                                                                                                                                                                                                                                                                        |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `h`          | Remove trailing filename component (head: like `dirname`)                                                                                                                                                                                                                                                                     |
+| `t`          | Remove all leading filename components (tail: like `basename`)                                                                                                                                                                                                                                                                |
+| `r`          | Remove trailing `.SUFFIX` (root/basename without extension)                                                                                                                                                                                                                                                                   |
+| `e`          | Remove all but trailing suffix (extension only)                                                                                                                                                                                                                                                                               |
+| `p`          | Print but do not execute                                                                                                                                                                                                                                                                                                      |
+| `q`          | Quote substituted words, escaping further substitutions                                                                                                                                                                                                                                                                       |
+| `x`          | Quote like `q` but break into words at spaces/tabs/newlines. `q` and `x` are mutually exclusive; last one supplied wins                                                                                                                                                                                                       |
 | `s/OLD/NEW/` | Substitute NEW for first occurrence of OLD. Any delimiter may replace `/`. Delimiter can be escaped with `\` in OLD and NEW. `&` in NEW replaced with OLD (escape with `\`). Null OLD = last OLD substituted or last `!?string?` search string. Null NEW = delete matching OLD. Final delimiter optional if last char on line |
-| `&` | Repeat previous substitution |
-| `g` or `a` | Apply `s` or `&` over entire event line (e.g., `gs/OLD/NEW/`) |
-| `G` | Apply following `s` or `&` once to each word in the event |
+| `&`          | Repeat previous substitution                                                                                                                                                                                                                                                                                                  |
+| `g` or `a`   | Apply `s` or `&` over entire event line (e.g., `gs/OLD/NEW/`)                                                                                                                                                                                                                                                                 |
+| `G`          | Apply following `s` or `&` once to each word in the event                                                                                                                                                                                                                                                                     |

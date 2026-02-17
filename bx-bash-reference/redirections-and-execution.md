@@ -35,10 +35,10 @@ If WORD expands to **more than one word**, Bash reports an error.
 
 Each redirection that may be preceded by a file descriptor number may instead be preceded by a word of the form `{VARNAME}`.
 
-| Operator | Behavior |
-|---|---|
+| Operator                   | Behavior                                                  |
+|----------------------------|-----------------------------------------------------------|
 | Any except `>&-` and `<&-` | Shell allocates an fd >= 10 and assigns it to `{VARNAME}` |
-| `>&-` or `<&-` | The value of VARNAME defines the fd to close |
+| `>&-` or `<&-`             | The value of VARNAME defines the fd to close              |
 
 When `{VARNAME}` is supplied, the redirection **persists beyond the scope of the command**, allowing manual fd lifetime management without `exec`. The `varredir_close` shell option manages this behavior.
 
@@ -70,12 +70,12 @@ In the second example, stderr was made a copy of stdout **before** stdout was re
 
 Bash handles the following filenames specially. If the OS provides them, Bash uses them; otherwise Bash emulates them internally.
 
-| Special Filename | Behavior |
-|---|---|
-| `/dev/fd/FD` | Duplicates file descriptor FD (FD must be a valid integer) |
-| `/dev/stdin` | Duplicates file descriptor 0 (stdin) |
-| `/dev/stdout` | Duplicates file descriptor 1 (stdout) |
-| `/dev/stderr` | Duplicates file descriptor 2 (stderr) |
+| Special Filename     | Behavior                                                                                       |
+|----------------------|------------------------------------------------------------------------------------------------|
+| `/dev/fd/FD`         | Duplicates file descriptor FD (FD must be a valid integer)                                     |
+| `/dev/stdin`         | Duplicates file descriptor 0 (stdin)                                                           |
+| `/dev/stdout`        | Duplicates file descriptor 1 (stdout)                                                          |
+| `/dev/stderr`        | Duplicates file descriptor 2 (stderr)                                                          |
 | `/dev/tcp/HOST/PORT` | Opens the corresponding TCP socket (HOST = hostname or IP, PORT = port number or service name) |
 | `/dev/udp/HOST/PORT` | Opens the corresponding UDP socket (HOST = hostname or IP, PORT = port number or service name) |
 
@@ -119,10 +119,10 @@ Opens the file for **writing** on file descriptor `n`, or stdout (fd 1) if `n` i
 [n]>[|]WORD
 ```
 
-| Operator | Behavior |
-|---|---|
-| `>` | Redirects output; **fails** if `noclobber` is set and the file exists as a regular file |
-| `>\|` | Redirects output; **overrides `noclobber`** -- always attempts the redirection even if the file exists |
+| Operator | Behavior                                                                                               |
+|----------|--------------------------------------------------------------------------------------------------------|
+| `>`      | Redirects output; **fails** if `noclobber` is set and the file exists as a regular file                |
+| `>\|`    | Redirects output; **overrides `noclobber`** -- always attempts the redirection even if the file exists |
 
 **Examples:**
 
@@ -239,10 +239,10 @@ DELIMITER
 
 **Expansion Rules:**
 
-| WORD Quoting | DELIMITER | Here-document body expansion |
-|---|---|---|
-| **Any part quoted** (e.g., `'EOF'`, `"EOF"`, `\EOF`) | Result of quote removal on WORD | **No expansion** -- lines are literal |
-| **Unquoted** | WORD itself | Treated like a double-quoted string: parameter expansion, command substitution, arithmetic expansion are performed. `\newline` is literal. `\` must be used to quote `\`, `$`, and `` ` ``. Double quotes have no special meaning. |
+| WORD Quoting                                         | DELIMITER                       | Here-document body expansion                                                                                                                                                                                                       |
+|------------------------------------------------------|---------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Any part quoted** (e.g., `'EOF'`, `"EOF"`, `\EOF`) | Result of quote removal on WORD | **No expansion** -- lines are literal                                                                                                                                                                                              |
+| **Unquoted**                                         | WORD itself                     | Treated like a double-quoted string: parameter expansion, command substitution, arithmetic expansion are performed. `\newline` is literal. `\` must be used to quote `\`, `$`, and `` ` ``. Double quotes have no special meaning. |
 
 **Tab stripping with `<<-`:**
 
@@ -300,15 +300,15 @@ A variant of here documents providing a single string as input.
 
 **Expansion applied to WORD:**
 
-| Expansion | Applied? |
-|---|---|
-| Tilde expansion | Yes |
-| Parameter and variable expansion | Yes |
-| Command substitution | Yes |
-| Arithmetic expansion | Yes |
-| Quote removal | Yes |
-| Filename expansion | **No** |
-| Word splitting | **No** |
+| Expansion                        | Applied? |
+|----------------------------------|----------|
+| Tilde expansion                  | Yes      |
+| Parameter and variable expansion | Yes      |
+| Command substitution             | Yes      |
+| Arithmetic expansion             | Yes      |
+| Quote removal                    | Yes      |
+| Filename expansion               | **No**   |
+| Word splitting                   | **No**   |
 
 The result is supplied as a single string, **with a newline appended**, to the command on its stdin (or fd `n` if specified).
 
@@ -346,11 +346,11 @@ exec 3<<< "data for fd 3"
 [n]<&WORD
 ```
 
-| WORD value | Behavior |
-|---|---|
+| WORD value         | Behavior                                                                                   |
+|--------------------|--------------------------------------------------------------------------------------------|
 | One or more digits | fd `n` becomes a copy of that fd. Error if the digits do not specify an fd open for input. |
-| `-` | fd `n` is **closed** |
-| _(n omitted)_ | Defaults to stdin (fd 0) |
+| `-`                | fd `n` is **closed**                                                                       |
+| _(n omitted)_      | Defaults to stdin (fd 0)                                                                   |
 
 #### Duplicating Output File Descriptors
 
@@ -360,12 +360,12 @@ exec 3<<< "data for fd 3"
 [n]>&WORD
 ```
 
-| WORD value | Behavior |
-|---|---|
-| One or more digits | fd `n` becomes a copy of that fd. Error if the digits do not specify an fd open for output. |
-| `-` | fd `n` is **closed** |
-| _(n omitted)_ | Defaults to stdout (fd 1) |
-| _(n omitted, WORD is not digits or `-`)_ | **Special case:** redirects both stdout and stderr (same as `&>WORD`) |
+| WORD value                               | Behavior                                                                                    |
+|------------------------------------------|---------------------------------------------------------------------------------------------|
+| One or more digits                       | fd `n` becomes a copy of that fd. Error if the digits do not specify an fd open for output. |
+| `-`                                      | fd `n` is **closed**                                                                        |
+| _(n omitted)_                            | Defaults to stdout (fd 1)                                                                   |
+| _(n omitted, WORD is not digits or `-`)_ | **Special case:** redirects both stdout and stderr (same as `&>WORD`)                       |
 
 **Examples:**
 
@@ -453,24 +453,24 @@ exec <> /tmp/data.txt
 
 ### Redirections Quick Reference Table
 
-| Syntax | Operation | Default fd |
-|---|---|---|
-| `[n]<WORD` | Redirect input (read from file) | 0 (stdin) |
-| `[n]>WORD` | Redirect output (write to file, truncate) | 1 (stdout) |
-| `[n]>\|WORD` | Redirect output (force, override noclobber) | 1 (stdout) |
-| `[n]>>WORD` | Append output | 1 (stdout) |
-| `&>WORD` | Redirect stdout + stderr to file | 1 + 2 |
-| `>&WORD` | Redirect stdout + stderr to file (alt form) | 1 + 2 |
-| `&>>WORD` | Append stdout + stderr to file | 1 + 2 |
-| `[n]<<[-]WORD` | Here document | 0 (stdin) |
-| `[n]<<<WORD` | Here string | 0 (stdin) |
-| `[n]<&WORD` | Duplicate input fd | 0 (stdin) |
-| `[n]>&WORD` | Duplicate output fd | 1 (stdout) |
-| `[n]<&DIGIT-` | Move input fd (close source) | 0 (stdin) |
-| `[n]>&DIGIT-` | Move output fd (close source) | 1 (stdout) |
-| `[n]<>WORD` | Open for reading and writing | 0 (stdin) |
-| `[n]<&-` | Close input fd | 0 (stdin) |
-| `[n]>&-` | Close output fd | 1 (stdout) |
+| Syntax         | Operation                                   | Default fd |
+|----------------|---------------------------------------------|------------|
+| `[n]<WORD`     | Redirect input (read from file)             | 0 (stdin)  |
+| `[n]>WORD`     | Redirect output (write to file, truncate)   | 1 (stdout) |
+| `[n]>\|WORD`   | Redirect output (force, override noclobber) | 1 (stdout) |
+| `[n]>>WORD`    | Append output                               | 1 (stdout) |
+| `&>WORD`       | Redirect stdout + stderr to file            | 1 + 2      |
+| `>&WORD`       | Redirect stdout + stderr to file (alt form) | 1 + 2      |
+| `&>>WORD`      | Append stdout + stderr to file              | 1 + 2      |
+| `[n]<<[-]WORD` | Here document                               | 0 (stdin)  |
+| `[n]<<<WORD`   | Here string                                 | 0 (stdin)  |
+| `[n]<&WORD`    | Duplicate input fd                          | 0 (stdin)  |
+| `[n]>&WORD`    | Duplicate output fd                         | 1 (stdout) |
+| `[n]<&DIGIT-`  | Move input fd (close source)                | 0 (stdin)  |
+| `[n]>&DIGIT-`  | Move output fd (close source)               | 1 (stdout) |
+| `[n]<>WORD`    | Open for reading and writing                | 0 (stdin)  |
+| `[n]<&-`       | Close input fd                              | 0 (stdin)  |
+| `[n]>&-`       | Close output fd                             | 1 (stdout) |
 
 ---
 
@@ -495,14 +495,14 @@ When the shell executes a simple command, it performs the following expansions, 
 
 #### When No Command Name Results
 
-| Condition | Behavior |
-|---|---|
-| Only assignments, no command name | Variable assignments affect the **current shell environment**. Assignment statements are performed **before** redirections. |
-| Only redirections, no command name | Redirections are performed but do **not** affect the current shell environment. A redirection error causes a non-zero exit status. |
-| With a command name | Variables are added to the **environment of the executed command** and do not affect the current shell environment. |
-| Readonly variable assignment attempt | An error occurs and the command exits with a non-zero status. |
-| No command name, has command substitutions | Exit status is the exit status of the **last command substitution** performed. |
-| No command name, no command substitutions | Command exits with **zero** status. |
+| Condition                                  | Behavior                                                                                                                           |
+|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| Only assignments, no command name          | Variable assignments affect the **current shell environment**. Assignment statements are performed **before** redirections.        |
+| Only redirections, no command name         | Redirections are performed but do **not** affect the current shell environment. A redirection error causes a non-zero exit status. |
+| With a command name                        | Variables are added to the **environment of the executed command** and do not affect the current shell environment.                |
+| Readonly variable assignment attempt       | An error occurs and the command exits with a non-zero status.                                                                      |
+| No command name, has command substitutions | Exit status is the exit status of the **last command substitution** performed.                                                     |
+| No command name, no command substitutions  | Command exits with **zero** status.                                                                                                |
 
 ---
 
@@ -510,15 +510,15 @@ When the shell executes a simple command, it performs the following expansions, 
 
 After a command has been split into words, if it results in a simple command and an optional list of arguments, the shell performs the following actions:
 
-| Step | Condition | Action |
-|---|---|---|
-| 1 | Command name contains **no slashes** | Shell attempts to locate the command. If a **shell function** exists by that name, the function is invoked. |
-| 2 | Name does not match a function | Shell searches the list of **shell builtins**. If a match is found, that builtin is invoked. |
-| 3 | Name is not a function or builtin, contains no slashes | Bash searches each element of `$PATH` for a directory containing an executable file by that name. Uses a **hash table** to cache full pathnames (see `hash` builtin). Full `$PATH` search only if not found in hash table. |
-| 3a | `$PATH` search unsuccessful | Shell searches for a function named `command_not_found_handle`. If found, it is invoked in a separate execution environment with the original command and arguments. The function's exit status becomes the subshell's exit status. If not found, shell prints an error and returns exit status **127**. |
-| 4 | Search successful, or name contains slashes | Shell executes the named program in a separate execution environment. Argument 0 is the command name; remaining arguments are passed as supplied. |
-| 5 | Execution fails (not executable format, not a directory) | File is assumed to be a **shell script** and executed as described in Shell Scripts. |
-| 6 | Command not begun asynchronously | Shell **waits** for the command to complete and collects its exit status. |
+| Step | Condition                                                | Action                                                                                                                                                                                                                                                                                                   |
+|------|----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1    | Command name contains **no slashes**                     | Shell attempts to locate the command. If a **shell function** exists by that name, the function is invoked.                                                                                                                                                                                              |
+| 2    | Name does not match a function                           | Shell searches the list of **shell builtins**. If a match is found, that builtin is invoked.                                                                                                                                                                                                             |
+| 3    | Name is not a function or builtin, contains no slashes   | Bash searches each element of `$PATH` for a directory containing an executable file by that name. Uses a **hash table** to cache full pathnames (see `hash` builtin). Full `$PATH` search only if not found in hash table.                                                                               |
+| 3a   | `$PATH` search unsuccessful                              | Shell searches for a function named `command_not_found_handle`. If found, it is invoked in a separate execution environment with the original command and arguments. The function's exit status becomes the subshell's exit status. If not found, shell prints an error and returns exit status **127**. |
+| 4    | Search successful, or name contains slashes              | Shell executes the named program in a separate execution environment. Argument 0 is the command name; remaining arguments are passed as supplied.                                                                                                                                                        |
+| 5    | Execution fails (not executable format, not a directory) | File is assumed to be a **shell script** and executed as described in Shell Scripts.                                                                                                                                                                                                                     |
+| 6    | Command not begun asynchronously                         | Shell **waits** for the command to complete and collects its exit status.                                                                                                                                                                                                                                |
 
 ---
 
@@ -555,20 +555,20 @@ A **subshell** is a copy of the shell process.
 
 The following are invoked in a subshell environment (a duplicate of the shell environment):
 
-| Construct | Notes |
-|---|---|
-| Command substitution (`$(...)`) | Traps caught by the shell are reset to values inherited from parent at invocation |
-| Commands grouped with parentheses (`(...)`) | Same trap reset behavior |
-| Asynchronous commands (`command &`) | Same trap reset behavior |
-| Builtin commands in a pipeline | Except possibly the **last element** (depends on `lastpipe` shell option) |
+| Construct                                   | Notes                                                                             |
+|---------------------------------------------|-----------------------------------------------------------------------------------|
+| Command substitution (`$(...)`)             | Traps caught by the shell are reset to values inherited from parent at invocation |
+| Commands grouped with parentheses (`(...)`) | Same trap reset behavior                                                          |
+| Asynchronous commands (`command &`)         | Same trap reset behavior                                                          |
+| Builtin commands in a pipeline              | Except possibly the **last element** (depends on `lastpipe` shell option)         |
 
 **Changes made to the subshell environment cannot affect the shell's execution environment.**
 
 #### POSIX Mode and `-e` Option in Subshells
 
-| Mode | Behavior |
-|---|---|
-| POSIX mode | Subshells spawned for command substitution **inherit** the `-e` option from the parent shell |
+| Mode           | Behavior                                                                                                   |
+|----------------|------------------------------------------------------------------------------------------------------------|
+| POSIX mode     | Subshells spawned for command substitution **inherit** the `-e` option from the parent shell               |
 | Non-POSIX mode | Bash **clears** the `-e` option in such subshells. Use the `inherit_errexit` shell option to control this. |
 
 #### Asynchronous Commands and Standard Input
@@ -583,13 +583,13 @@ When a program is invoked, it is given an array of strings called the **environm
 
 #### How Bash Manages the Environment
 
-| Action | Effect |
-|---|---|
-| Shell invocation | Bash scans its own environment, creates a parameter for each name found, automatically marks it for `export` to child processes |
-| `export VAR` / `declare -x VAR` | Adds or marks a variable for export |
-| `unset VAR` | Removes a variable from the environment |
-| `export -n VAR` | Removes the export attribute (variable stays but is not passed to children) |
-| Modifying an exported variable | New value automatically becomes part of the environment |
+| Action                          | Effect                                                                                                                          |
+|---------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| Shell invocation                | Bash scans its own environment, creates a parameter for each name found, automatically marks it for `export` to child processes |
+| `export VAR` / `declare -x VAR` | Adds or marks a variable for export                                                                                             |
+| `unset VAR`                     | Removes a variable from the environment                                                                                         |
+| `export -n VAR`                 | Removes the export attribute (variable stays but is not passed to children)                                                     |
+| Modifying an exported variable  | New value automatically becomes part of the environment                                                                         |
 
 #### The Inherited Environment of Executed Commands
 
@@ -630,15 +630,15 @@ The exit status of an executed command is the value returned by the `waitpid` sy
 
 #### Exit Status Ranges and Special Values
 
-| Exit Status | Meaning |
-|---|---|
-| **0** | Success |
-| **1-125** | Failure (command-specific meaning) |
-| **2** | Incorrect usage of a builtin (invalid options or missing arguments) |
-| **126** | Command found but **not executable** |
-| **127** | Command **not found** |
-| **128+N** | Command terminated by fatal **signal number N** |
-| **> 125** | Reserved by the shell for special failure modes |
+| Exit Status | Meaning                                                             |
+|-------------|---------------------------------------------------------------------|
+| **0**       | Success                                                             |
+| **1-125**   | Failure (command-specific meaning)                                  |
+| **2**       | Incorrect usage of a builtin (invalid options or missing arguments) |
+| **126**     | Command found but **not executable**                                |
+| **127**     | Command **not found**                                               |
+| **128+N**   | Command terminated by fatal **signal number N**                     |
+| **> 125**   | Reserved by the shell for special failure modes                     |
 
 #### Key Rules
 
@@ -676,14 +676,14 @@ echo $?      # prints 126
 
 #### Interactive Shell Signal Handling
 
-| Signal | Behavior in Interactive Shell |
-|---|---|
-| `SIGTERM` | **Ignored** (so `kill 0` does not kill an interactive shell) |
-| `SIGINT` | **Caught and handled** (so `wait` is interruptible). Breaks out of executing loops. |
-| `SIGQUIT` | **Ignored** (in all cases) |
-| `SIGTTIN` | **Ignored** (when job control is in effect) |
-| `SIGTTOU` | **Ignored** (when job control is in effect) |
-| `SIGTSTP` | **Ignored** (when job control is in effect) |
+| Signal    | Behavior in Interactive Shell                                                       |
+|-----------|-------------------------------------------------------------------------------------|
+| `SIGTERM` | **Ignored** (so `kill 0` does not kill an interactive shell)                        |
+| `SIGINT`  | **Caught and handled** (so `wait` is interruptible). Breaks out of executing loops. |
+| `SIGQUIT` | **Ignored** (in all cases)                                                          |
+| `SIGTTIN` | **Ignored** (when job control is in effect)                                         |
+| `SIGTTOU` | **Ignored** (when job control is in effect)                                         |
+| `SIGTSTP` | **Ignored** (when job control is in effect)                                         |
 
 The `trap` builtin modifies the shell's signal handling.
 
@@ -695,13 +695,13 @@ The `trap` builtin modifies the shell's signal handling.
 
 #### SIGHUP Handling
 
-| Event | Behavior |
-|---|---|
-| Shell receives `SIGHUP` | Shell exits by default |
-| Before exiting (interactive shell) | Resends `SIGHUP` to all jobs (running or stopped) |
-| Stopped jobs | Shell sends `SIGCONT` first to ensure they receive the `SIGHUP` |
-| Prevent `SIGHUP` to a job | Use `disown` (removes from jobs table) or `disown -h` (marks to not receive `SIGHUP`) |
-| `huponexit` shell option set | Bash sends `SIGHUP` to all jobs when an interactive login shell exits |
+| Event                              | Behavior                                                                              |
+|------------------------------------|---------------------------------------------------------------------------------------|
+| Shell receives `SIGHUP`            | Shell exits by default                                                                |
+| Before exiting (interactive shell) | Resends `SIGHUP` to all jobs (running or stopped)                                     |
+| Stopped jobs                       | Shell sends `SIGCONT` first to ensure they receive the `SIGHUP`                       |
+| Prevent `SIGHUP` to a job          | Use `disown` (removes from jobs table) or `disown -h` (marks to not receive `SIGHUP`) |
+| `huponexit` shell option set       | Bash sends `SIGHUP` to all jobs when an interactive login shell exits                 |
 
 #### Trap Execution Timing
 
@@ -716,10 +716,10 @@ The shell and the command are in the **same process group** as the terminal, so 
 
 When Bash receives `SIGINT` while waiting for a foreground command, it waits until the command terminates, then:
 
-| Scenario | Condition | Bash Behavior |
-|---|---|---|
-| 1 | Command **terminates due to SIGINT** | Bash concludes the user intended SIGINT for the shell too. Acts on it: runs SIGINT trap, exits a non-interactive shell, or returns to top level. |
-| 2 | Command **does not terminate due to SIGINT** | Bash assumes the program handled SIGINT as normal operation (e.g., `emacs` abort). Bash does not treat SIGINT as fatal, but still runs any SIGINT trap for compatibility. |
+| Scenario | Condition                                    | Bash Behavior                                                                                                                                                             |
+|----------|----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1        | Command **terminates due to SIGINT**         | Bash concludes the user intended SIGINT for the shell too. Acts on it: runs SIGINT trap, exits a non-interactive shell, or returns to top level.                          |
+| 2        | Command **does not terminate due to SIGINT** | Bash assumes the program handled SIGINT as normal operation (e.g., `emacs` abort). Bash does not treat SIGINT as fatal, but still runs any SIGINT trap for compatibility. |
 
 **When job control IS enabled** (most common in interactive shells):
 
@@ -747,11 +747,11 @@ Bash tries to determine whether the file is a text file or a binary, and **will 
 
 ### Parameter Setup
 
-| Parameter | Value |
-|---|---|
-| `$0` | Set to the name of the script file (not the name of the shell) |
-| `$1`, `$2`, ... | Set to the remaining arguments, if any |
-| _(no arguments)_ | Positional parameters are **unset** |
+| Parameter        | Value                                                          |
+|------------------|----------------------------------------------------------------|
+| `$0`             | Set to the name of the script file (not the name of the shell) |
+| `$1`, `$2`, ...  | Set to the remaining arguments, if any                         |
+| _(no arguments)_ | Positional parameters are **unset**                            |
 
 ### Making Scripts Executable
 
@@ -792,9 +792,9 @@ Bash will perform shebang handling on operating systems that do not handle it th
 
 ### Best Practices Summary
 
-| Practice | Reason |
-|---|---|
+| Practice                      | Reason                                                                         |
+|-------------------------------|--------------------------------------------------------------------------------|
 | Always include a shebang line | Ensures the correct interpreter is used even when executed under another shell |
-| Use `#!/usr/bin/env bash` | More portable than hardcoding `/bin/bash` |
-| Use `chmod +x script.sh` | Makes the script directly executable |
-| Set `$0` to the script name | Allows the script to know its own name for error messages |
+| Use `#!/usr/bin/env bash`     | More portable than hardcoding `/bin/bash`                                      |
+| Use `chmod +x script.sh`      | Makes the script directly executable                                           |
+| Set `$0` to the script name   | Allows the script to know its own name for error messages                      |

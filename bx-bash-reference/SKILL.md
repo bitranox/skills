@@ -35,27 +35,27 @@ Complete reference for GNU Bash 5.3 (May 2025). Covers all shell syntax, builtin
 
 ## Reference Files
 
-| File | Contents |
-|------|----------|
-| `shell-syntax-and-commands.md` | Quoting, comments, reserved words, pipelines, lists, compound commands (if/for/while/case/select/[[/(( ), grouping, coprocesses |
-| `functions-parameters-expansions.md` | Shell functions, positional/special parameters, ALL expansion types (brace, tilde, parameter, command substitution, arithmetic, process substitution, word splitting, globbing, pattern matching) |
-| `redirections-and-execution.md` | All redirection types, here docs/strings, file descriptors, command search/execution, execution environment, exit status, signals, shell scripts |
-| `shell-builtins.md` | All Bourne shell builtins, all Bash builtins, `set` options, `shopt` options, special builtins |
-| `shell-variables.md` | All Bourne shell variables, all Bash variables (BASH_*, COMP_*, HIST*, READLINE_*, etc.) |
-| `bash-features.md` | Invocation options, startup files, interactive shell behavior, conditional expressions, arithmetic, aliases, arrays, directory stack, prompt control, restricted shell, POSIX mode, compatibility mode |
-| `job-control-readline-history.md` | Job control (bg/fg/jobs/disown), readline configuration, all bindable commands, vi mode, programmable completion (complete/compgen/compopt), history expansion |
+| File                                 | Contents                                                                                                                                                                                               |
+|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `shell-syntax-and-commands.md`       | Quoting, comments, reserved words, pipelines, lists, compound commands (if/for/while/case/select/[[/(( ), grouping, coprocesses                                                                        |
+| `functions-parameters-expansions.md` | Shell functions, positional/special parameters, ALL expansion types (brace, tilde, parameter, command substitution, arithmetic, process substitution, word splitting, globbing, pattern matching)      |
+| `redirections-and-execution.md`      | All redirection types, here docs/strings, file descriptors, command search/execution, execution environment, exit status, signals, shell scripts                                                       |
+| `shell-builtins.md`                  | All Bourne shell builtins, all Bash builtins, `set` options, `shopt` options, special builtins                                                                                                         |
+| `shell-variables.md`                 | All Bourne shell variables, all Bash variables (BASH_*, COMP_*, HIST*, READLINE_*, etc.)                                                                                                               |
+| `bash-features.md`                   | Invocation options, startup files, interactive shell behavior, conditional expressions, arithmetic, aliases, arrays, directory stack, prompt control, restricted shell, POSIX mode, compatibility mode |
+| `job-control-readline-history.md`    | Job control (bg/fg/jobs/disown), readline configuration, all bindable commands, vi mode, programmable completion (complete/compgen/compopt), history expansion                                         |
 
 ### Which File Do I Need?
 
-| I need to... | Read |
-|--------------|------|
-| Write a function, use parameters/expansions, do string manipulation | `functions-parameters-expansions.md` |
-| Use `if`/`for`/`while`/`case`/`select`/`[[ ]]`/`(( ))`, or understand quoting | `shell-syntax-and-commands.md` |
-| Redirect I/O, use here docs/strings, understand fd management | `redirections-and-execution.md` |
-| Look up a builtin (`set`, `shopt`, `declare`, `read`, `printf`, `trap`, etc.) | `shell-builtins.md` |
-| Check a shell variable (`BASH_REMATCH`, `PIPESTATUS`, `EPOCHSECONDS`, etc.) | `shell-variables.md` |
-| Understand startup files, arrays, arithmetic, POSIX mode, or conditional expressions | `bash-features.md` |
-| Work with job control, readline, completion, or history expansion | `job-control-readline-history.md` |
+| I need to...                                                                         | Read                                 |
+|--------------------------------------------------------------------------------------|--------------------------------------|
+| Write a function, use parameters/expansions, do string manipulation                  | `functions-parameters-expansions.md` |
+| Use `if`/`for`/`while`/`case`/`select`/`[[ ]]`/`(( ))`, or understand quoting        | `shell-syntax-and-commands.md`       |
+| Redirect I/O, use here docs/strings, understand fd management                        | `redirections-and-execution.md`      |
+| Look up a builtin (`set`, `shopt`, `declare`, `read`, `printf`, `trap`, etc.)        | `shell-builtins.md`                  |
+| Check a shell variable (`BASH_REMATCH`, `PIPESTATUS`, `EPOCHSECONDS`, etc.)          | `shell-variables.md`                 |
+| Understand startup files, arrays, arithmetic, POSIX mode, or conditional expressions | `bash-features.md`                   |
+| Work with job control, readline, completion, or history expansion                    | `job-control-readline-history.md`    |
 
 
 ## Quick Reference: Most-Used Constructs
@@ -64,69 +64,69 @@ Complete reference for GNU Bash 5.3 (May 2025). Covers all shell syntax, builtin
 
 > Full details: `shell-syntax-and-commands.md` (section 1)
 
-| Syntax | Behavior |
-|--------|----------|
-| `\x` | Escape single character |
-| `'text'` | Literal string, no expansion |
-| `"text"` | Allows `$`, `` ` ``, `\`, `!` expansion |
+| Syntax    | Behavior                                                         |
+|-----------|------------------------------------------------------------------|
+| `\x`      | Escape single character                                          |
+| `'text'`  | Literal string, no expansion                                     |
+| `"text"`  | Allows `$`, `` ` ``, `\`, `!` expansion                          |
 | `$'text'` | ANSI-C escapes: `\n`, `\t`, `\e`, `\xHH`, `\uHHHH`, `\UHHHHHHHH` |
-| `$"text"` | Locale-specific translation |
+| `$"text"` | Locale-specific translation                                      |
 
 ### Parameter Expansion
 
 > Full details: `functions-parameters-expansions.md` (section 3.4)
 
-| Syntax | Result |
-|--------|--------|
-| `${var:-default}` | Use default if var unset/null |
-| `${var:=default}` | Assign default if var unset/null |
-| `${var:+alternate}` | Use alternate if var IS set |
-| `${var:?error}` | Error if var unset/null |
-| `${#var}` | String length |
-| `${var:offset:length}` | Substring |
-| `${var#pattern}` | Remove shortest prefix match |
-| `${var##pattern}` | Remove longest prefix match |
-| `${var%pattern}` | Remove shortest suffix match |
-| `${var%%pattern}` | Remove longest suffix match |
-| `${var/pat/str}` | Replace first match |
-| `${var//pat/str}` | Replace all matches |
-| `${var/#pat/str}` | Replace if matches beginning |
-| `${var/%pat/str}` | Replace if matches end |
-| `${var^pattern}` | Uppercase first char |
-| `${var^^pattern}` | Uppercase all chars |
-| `${var,pattern}` | Lowercase first char |
-| `${var,,pattern}` | Lowercase all chars |
-| `${!prefix*}` | Names matching prefix |
-| `${!name[@]}` | Array indices/keys |
-| `${!var}` | Indirect expansion |
-| `${var@Q}` | Quote for reuse |
-| `${var@E}` | Expand escape sequences |
-| `${var@P}` | Expand as prompt string |
-| `${var@A}` | Assignment statement form |
-| `${var@a}` | Attribute flags |
-| `${var@U}` | Uppercase all |
-| `${var@u}` | Uppercase first |
-| `${var@L}` | Lowercase all |
-| `${var@K}` | Key-value pairs (assoc arrays) |
+| Syntax                 | Result                           |
+|------------------------|----------------------------------|
+| `${var:-default}`      | Use default if var unset/null    |
+| `${var:=default}`      | Assign default if var unset/null |
+| `${var:+alternate}`    | Use alternate if var IS set      |
+| `${var:?error}`        | Error if var unset/null          |
+| `${#var}`              | String length                    |
+| `${var:offset:length}` | Substring                        |
+| `${var#pattern}`       | Remove shortest prefix match     |
+| `${var##pattern}`      | Remove longest prefix match      |
+| `${var%pattern}`       | Remove shortest suffix match     |
+| `${var%%pattern}`      | Remove longest suffix match      |
+| `${var/pat/str}`       | Replace first match              |
+| `${var//pat/str}`      | Replace all matches              |
+| `${var/#pat/str}`      | Replace if matches beginning     |
+| `${var/%pat/str}`      | Replace if matches end           |
+| `${var^pattern}`       | Uppercase first char             |
+| `${var^^pattern}`      | Uppercase all chars              |
+| `${var,pattern}`       | Lowercase first char             |
+| `${var,,pattern}`      | Lowercase all chars              |
+| `${!prefix*}`          | Names matching prefix            |
+| `${!name[@]}`          | Array indices/keys               |
+| `${!var}`              | Indirect expansion               |
+| `${var@Q}`             | Quote for reuse                  |
+| `${var@E}`             | Expand escape sequences          |
+| `${var@P}`             | Expand as prompt string          |
+| `${var@A}`             | Assignment statement form        |
+| `${var@a}`             | Attribute flags                  |
+| `${var@U}`             | Uppercase all                    |
+| `${var@u}`             | Uppercase first                  |
+| `${var@L}`             | Lowercase all                    |
+| `${var@K}`             | Key-value pairs (assoc arrays)   |
 
 ### Special Parameters
 
 > Full details: `functions-parameters-expansions.md` (section 2)
 
-| Param | Meaning |
-|-------|---------|
-| `$0` | Script/shell name |
-| `$1`..`$9`, `${10}` | Positional parameters |
-| `$#` | Number of positional parameters |
-| `$*` | All positional params as single word (with IFS) |
-| `$@` | All positional params as separate words |
-| `"$*"` | `"$1c$2c..."` where c = first char of IFS |
-| `"$@"` | `"$1" "$2" ...` (preserves word boundaries) |
-| `$?` | Exit status of last command |
-| `$$` | PID of the shell |
-| `$!` | PID of last background command |
-| `$-` | Current option flags |
-| `$_` | Last argument of previous command |
+| Param               | Meaning                                         |
+|---------------------|-------------------------------------------------|
+| `$0`                | Script/shell name                               |
+| `$1`..`$9`, `${10}` | Positional parameters                           |
+| `$#`                | Number of positional parameters                 |
+| `$*`                | All positional params as single word (with IFS) |
+| `$@`                | All positional params as separate words         |
+| `"$*"`              | `"$1c$2c..."` where c = first char of IFS       |
+| `"$@"`              | `"$1" "$2" ...` (preserves word boundaries)     |
+| `$?`                | Exit status of last command                     |
+| `$$`                | PID of the shell                                |
+| `$!`                | PID of last background command                  |
+| `$-`                | Current option flags                            |
+| `$_`                | Last argument of previous command               |
 
 ### Compound Commands
 
@@ -167,65 +167,65 @@ select var in words; do ...; done
 
 > Full details: `bash-features.md` (section 4)
 
-| Operator | Test |
-|----------|------|
-| `-e file` | Exists |
-| `-f file` | Regular file |
-| `-d file` | Directory |
-| `-L file` / `-h file` | Symlink |
-| `-s file` | Non-zero size |
-| `-r file` | Readable |
-| `-w file` | Writable |
-| `-x file` | Executable |
-| `-p file` | Named pipe |
-| `-S file` | Socket |
-| `-b file` | Block device |
-| `-c file` | Character device |
-| `-t fd` | FD is terminal |
-| `-O file` | Owned by effective UID |
-| `-G file` | Owned by effective GID |
-| `-N file` | Modified since last read |
-| `f1 -nt f2` | f1 newer than f2 |
-| `f1 -ot f2` | f1 older than f2 |
-| `f1 -ef f2` | Same inode |
-| `-v var` | Variable is set |
-| `-R var` | Variable is nameref |
-| `-z string` | Zero length |
-| `-n string` | Non-zero length |
-| `s1 == s2` | Equal (pattern match in `[[ ]]`) |
-| `s1 != s2` | Not equal |
-| `s1 < s2` | Less than (lexicographic) |
-| `s1 > s2` | Greater than (lexicographic) |
-| `s1 =~ regex` | Regex match (`[[ ]]` only) |
-| `n1 -eq n2` | Numeric equal |
-| `n1 -ne n2` | Numeric not equal |
-| `n1 -lt n2` | Numeric less than |
-| `n1 -le n2` | Numeric less/equal |
-| `n1 -gt n2` | Numeric greater than |
-| `n1 -ge n2` | Numeric greater/equal |
+| Operator              | Test                             |
+|-----------------------|----------------------------------|
+| `-e file`             | Exists                           |
+| `-f file`             | Regular file                     |
+| `-d file`             | Directory                        |
+| `-L file` / `-h file` | Symlink                          |
+| `-s file`             | Non-zero size                    |
+| `-r file`             | Readable                         |
+| `-w file`             | Writable                         |
+| `-x file`             | Executable                       |
+| `-p file`             | Named pipe                       |
+| `-S file`             | Socket                           |
+| `-b file`             | Block device                     |
+| `-c file`             | Character device                 |
+| `-t fd`               | FD is terminal                   |
+| `-O file`             | Owned by effective UID           |
+| `-G file`             | Owned by effective GID           |
+| `-N file`             | Modified since last read         |
+| `f1 -nt f2`           | f1 newer than f2                 |
+| `f1 -ot f2`           | f1 older than f2                 |
+| `f1 -ef f2`           | Same inode                       |
+| `-v var`              | Variable is set                  |
+| `-R var`              | Variable is nameref              |
+| `-z string`           | Zero length                      |
+| `-n string`           | Non-zero length                  |
+| `s1 == s2`            | Equal (pattern match in `[[ ]]`) |
+| `s1 != s2`            | Not equal                        |
+| `s1 < s2`             | Less than (lexicographic)        |
+| `s1 > s2`             | Greater than (lexicographic)     |
+| `s1 =~ regex`         | Regex match (`[[ ]]` only)       |
+| `n1 -eq n2`           | Numeric equal                    |
+| `n1 -ne n2`           | Numeric not equal                |
+| `n1 -lt n2`           | Numeric less than                |
+| `n1 -le n2`           | Numeric less/equal               |
+| `n1 -gt n2`           | Numeric greater than             |
+| `n1 -ge n2`           | Numeric greater/equal            |
 
 ### Redirections
 
 > Full details: `redirections-and-execution.md` (section 1)
 
-| Syntax | Operation |
-|--------|-----------|
-| `cmd < file` | Stdin from file |
-| `cmd > file` | Stdout to file (truncate) |
-| `cmd >> file` | Stdout to file (append) |
-| `cmd 2> file` | Stderr to file |
-| `cmd &> file` or `cmd > file 2>&1` | Stdout+stderr to file |
-| `cmd &>> file` or `cmd >> file 2>&1` | Stdout+stderr append |
-| `cmd >&#124; file` | Force overwrite (noclobber) |
-| `cmd <<EOF` | Here document |
-| `cmd <<-EOF` | Here document (strip leading tabs) |
-| `cmd <<< "string"` | Here string |
-| `cmd <&fd` | Duplicate input FD |
-| `cmd >&fd` | Duplicate output FD |
-| `cmd fd<&-` | Close input FD |
-| `cmd fd>&-` | Close output FD |
-| `cmd n<>file` | Open for read+write on FD n |
-| `cmd {var}> file` | Auto-assign FD to var |
+| Syntax                               | Operation                          |
+|--------------------------------------|------------------------------------|
+| `cmd < file`                         | Stdin from file                    |
+| `cmd > file`                         | Stdout to file (truncate)          |
+| `cmd >> file`                        | Stdout to file (append)            |
+| `cmd 2> file`                        | Stderr to file                     |
+| `cmd &> file` or `cmd > file 2>&1`   | Stdout+stderr to file              |
+| `cmd &>> file` or `cmd >> file 2>&1` | Stdout+stderr append               |
+| `cmd >&#124; file`                   | Force overwrite (noclobber)        |
+| `cmd <<EOF`                          | Here document                      |
+| `cmd <<-EOF`                         | Here document (strip leading tabs) |
+| `cmd <<< "string"`                   | Here string                        |
+| `cmd <&fd`                           | Duplicate input FD                 |
+| `cmd >&fd`                           | Duplicate output FD                |
+| `cmd fd<&-`                          | Close input FD                     |
+| `cmd fd>&-`                          | Close output FD                    |
+| `cmd n<>file`                        | Open for read+write on FD n        |
+| `cmd {var}> file`                    | Auto-assign FD to var              |
 
 Special filenames in redirections: `/dev/fd/N`, `/dev/stdin`, `/dev/stdout`, `/dev/stderr`, `/dev/tcp/host/port`, `/dev/udp/host/port`
 
@@ -274,34 +274,34 @@ Steps 2-6 happen left-to-right simultaneously. Full details with word-count impa
 
 > Full details: `shell-builtins.md` (section 2, `set` builtin)
 
-| Option | Effect |
-|--------|--------|
-| `set -e` (`errexit`) | Exit on error (with exceptions) |
-| `set -u` (`nounset`) | Error on unset variables |
-| `set -o pipefail` | Pipeline fails if any command fails |
-| `set -x` (`xtrace`) | Print commands before execution |
-| `set -f` (`noglob`) | Disable filename expansion |
-| `set -n` (`noexec`) | Read commands without executing (syntax check) |
-| `set -o posix` | POSIX compliance mode |
-| `set -E` (`errtrace`) | ERR trap inherited by functions |
-| `set -T` (`functrace`) | DEBUG/RETURN traps inherited by functions |
+| Option                 | Effect                                         |
+|------------------------|------------------------------------------------|
+| `set -e` (`errexit`)   | Exit on error (with exceptions)                |
+| `set -u` (`nounset`)   | Error on unset variables                       |
+| `set -o pipefail`      | Pipeline fails if any command fails            |
+| `set -x` (`xtrace`)    | Print commands before execution                |
+| `set -f` (`noglob`)    | Disable filename expansion                     |
+| `set -n` (`noexec`)    | Read commands without executing (syntax check) |
+| `set -o posix`         | POSIX compliance mode                          |
+| `set -E` (`errtrace`)  | ERR trap inherited by functions                |
+| `set -T` (`functrace`) | DEBUG/RETURN traps inherited by functions      |
 
 ### Essential `shopt` Options
 
 > Full details: `shell-builtins.md` (section 3, `shopt` options)
 
-| Option | Effect |
-|--------|--------|
-| `extglob` | Extended patterns: `?(pat)` `*(pat)` `+(pat)` `@(pat)` `!(pat)` |
-| `globstar` | `**` matches directories recursively |
-| `nullglob` | Unmatched globs expand to nothing |
-| `failglob` | Unmatched globs cause error |
-| `nocaseglob` | Case-insensitive globbing |
-| `nocasematch` | Case-insensitive `case` and `[[ == ]]` |
-| `dotglob` | Globs match dotfiles |
-| `lastpipe` | Last pipeline command runs in current shell |
-| `inherit_errexit` | Command substitutions inherit `errexit` |
-| `assoc_expand_once` | Expand associative array subscripts once |
+| Option              | Effect                                                          |
+|---------------------|-----------------------------------------------------------------|
+| `extglob`           | Extended patterns: `?(pat)` `*(pat)` `+(pat)` `@(pat)` `!(pat)` |
+| `globstar`          | `**` matches directories recursively                            |
+| `nullglob`          | Unmatched globs expand to nothing                               |
+| `failglob`          | Unmatched globs cause error                                     |
+| `nocaseglob`        | Case-insensitive globbing                                       |
+| `nocasematch`       | Case-insensitive `case` and `[[ == ]]`                          |
+| `dotglob`           | Globs match dotfiles                                            |
+| `lastpipe`          | Last pipeline command runs in current shell                     |
+| `inherit_errexit`   | Command substitutions inherit `errexit`                         |
+| `assoc_expand_once` | Expand associative array subscripts once                        |
 
 ### Trap Signals
 
@@ -330,38 +330,38 @@ Bases: `0x` (hex), `0` (octal), `0b` (binary), `base#number` (arbitrary base 2-6
 
 > Full details: `bash-features.md` (section 8, Controlling the Prompt)
 
-| Escape | Meaning |
-|--------|---------|
-| `\u` | Username |
-| `\h` | Hostname (short) |
-| `\H` | Hostname (full) |
-| `\w` | Working directory |
-| `\W` | Basename of working directory |
-| `\d` | Date (Day Mon Date) |
-| `\t` | Time (HH:MM:SS 24hr) |
-| `\T` | Time (HH:MM:SS 12hr) |
-| `\@` | Time (AM/PM) |
-| `\A` | Time (HH:MM 24hr) |
-| `\D{fmt}` | strftime format |
-| `\j` | Number of jobs |
-| `\!` | History number |
-| `\#` | Command number |
-| `\$` | `#` if root, `$` otherwise |
-| `\[` | Begin non-printing chars |
-| `\]` | End non-printing chars |
+| Escape    | Meaning                       |
+|-----------|-------------------------------|
+| `\u`      | Username                      |
+| `\h`      | Hostname (short)              |
+| `\H`      | Hostname (full)               |
+| `\w`      | Working directory             |
+| `\W`      | Basename of working directory |
+| `\d`      | Date (Day Mon Date)           |
+| `\t`      | Time (HH:MM:SS 24hr)          |
+| `\T`      | Time (HH:MM:SS 12hr)          |
+| `\@`      | Time (AM/PM)                  |
+| `\A`      | Time (HH:MM 24hr)             |
+| `\D{fmt}` | strftime format               |
+| `\j`      | Number of jobs                |
+| `\!`      | History number                |
+| `\#`      | Command number                |
+| `\$`      | `#` if root, `$` otherwise    |
+| `\[`      | Begin non-printing chars      |
+| `\]`      | End non-printing chars        |
 
 ## Definitions
 
-| Term | Definition |
-|------|-----------|
-| **blank** | Space or tab |
-| **word** | Sequence of characters treated as a unit (no unquoted metacharacters) |
-| **token** | A word or an operator |
-| **metacharacter** | Unquoted: space, tab, newline, `\|`, `&`, `;`, `(`, `)`, `<`, `>` |
-| **control operator** | `\|\|`, `&&`, `&`, `;`, `;;`, `;&`, `;;&`, `\|`, `\|&`, `(`, `)`, newline |
-| **name/identifier** | Letters, numbers, underscores; starts with letter or underscore |
-| **exit status** | 0-255; 0 = success, 1 = general error, 2 = usage error, 126 = not executable, 127 = not found, 128+N = killed by signal N |
-| **special builtin** | POSIX-designated builtins that have special properties (break, :, ., continue, eval, exec, exit, export, readonly, return, set, shift, trap, unset) |
+| Term                 | Definition                                                                                                                                          |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| **blank**            | Space or tab                                                                                                                                        |
+| **word**             | Sequence of characters treated as a unit (no unquoted metacharacters)                                                                               |
+| **token**            | A word or an operator                                                                                                                               |
+| **metacharacter**    | Unquoted: space, tab, newline, `\|`, `&`, `;`, `(`, `)`, `<`, `>`                                                                                   |
+| **control operator** | `\|\|`, `&&`, `&`, `;`, `;;`, `;&`, `;;&`, `\|`, `\|&`, `(`, `)`, newline                                                                           |
+| **name/identifier**  | Letters, numbers, underscores; starts with letter or underscore                                                                                     |
+| **exit status**      | 0-255; 0 = success, 1 = general error, 2 = usage error, 126 = not executable, 127 = not found, 128+N = killed by signal N                           |
+| **special builtin**  | POSIX-designated builtins that have special properties (break, :, ., continue, eval, exec, exit, export, readonly, return, set, shift, trap, unset) |
 
 ## Common Patterns
 

@@ -33,7 +33,7 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 **How it works in skills:**
 - Require announcements: "Announce skill usage"
 - Force explicit choices: "Choose A, B, or C"
-- Use tracking: TodoWrite for checklists
+- Use tracking: TaskCreate for checklists
 
 **When to use:**
 - Ensuring skills are actually followed
@@ -80,8 +80,8 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 
 **Example:**
 ```markdown
-✅ Checklists without TodoWrite tracking = steps get skipped. Every time.
-❌ Some people find TodoWrite helpful for checklists.
+✅ Checklists without TaskCreate tracking = steps get skipped. Every time.
+❌ Some people find TaskCreate helpful for checklists.
 ```
 
 ### 5. Unity
@@ -125,12 +125,12 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 
 ## Principle Combinations by Skill Type
 
-| Skill Type | Use | Avoid |
-|------------|-----|-------|
+| Skill Type           | Use                                   | Avoid               |
+|----------------------|---------------------------------------|---------------------|
 | Discipline-enforcing | Authority + Commitment + Social Proof | Liking, Reciprocity |
-| Guidance/technique | Moderate Authority + Unity | Heavy authority |
-| Collaborative | Unity + Commitment | Authority, Liking |
-| Reference | Clarity only | All persuasion |
+| Guidance/technique   | Moderate Authority + Unity            | Heavy authority     |
+| Collaborative        | Unity + Commitment                    | Authority, Liking   |
+| Reference            | Clarity only                          | All persuasion      |
 
 ## Why This Works: The Psychology
 

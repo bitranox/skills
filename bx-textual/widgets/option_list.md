@@ -202,7 +202,7 @@ OptionList {
 ## Reactive Attributes
 
 | Name          | Type            | Default | Description                                                               |
-| ------------- | --------------- | ------- | ------------------------------------------------------------------------- |
+|---------------|-----------------|---------|---------------------------------------------------------------------------|
 | `highlighted` | `int` \| `None` | `None`  | The index of the highlighted option. `None` means nothing is highlighted. |
 
 ## Messages

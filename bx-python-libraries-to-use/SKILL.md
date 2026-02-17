@@ -18,32 +18,32 @@ Standardized library choices for all Python projects. Ensures consistency, avoid
 
 ## Quick Reference Table
 
-| Category               | Preferred Library      | Do NOT Use                  |
-|------------------------|------------------------|-----------------------------|
-| CLI exit/traceback     | `lib_cli_exit_tools`   | manual `sys.exit`           |
-| Logging (apps)         | `lib_log_rich`         | `print()`, bare `logging`   |
-| Logging (libs)         | `logging` stdlib       | `lib_log_rich`              |
-| Terminal output        | `rich`                 | `colorama` (fallback only)  |
-| TUI                    | `textual`              | `curses`                    |
-| Domain models          | `dataclasses`          | `dict`, `Pydantic`          |
-| Boundary validation    | `pydantic`             | manual parsing              |
-| Enums                  | `IntEnum` / `StrEnum`  | plain `Enum`, magic strings |
-| TOML                   | `rtoml`                | `tomllib`, `tomli`          |
-| JSON                   | `orjson`               | `json` stdlib               |
-| YAML                   | `ruamel.yaml`          | `PyYAML`                    |
-| HTTP                   | `httpx`                | `requests`                  |
-| Compression (stream)   | `isal`                 | `gzip` stdlib               |
-| Compression (store)    | `libdeflate`           | `gzip` stdlib               |
-| Paths                  | `pathlib.Path`         | `os.path`                   |
-| .env files             | `python-dotenv`        | manual parsing              |
-| Config management      | `lib_layered_config`   | manual argparse + env       |
-| Database (ODBC)        | `pyodbc`               | raw ODBC bindings           |
-| Database (MySQL)       | `mysql-connector-python` / `SQLAlchemy` | `PyMySQL`, `mysqlclient`  |
-| ORM / query builder    | `SQLAlchemy`           | custom ORM, raw SQL for complex apps |
-| Testing                | `pytest`               | `unittest`                  |
-| Date/time              | `datetime` + `zoneinfo`| `pytz`                      |
-| Subprocess             | `subprocess.run`       | `os.system`                 |
-| Type checking          | `mypy`                 | no type checking            |
+| Category             | Preferred Library                       | Do NOT Use                           |
+|----------------------|-----------------------------------------|--------------------------------------|
+| CLI exit/traceback   | `lib_cli_exit_tools`                    | manual `sys.exit`                    |
+| Logging (apps)       | `lib_log_rich`                          | `print()`, bare `logging`            |
+| Logging (libs)       | `logging` stdlib                        | `lib_log_rich`                       |
+| Terminal output      | `rich`                                  | `colorama` (fallback only)           |
+| TUI                  | `textual`                               | `curses`                             |
+| Domain models        | `dataclasses`                           | `dict`, `Pydantic`                   |
+| Boundary validation  | `pydantic`                              | manual parsing                       |
+| Enums                | `IntEnum` / `StrEnum`                   | plain `Enum`, magic strings          |
+| TOML                 | `rtoml`                                 | `tomllib`, `tomli`                   |
+| JSON                 | `orjson`                                | `json` stdlib                        |
+| YAML                 | `ruamel.yaml`                           | `PyYAML`                             |
+| HTTP                 | `httpx`                                 | `requests`                           |
+| Compression (stream) | `isal`                                  | `gzip` stdlib                        |
+| Compression (store)  | `libdeflate`                            | `gzip` stdlib                        |
+| Paths                | `pathlib.Path`                          | `os.path`                            |
+| .env files           | `python-dotenv`                         | manual parsing                       |
+| Config management    | `lib_layered_config`                    | manual argparse + env                |
+| Database (ODBC)      | `pyodbc`                                | raw ODBC bindings                    |
+| Database (MySQL)     | `mysql-connector-python` / `SQLAlchemy` | `PyMySQL`, `mysqlclient`             |
+| ORM / query builder  | `SQLAlchemy`                            | custom ORM, raw SQL for complex apps |
+| Testing              | `pytest`                                | `unittest`                           |
+| Date/time            | `datetime` + `zoneinfo`                 | `pytz`                               |
+| Subprocess           | `subprocess.run`                        | `os.system`                          |
+| Type checking        | `mypy`                                  | no type checking                     |
 
 ---
 
@@ -166,14 +166,14 @@ Safe to call multiple times after initialization.
 
 ### Decision Matrix
 
-| Use Case                       | Recommended             | Why                            |
-|--------------------------------|-------------------------|--------------------------------|
-| Domain entities & value objects| `dataclasses`           | Keep domain dependency-free    |
-| Internal DTOs (trusted data)   | `dataclasses`           | Lightweight, no parsing needed |
-| External input validation      | `pydantic.BaseModel`    | Type coercion, sanitization    |
-| JSON/dict serialization        | `pydantic.BaseModel`    | Built-in `.model_dump()`       |
-| Configuration from env/files   | `pydantic.BaseSettings` | Validation + env parsing       |
-| Performance-critical paths     | `dataclasses`           | Lower overhead                 |
+| Use Case                        | Recommended             | Why                            |
+|---------------------------------|-------------------------|--------------------------------|
+| Domain entities & value objects | `dataclasses`           | Keep domain dependency-free    |
+| Internal DTOs (trusted data)    | `dataclasses`           | Lightweight, no parsing needed |
+| External input validation       | `pydantic.BaseModel`    | Type coercion, sanitization    |
+| JSON/dict serialization         | `pydantic.BaseModel`    | Built-in `.model_dump()`       |
+| Configuration from env/files    | `pydantic.BaseSettings` | Validation + env parsing       |
+| Performance-critical paths      | `dataclasses`           | Lower overhead                 |
 
 ### Preference Order
 
@@ -237,13 +237,13 @@ External Input -> Pydantic (validate) -> Dataclass (domain logic) -> Pydantic (s
 
 ### When to use each
 
-| Use Case                                       | Recommended         |
-|------------------------------------------------|---------------------|
-| Status codes, error codes, log levels          | `IntEnum`           |
-| Database-backed enumerations                   | `IntEnum`           |
-| API response codes                             | `IntEnum`           |
-| Purely semantic categories (no numeric meaning)| `Enum` or `StrEnum` |
-| String-based identifiers (e.g., HTTP methods)  | `StrEnum`           |
+| Use Case                                        | Recommended         |
+|-------------------------------------------------|---------------------|
+| Status codes, error codes, log levels           | `IntEnum`           |
+| Database-backed enumerations                    | `IntEnum`           |
+| API response codes                              | `IntEnum`           |
+| Purely semantic categories (no numeric meaning) | `Enum` or `StrEnum` |
+| String-based identifiers (e.g., HTTP methods)   | `StrEnum`           |
 
 ### Example
 
@@ -403,12 +403,12 @@ async with httpx.AsyncClient(timeout=30.0) as client:
 
 ### Decision Matrix
 
-| Use Case                      | Library                  | Notes                                                    |
-|-------------------------------|--------------------------|----------------------------------------------------------|
-| **ODBC connections (any DB)** | `pyodbc`                 | Most widely used, stable, works with any ODBC driver     |
-| **MySQL (simple tasks)**      | `mysql-connector-python` | Official Oracle driver, pure Python, no external libs    |
-| **MySQL (ORM / complex)**    | `SQLAlchemy`             | Use `mysql-connector-python` as MySQL backend            |
-| **Async database access**    | `SQLAlchemy` (async)     | With `asyncio` extension + async driver                  |
+| Use Case                      | Library                  | Notes                                                 |
+|-------------------------------|--------------------------|-------------------------------------------------------|
+| **ODBC connections (any DB)** | `pyodbc`                 | Most widely used, stable, works with any ODBC driver  |
+| **MySQL (simple tasks)**      | `mysql-connector-python` | Official Oracle driver, pure Python, no external libs |
+| **MySQL (ORM / complex)**     | `SQLAlchemy`             | Use `mysql-connector-python` as MySQL backend         |
+| **Async database access**     | `SQLAlchemy` (async)     | With `asyncio` extension + async driver               |
 
 ### Usage Patterns
 
@@ -454,14 +454,14 @@ engine = create_engine(
 
 ## Testing
 
-| Component            | Library           | Notes                                      |
-|----------------------|-------------------|--------------------------------------------|
-| **Test framework**   | `pytest`          | Preferred over `unittest`                  |
-| **Coverage**         | `pytest-cov`      | Coverage reporting integrated with pytest  |
-| **Mocking**          | `unittest.mock`   | stdlib — no extra dependency needed        |
-| **Async tests**      | `pytest-asyncio`  | For testing async code                     |
-| **Parameterization** | `pytest` built-in | `@pytest.mark.parametrize`                 |
-| **Fixtures**         | `pytest` built-in | Prefer fixtures over setUp/tearDown        |
+| Component            | Library           | Notes                                     |
+|----------------------|-------------------|-------------------------------------------|
+| **Test framework**   | `pytest`          | Preferred over `unittest`                 |
+| **Coverage**         | `pytest-cov`      | Coverage reporting integrated with pytest |
+| **Mocking**          | `unittest.mock`   | stdlib — no extra dependency needed       |
+| **Async tests**      | `pytest-asyncio`  | For testing async code                    |
+| **Parameterization** | `pytest` built-in | `@pytest.mark.parametrize`                |
+| **Fixtures**         | `pytest` built-in | Prefer fixtures over setUp/tearDown       |
 
 **Rules:**
 - Use `pytest` style (functions + fixtures), not `unittest` style (classes + setUp/tearDown)
@@ -475,10 +475,10 @@ engine = create_engine(
 
 **Use high-performance compression libraries instead of stdlib `gzip`.**
 
-| Use Case          | Library                | Why                                                         |
-|-------------------|------------------------|-------------------------------------------------------------|
-| **Web transport** | `isal` (ISA-L / igzip) | Intel-optimized, 2-4x faster compression/decompression      |
-| **Storage**       | `libdeflate`           | Higher compression ratios, optimized for single-shot ops    |
+| Use Case          | Library                | Why                                                      |
+|-------------------|------------------------|----------------------------------------------------------|
+| **Web transport** | `isal` (ISA-L / igzip) | Intel-optimized, 2-4x faster compression/decompression   |
+| **Storage**       | `libdeflate`           | Higher compression ratios, optimized for single-shot ops |
 
 ```python
 # Web transport: ISA-L (igzip) — streaming, fast

@@ -48,7 +48,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name                   | Type   | Default | Description                                                                                |
-| ---------------------- | ------ | ------- | ------------------------------------------------------------------------------------------ |
+|------------------------|--------|---------|--------------------------------------------------------------------------------------------|
 | `compact`              | `bool` | `False` | Display a more compact footer.                                                             |
 | `show_command_palette` | `bool` | `True`  | Display the key to invoke the command palette (show on the right hand side of the footer). |
 

@@ -247,7 +247,7 @@ The `state` attribute will contain one of the following values:
 
 
 | Value     | Description                                                                         |
-| --------- | ----------------------------------------------------------------------------------- |
+|-----------|-------------------------------------------------------------------------------------|
 | PENDING   | The worker was created, but not yet started.                                        |
 | RUNNING   | The worker is currently running.                                                    |
 | CANCELLED | The worker was cancelled and is no longer running.                                  |

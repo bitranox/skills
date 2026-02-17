@@ -56,7 +56,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name       | Type  | Default | Description               |
-| ---------- | ----- | ------- | ------------------------- |
+|------------|-------|---------|---------------------------|
 | `template` | `str` | `""`    | The template mask string. |
 
 ### The template string format
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 A `MaskedInput` template length defines the maximum length of the input value. Each character of the mask defines a regular expression used to restrict what the user can insert in the corresponding position, and whether the presence of the character in the user input is required for the `MaskedInput` value to be considered valid, according to the following table:
 
 | Mask character | Regular expression | Required? |
-| -------------- | ------------------ | --------- |
+|----------------|--------------------|-----------|
 | `A`            | `[A-Za-z]`         | Yes       |
 | `a`            | `[A-Za-z]`         | No        |
 | `N`            | `[A-Za-z0-9]`      | Yes       |

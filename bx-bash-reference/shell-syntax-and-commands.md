@@ -18,15 +18,15 @@ The shell then parses these tokens into commands and other constructs, removes t
 
 The shell performs the following steps when it reads and executes a command:
 
-| Step | Operation |
-|------|-----------|
-| 1 | Reads input from a file (shell script), from a string supplied via the `-c` invocation option, or from the user's terminal. |
-| 2 | Breaks the input into words and operators, obeying quoting rules. Tokens are separated by **metacharacters**. Alias expansion is performed at this step. |
-| 3 | Parses the tokens into **simple commands** and **compound commands**. |
-| 4 | Performs shell expansions, breaking expanded tokens into lists of filenames, commands, and arguments. |
-| 5 | Performs any necessary **redirections** and removes redirection operators and their operands from the argument list. |
-| 6 | **Executes** the command. |
-| 7 | Optionally **waits** for the command to complete and collects its **exit status**. |
+| Step | Operation                                                                                                                                                |
+|------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1    | Reads input from a file (shell script), from a string supplied via the `-c` invocation option, or from the user's terminal.                              |
+| 2    | Breaks the input into words and operators, obeying quoting rules. Tokens are separated by **metacharacters**. Alias expansion is performed at this step. |
+| 3    | Parses the tokens into **simple commands** and **compound commands**.                                                                                    |
+| 4    | Performs shell expansions, breaking expanded tokens into lists of filenames, commands, and arguments.                                                    |
+| 5    | Performs any necessary **redirections** and removes redirection operators and their operands from the argument list.                                     |
+| 6    | **Executes** the command.                                                                                                                                |
+| 7    | Optionally **waits** for the command to complete and collects its **exit status**.                                                                       |
 
 ---
 
@@ -77,12 +77,12 @@ echo 'It'\''s a test'    # workaround: end quote, escaped quote, start quote
 
 Enclosing characters in double quotes (`"..."`) preserves the literal value of all characters within the quotes, **with the following exceptions**:
 
-| Character | Behavior inside double quotes |
-|-----------|-------------------------------|
-| `$` | Retains its special meaning (expansions) |
-| `` ` `` | Retains its special meaning (command substitution) |
-| `\` | Retains special meaning **only** when followed by: `$`, `` ` ``, `"`, `\`, or `newline`. Backslashes before these characters are removed. Backslashes before other characters are left unmodified. |
-| `!` | Retains special meaning when history expansion is enabled (except in POSIX mode) |
+| Character | Behavior inside double quotes                                                                                                                                                                      |
+|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `$`       | Retains its special meaning (expansions)                                                                                                                                                           |
+| `` ` ``   | Retains its special meaning (command substitution)                                                                                                                                                 |
+| `\`       | Retains special meaning **only** when followed by: `$`, `` ` ``, `"`, `\`, or `newline`. Backslashes before these characters are removed. Backslashes before other characters are left unmodified. |
+| `!`       | Retains special meaning when history expansion is enabled (except in POSIX mode)                                                                                                                   |
 
 A double quote may be quoted within double quotes by preceding it with a backslash:
 
@@ -98,25 +98,25 @@ The special parameters `*` and `@` have special meaning when in double quotes (s
 
 Character sequences of the form `$'STRING'` are treated as a special kind of single quotes. The sequence expands to STRING with backslash-escaped characters replaced as specified by the ANSI C standard.
 
-| Escape Sequence | Meaning |
-|-----------------|---------|
-| `\a` | Alert (bell) |
-| `\b` | Backspace |
-| `\e`, `\E` | Escape character (not in ANSI C) |
-| `\f` | Form feed |
-| `\n` | Newline |
-| `\r` | Carriage return |
-| `\t` | Horizontal tab |
-| `\v` | Vertical tab |
-| `\\` | Backslash |
-| `\'` | Single quote |
-| `\"` | Double quote |
-| `\?` | Question mark |
-| `\NNN` | Eight-bit character with octal value NNN (one to three octal digits) |
-| `\xHH` | Eight-bit character with hexadecimal value HH (one or two hex digits) |
-| `\uHHHH` | Unicode character with hex value HHHH (one to four hex digits) |
-| `\UHHHHHHHH` | Unicode character with hex value HHHHHHHH (one to eight hex digits) |
-| `\cX` | A control-X character |
+| Escape Sequence | Meaning                                                               |
+|-----------------|-----------------------------------------------------------------------|
+| `\a`            | Alert (bell)                                                          |
+| `\b`            | Backspace                                                             |
+| `\e`, `\E`      | Escape character (not in ANSI C)                                      |
+| `\f`            | Form feed                                                             |
+| `\n`            | Newline                                                               |
+| `\r`            | Carriage return                                                       |
+| `\t`            | Horizontal tab                                                        |
+| `\v`            | Vertical tab                                                          |
+| `\\`            | Backslash                                                             |
+| `\'`            | Single quote                                                          |
+| `\"`            | Double quote                                                          |
+| `\?`            | Question mark                                                         |
+| `\NNN`          | Eight-bit character with octal value NNN (one to three octal digits)  |
+| `\xHH`          | Eight-bit character with hexadecimal value HH (one or two hex digits) |
+| `\uHHHH`        | Unicode character with hex value HHHH (one to four hex digits)        |
+| `\UHHHHHHHH`    | Unicode character with hex value HHHHHHHH (one to eight hex digits)   |
+| `\cX`           | A control-X character                                                 |
 
 The expanded result is single-quoted, as if the dollar sign had not been present.
 
@@ -131,11 +131,11 @@ echo $'\u00e9'      # prints: e with acute accent
 
 Prefixing a double-quoted string with a dollar sign (`$"hello, world"`) causes the string to be **translated according to the current locale**. The `gettext` infrastructure performs the lookup and translation, using the following shell variables:
 
-| Variable | Purpose |
-|----------|---------|
-| `LC_MESSAGES` | Selects the desired language |
-| `TEXTDOMAIN` | The script's message domain (arbitrary identifier string) |
-| `TEXTDOMAINDIR` | Directory where message catalog files are stored |
+| Variable        | Purpose                                                   |
+|-----------------|-----------------------------------------------------------|
+| `LC_MESSAGES`   | Selects the desired language                              |
+| `TEXTDOMAIN`    | The script's message domain (arbitrary identifier string) |
+| `TEXTDOMAINDIR` | Directory where message catalog files are stored          |
 
 If the current locale is `C` or `POSIX`, if there are no translations available, or if the string is not translated, the dollar sign is ignored and the string is treated as a regular double-quoted string.
 
@@ -204,12 +204,12 @@ Reserved words are words that have special meaning to the shell. They are used t
 
 The following words are recognized as reserved when **unquoted** and the **first word** of a command (see below for exceptions):
 
-| | | | | | |
-|--------|--------|--------|----------|------------|--------|
-| `if` | `then` | `elif` | `else` | `fi` | `time` |
-| `for` | `in` | `until` | `while` | `do` | `done` |
-| `case` | `esac` | `coproc` | `select` | `function` | |
-| `{` | `}` | `[[` | `]]` | `!` | |
+|        |        |          |          |            |        |
+|--------|--------|----------|----------|------------|--------|
+| `if`   | `then` | `elif`   | `else`   | `fi`       | `time` |
+| `for`  | `in`   | `until`  | `while`  | `do`       | `done` |
+| `case` | `esac` | `coproc` | `select` | `function` |        |
+| `{`    | `}`    | `[[`     | `]]`     | `!`        |        |
 
 **Exceptions for positional recognition:**
 
@@ -274,11 +274,11 @@ When `time` precedes the pipeline, Bash prints **timing statistics** once the pi
 - User time consumed
 - System time consumed
 
-| Option / Detail | Description |
-|-----------------|-------------|
-| `-p` | Changes output format to POSIX-specified format |
-| `TIMEFORMAT` variable | Format string controlling how timing information is displayed |
-| POSIX mode behavior | `time` is not recognized as a reserved word if the next token begins with `-` |
+| Option / Detail       | Description                                                                                 |
+|-----------------------|---------------------------------------------------------------------------------------------|
+| `-p`                  | Changes output format to POSIX-specified format                                             |
+| `TIMEFORMAT` variable | Format string controlling how timing information is displayed                               |
+| POSIX mode behavior   | `time` is not recognized as a reserved word if the next token begins with `-`               |
 | POSIX mode standalone | `time` by itself displays total user and system time consumed by the shell and its children |
 
 `time` as a reserved word permits timing of **shell builtins**, **shell functions**, and **pipelines** -- an external `time` command cannot time these easily.
@@ -307,12 +307,12 @@ echo "$var"    # hello
 
 #### Pipeline Exit Status
 
-| Condition | Exit status |
-|-----------|-------------|
-| Default | Exit status of the **last command** in the pipeline |
+| Condition                              | Exit status                                                                                                         |
+|----------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| Default                                | Exit status of the **last command** in the pipeline                                                                 |
 | `pipefail` enabled (`set -o pipefail`) | Value of the **last (rightmost) command to exit with a non-zero status**, or zero if all commands exit successfully |
-| `!` precedes the pipeline | **Logical negation** of the exit status described above |
-| Asynchronous pipeline | Always **0** |
+| `!` precedes the pipeline              | **Logical negation** of the exit status described above                                                             |
+| Asynchronous pipeline                  | Always **0**                                                                                                        |
 
 If a pipeline is not executed asynchronously, the shell waits for **all commands** in the pipeline to terminate before returning a value.
 
@@ -339,10 +339,10 @@ A **list** is a sequence of one or more pipelines separated by one of the operat
 
 #### Operator Precedence
 
-| Precedence | Operators |
-|------------|-----------|
-| Higher | `&&`, `||` (equal to each other) |
-| Lower | `;`, `&` (equal to each other) |
+| Precedence | Operators                        |
+|------------|----------------------------------|
+| Higher     | `&&`, `||` (equal to each other) |
+| Lower      | `;`, `&` (equal to each other)   |
 
 A sequence of one or more newlines may appear in a list to delimit commands, equivalent to a semicolon.
 
@@ -590,11 +590,11 @@ esac
 
 **Clause terminators:**
 
-| Terminator | Behavior |
-|------------|----------|
-| `;;` | Completes the `case` command after the first match (standard behavior). |
-| `;&` | **Fall-through:** continues execution with the COMMAND-LIST of the **next clause** (without testing its pattern). |
-| `;;&` | **Test-next:** tests the patterns in the **next clause** and executes its COMMAND-LIST if the match succeeds, continuing the case statement. |
+| Terminator | Behavior                                                                                                                                     |
+|------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| `;;`       | Completes the `case` command after the first match (standard behavior).                                                                      |
+| `;&`       | **Fall-through:** continues execution with the COMMAND-LIST of the **next clause** (without testing its pattern).                            |
+| `;;&`      | **Test-next:** tests the patterns in the **next clause** and executes its COMMAND-LIST if the match succeeds, continuing the case statement. |
 
 **Return status:** Zero if no pattern matches. Otherwise, the exit status of the last COMMAND-LIST executed.
 
@@ -660,13 +660,13 @@ Evaluate the conditional expression EXPRESSION and return a status of **zero** (
 
 **String comparison operators:**
 
-| Operator | Behavior |
-|----------|----------|
+| Operator  | Behavior                                                                                                             |
+|-----------|----------------------------------------------------------------------------------------------------------------------|
 | `==`, `=` | Pattern match (right side is a pattern, as if `extglob` were enabled). Returns 0 if match. `=` is identical to `==`. |
-| `!=` | Negated pattern match. Returns 0 if no match. |
-| `<` | Lexicographic less-than (using current locale). |
-| `>` | Lexicographic greater-than (using current locale). |
-| `=~` | POSIX extended regular expression match (see below). |
+| `!=`      | Negated pattern match. Returns 0 if no match.                                                                        |
+| `<`       | Lexicographic less-than (using current locale).                                                                      |
+| `>`       | Lexicographic greater-than (using current locale).                                                                   |
+| `=~`      | POSIX extended regular expression match (see below).                                                                 |
 
 If the `nocasematch` shell option is enabled, `==`, `!=`, and `=~` matches are **case-insensitive**.
 
@@ -720,12 +720,12 @@ pattern='\.'
 
 **Compound expressions in `[[ ]]`** (listed in decreasing precedence):
 
-| Expression | Meaning |
-|------------|---------|
-| `( EXPRESSION )` | Returns the value of EXPRESSION. Overrides normal precedence. |
-| `! EXPRESSION` | True if EXPRESSION is false. |
-| `EXPRESSION1 && EXPRESSION2` | True if both are true. |
-| `EXPRESSION1 \|\| EXPRESSION2` | True if either is true. |
+| Expression                     | Meaning                                                       |
+|--------------------------------|---------------------------------------------------------------|
+| `( EXPRESSION )`               | Returns the value of EXPRESSION. Overrides normal precedence. |
+| `! EXPRESSION`                 | True if EXPRESSION is false.                                  |
+| `EXPRESSION1 && EXPRESSION2`   | True if both are true.                                        |
+| `EXPRESSION1 \|\| EXPRESSION2` | True if either is true.                                       |
 
 The `&&` and `||` operators use **short-circuit evaluation**: EXPRESSION2 is not evaluated if EXPRESSION1 is sufficient to determine the result.
 
@@ -783,12 +783,12 @@ echo "$x $y"    # 42 99
 
 **Key differences between `()` and `{}`:**
 
-| Feature | `( LIST )` | `{ LIST; }` |
-|---------|------------|-------------|
-| Execution environment | Subshell (separate process) | Current shell |
-| Variable persistence | No (lost after subshell exits) | Yes |
-| Syntax | Operators; no whitespace or `;` required | Reserved words; whitespace and trailing `;` required |
-| Exit status | Exit status of LIST | Exit status of LIST |
+| Feature               | `( LIST )`                               | `{ LIST; }`                                          |
+|-----------------------|------------------------------------------|------------------------------------------------------|
+| Execution environment | Subshell (separate process)              | Current shell                                        |
+| Variable persistence  | No (lost after subshell exits)           | Yes                                                  |
+| Syntax                | Operators; no whitespace or `;` required | Reserved words; whitespace and trailing `;` required |
+| Exit status           | Exit status of LIST                      | Exit status of LIST                                  |
 
 ---
 
@@ -829,10 +829,10 @@ coproc SIMPLE-COMMAND
 
 When the coprocess is executed, the shell creates an **array variable** named NAME in the context of the executing shell:
 
-| Array Element | Connected To |
-|---------------|-------------|
-| `NAME[0]` | File descriptor connected to the **standard output** of COMMAND (read from coprocess) |
-| `NAME[1]` | File descriptor connected to the **standard input** of COMMAND (write to coprocess) |
+| Array Element | Connected To                                                                          |
+|---------------|---------------------------------------------------------------------------------------|
+| `NAME[0]`     | File descriptor connected to the **standard output** of COMMAND (read from coprocess) |
+| `NAME[1]`     | File descriptor connected to the **standard input** of COMMAND (write to coprocess)   |
 
 This pipe is established **before** any redirections specified by the command. The file descriptors can be used as arguments to shell commands and redirections using standard word expansions. The file descriptors are **not available in subshells** (other than those created for command and process substitutions).
 

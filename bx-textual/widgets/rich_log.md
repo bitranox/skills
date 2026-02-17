@@ -90,7 +90,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name        | Type   | Default | Description                                                  |
-| ----------- | ------ | ------- | ------------------------------------------------------------ |
+|-------------|--------|---------|--------------------------------------------------------------|
 | `highlight` | `bool` | `False` | Automatically highlight content.                             |
 | `markup`    | `bool` | `False` | Apply markup.                                                |
 | `max_lines` | `int`  | `None`  | Maximum number of lines in the log or `None` for no maximum. |

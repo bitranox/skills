@@ -86,7 +86,7 @@ Switch {
 ## Reactive Attributes
 
 | Name    | Type   | Default | Description              |
-| ------- | ------ | ------- | ------------------------ |
+|---------|--------|---------|--------------------------|
 | `value` | `bool` | `False` | The value of the switch. |
 
 ## Messages

@@ -119,7 +119,7 @@ Placeholder {
 ## Reactive Attributes
 
 | Name      | Type  | Default     | Description                                        |
-| --------- | ----- | ----------- | -------------------------------------------------- |
+|-----------|-------|-------------|----------------------------------------------------|
 | `variant` | `str` | `"default"` | Styling variant. One of `default`, `size`, `text`. |
 
 

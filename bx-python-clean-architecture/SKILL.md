@@ -58,12 +58,12 @@ Inner layers change less frequently and for more important reasons. Outer layers
 
 You may need more or fewer layers depending on complexity. The dependency rule always applies: dependencies point inward, abstraction increases inward.
 
-| Layer | Contains | Rules |
-|-------|----------|-------|
-| **Domain** | Entities, Value Objects, Domain Services | Pure, sync, no I/O, no logs, no frameworks |
-| **Application** | Use Cases, Ports (`Protocol`s), DTOs | Orchestrates domain + ports; no framework types |
-| **Adapters** | Transport, Persistence, Messaging | Implements ports; maps DTOs <-> external formats |
-| **Composition Root** | Wiring | Binds adapters to ports per process; the only place that imports everything |
+| Layer                | Contains                                 | Rules                                                                       |
+|----------------------|------------------------------------------|-----------------------------------------------------------------------------|
+| **Domain**           | Entities, Value Objects, Domain Services | Pure, sync, no I/O, no logs, no frameworks                                  |
+| **Application**      | Use Cases, Ports (`Protocol`s), DTOs     | Orchestrates domain + ports; no framework types                             |
+| **Adapters**         | Transport, Persistence, Messaging        | Implements ports; maps DTOs <-> external formats                            |
+| **Composition Root** | Wiring                                   | Binds adapters to ports per process; the only place that imports everything |
 
 ### Data Crossing Boundaries
 
@@ -71,12 +71,12 @@ Data passed across a boundary must always be in the form most convenient for the
 
 ### Domain vs Use Cases
 
-| | Domain | Use Cases |
-|---|----------|-----------|
-| **Scope** | Core business rules (exist without automation) | Application-specific workflows (exist because system is automated) |
-| **Change rate** | Slowest | Faster (new features, workflow changes) |
-| **Dependencies** | Know nothing about use cases | Depend on domain, never the reverse |
-| **Python** | `@dataclass(frozen=True, slots=True)` with business methods | Classes in `application/use_cases/` with `execute()` |
+|                  | Domain                                                      | Use Cases                                                          |
+|------------------|-------------------------------------------------------------|--------------------------------------------------------------------|
+| **Scope**        | Core business rules (exist without automation)              | Application-specific workflows (exist because system is automated) |
+| **Change rate**  | Slowest                                                     | Faster (new features, workflow changes)                            |
+| **Dependencies** | Know nothing about use cases                                | Depend on domain, never the reverse                                |
+| **Python**       | `@dataclass(frozen=True, slots=True)` with business methods | Classes in `application/use_cases/` with `execute()`               |
 
 Use case request/response models must be **independent** -- no framework types, no entity references, no knowledge of delivery mechanism.
 
@@ -103,12 +103,12 @@ src/lending_platform/
   composition/      # compose.py -- FastAPI only appears here
 ```
 
-| Question | Good answer |
-|----------|-------------|
-| Can you tell what the system *does* from top-level folders? | Yes -- bounded contexts visible |
-| Can you tell what *framework* is used? | No -- hidden in adapters/composition |
-| Can you unit-test all use cases without any framework? | Yes -- plain dataclasses + protocol ports |
-| Could you swap the delivery mechanism (web -> CLI)? | Yes -- add adapter, zero core changes |
+| Question                                                    | Good answer                               |
+|-------------------------------------------------------------|-------------------------------------------|
+| Can you tell what the system *does* from top-level folders? | Yes -- bounded contexts visible           |
+| Can you tell what *framework* is used?                      | No -- hidden in adapters/composition      |
+| Can you unit-test all use cases without any framework?      | Yes -- plain dataclasses + protocol ports |
+| Could you swap the delivery mechanism (web -> CLI)?         | Yes -- add adapter, zero core changes     |
 
 ## Design Principles
 
@@ -135,13 +135,13 @@ External Input -> Pydantic (validate) -> Dataclass (domain) -> Pydantic (seriali
      (raw)         (adapter boundary)     (pure business logic)   (adapter boundary)      (JSON/API)
 ```
 
-| Use Case | Type | Notes |
-|----------|------|-------|
-| Domain entities/VOs | `@dataclass(frozen=True, slots=True)` | Pure, no deps |
-| Internal DTOs | `@dataclass` | When data already trusted |
-| Boundary validation | Pydantic `BaseModel` | Parse untrusted input, coerce types |
-| Serialization | Pydantic `BaseModel` | `.model_dump()`, `.model_validate()` |
-| Configuration | Pydantic `BaseSettings` | Env var parsing |
+| Use Case            | Type                                  | Notes                                |
+|---------------------|---------------------------------------|--------------------------------------|
+| Domain entities/VOs | `@dataclass(frozen=True, slots=True)` | Pure, no deps                        |
+| Internal DTOs       | `@dataclass`                          | When data already trusted            |
+| Boundary validation | Pydantic `BaseModel`                  | Parse untrusted input, coerce types  |
+| Serialization       | Pydantic `BaseModel`                  | `.model_dump()`, `.model_validate()` |
+| Configuration       | Pydantic `BaseSettings`               | Env var parsing                      |
 
 **Never:** Pass `dict[str, Any]` between modules or layers. Dicts acceptable only when: truly dynamic data, <3 keys, single function scope, no business logic.
 
@@ -169,12 +169,12 @@ class UnitOfWork(Protocol[D]):
 
 ### Reliability Patterns
 
-| Pattern | Rule |
-|---------|------|
-| **Lock ordering** | Sort IDs before acquiring locks (prevents deadlocks) |
-| **Outbox** | Persist events within same transaction; publish after commit |
-| **Idempotency** | `run_once(key, fn)` with uniqueness guard |
-| **Timeouts** | `asyncio.wait_for(coro, timeout=)`; propagate `CancelledError` |
+| Pattern           | Rule                                                           |
+|-------------------|----------------------------------------------------------------|
+| **Lock ordering** | Sort IDs before acquiring locks (prevents deadlocks)           |
+| **Outbox**        | Persist events within same transaction; publish after commit   |
+| **Idempotency**   | `run_once(key, fn)` with uniqueness guard                      |
+| **Timeouts**      | `asyncio.wait_for(coro, timeout=)`; propagate `CancelledError` |
 
 ## Boundaries
 
@@ -198,12 +198,12 @@ The boundary sits at the `Protocol`. Business rules know nothing about which ada
 
 ### Boundary Crossing Modes
 
-| Mode | Mechanism | Cost | Python example |
-|------|-----------|------|----------------|
-| **Source-level** (monolith) | Function calls, same process | Negligible | Standard `import` + `Protocol` |
-| **Deployment component** | Separate pip packages, same process | Negligible | `myapp-domain`, `myapp-adapters-postgres` |
-| **Local process** | Sockets / IPC | Moderate | FastAPI + Celery on same host |
-| **Service** | Network (HTTP/gRPC/messaging) | High | Separate deployments |
+| Mode                        | Mechanism                           | Cost       | Python example                            |
+|-----------------------------|-------------------------------------|------------|-------------------------------------------|
+| **Source-level** (monolith) | Function calls, same process        | Negligible | Standard `import` + `Protocol`            |
+| **Deployment component**    | Separate pip packages, same process | Negligible | `myapp-domain`, `myapp-adapters-postgres` |
+| **Local process**           | Sockets / IPC                       | Moderate   | FastAPI + Celery on same host             |
+| **Service**                 | Network (HTTP/gRPC/messaging)       | High       | Separate deployments                      |
 
 **Recommended approach:** Start at source-level. Push decoupling to where a service *could* be formed, but keep components in the same process. Escalate to deployment-level or service-level only when development, deployment, or operational issues demand it.
 
@@ -213,31 +213,31 @@ At runtime, boundary crossing is just a function call. The trick is managing *so
 
 Full boundaries are expensive. When the cost is too high, use a partial strategy:
 
-| Strategy | Inverted? | When to use |
-|----------|-----------|-------------|
-| **Skip the Last Step** | Yes | Full interface design, but keep both sides in same package. Expect to split later. |
-| **Strategy Pattern** | One direction | Single `Protocol` with concrete implementation. Most common in Python. |
-| **Facade** | No | Thin class grouping service calls. Unlikely to ever need full boundary. |
+| Strategy               | Inverted?     | When to use                                                                        |
+|------------------------|---------------|------------------------------------------------------------------------------------|
+| **Skip the Last Step** | Yes           | Full interface design, but keep both sides in same package. Expect to split later. |
+| **Strategy Pattern**   | One direction | Single `Protocol` with concrete implementation. Most common in Python.             |
+| **Facade**             | No            | Thin class grouping service calls. Unlikely to ever need full boundary.            |
 
 **When to draw boundaries:** Watch for friction. Implement boundaries at the inflection point where the cost of implementing becomes less than the cost of ignoring. Review boundary decisions as the system evolves.
 
-| Signal | Action |
-|--------|--------|
-| Two modules change for different reasons/rates | Draw boundary |
-| You want to swap an implementation | Draw boundary (introduce `Protocol`) |
-| Cross-team ownership | Draw boundary (independent deployability) |
-| Single developer, no swap foreseeable | Skip or use partial boundary |
+| Signal                                         | Action                                    |
+|------------------------------------------------|-------------------------------------------|
+| Two modules change for different reasons/rates | Draw boundary                             |
+| You want to swap an implementation             | Draw boundary (introduce `Protocol`)      |
+| Cross-team ownership                           | Draw boundary (independent deployability) |
+| Single developer, no swap foreseeable          | Skip or use partial boundary              |
 
 ## I/O Boundary Isolation
 
 Split behaviors that are **hard to test** from behaviors that are **easy to test** into two modules. The I/O-facing module contains hard-to-test behavior stripped to its barest essence; the logic module contains all extracted testable logic.
 
-| Boundary | I/O Side (thin) | Logic Side (testable) |
-|----------|-----------------|----------------------|
-| **UI** | View (template/renderer) | Presenter (formats View Model) |
-| **Database** | Repository adapter (SQL/ORM) | Use case + repository port |
-| **External services** | HTTP client adapter | Use case + service port |
-| **Message queues** | Consumer adapter (deserialize + ack) | Use case + event handler |
+| Boundary              | I/O Side (thin)                      | Logic Side (testable)          |
+|-----------------------|--------------------------------------|--------------------------------|
+| **UI**                | View (template/renderer)             | Presenter (formats View Model) |
+| **Database**          | Repository adapter (SQL/ORM)         | Use case + repository port     |
+| **External services** | HTTP client adapter                  | Use case + service port        |
+| **Message queues**    | Consumer adapter (deserialize + ack) | Use case + event handler       |
 
 **Presenter example:**
 
@@ -264,11 +264,11 @@ class LoanPresenter:
 
 ## Error Handling
 
-| Layer | Style |
-|-------|-------|
-| Domain/Application | Raise domain exceptions |
+| Layer               | Style                                                                                       |
+|---------------------|---------------------------------------------------------------------------------------------|
+| Domain/Application  | Raise domain exceptions                                                                     |
 | Adapters/Boundaries | Catch -> map to result envelope `{"ok": False, "error": {"code": "...", "message": "..."}}` |
-| Transport | Map -> HTTP status / exit codes |
+| Transport           | Map -> HTTP status / exit codes                                                             |
 
 **Never** let raw exceptions leak to external consumers.
 
@@ -307,23 +307,23 @@ Keep packages cohesive and their dependency graph clean:
 
 Four packaging approaches from least to most robust:
 
-| Approach | Encapsulation | Recommended? |
-|----------|---------------|-------------|
-| **By Layer** (web/, service/, data/) | Weak | No -- prototype only |
-| **By Feature** (orders/, billing/) | Moderate | Small projects |
-| **Ports & Adapters** (domain/, adapters/) | Strong | **Default choice** |
-| **By Component** (single facade per feature) | Best | Monolith-to-microservice path |
+| Approach                                     | Encapsulation | Recommended?                  |
+|----------------------------------------------|---------------|-------------------------------|
+| **By Layer** (web/, service/, data/)         | Weak          | No -- prototype only          |
+| **By Feature** (orders/, billing/)           | Moderate      | Small projects                |
+| **Ports & Adapters** (domain/, adapters/)    | Strong        | **Default choice**            |
+| **By Component** (single facade per feature) | Best          | Monolith-to-microservice path |
 
 ## Cross-Bounded-Context Communication
 
 Bounded contexts must not share domain internals. Choose one integration style per boundary:
 
-| Style | When | Mechanism |
-|-------|------|-----------|
-| **Domain Events** | Eventual consistency acceptable | Outbox -> message broker -> consumer adapter |
-| **Application Service** | Synchronous query needed | Context A's adapter calls Context B's use case via port |
-| **Shared Kernel** | Tight coupling justified (e.g., `Money` VO) | Shared `kernel/` package; both contexts depend inward on it |
-| **Anti-Corruption Layer** | Integrating legacy/external systems | Adapter translates external model to local domain model |
+| Style                     | When                                        | Mechanism                                                   |
+|---------------------------|---------------------------------------------|-------------------------------------------------------------|
+| **Domain Events**         | Eventual consistency acceptable             | Outbox -> message broker -> consumer adapter                |
+| **Application Service**   | Synchronous query needed                    | Context A's adapter calls Context B's use case via port     |
+| **Shared Kernel**         | Tight coupling justified (e.g., `Money` VO) | Shared `kernel/` package; both contexts depend inward on it |
+| **Anti-Corruption Layer** | Integrating legacy/external systems         | Adapter translates external model to local domain model     |
 
 **Rules:**
 - Never import directly between `context_a.domain` and `context_b.domain`
@@ -343,19 +343,19 @@ Use cases are **narrow vertical slices** through all layers. Each use case chang
 
 ### Decoupling Modes
 
-| Mode | Communication | When to escalate |
-|------|---------------|-----------------|
-| **Source-level** (monolith) | Direct calls | Default starting point |
-| **Deployment-level** | Same process, separate packages | When teams need independent release cycles |
-| **Service-level** | Network calls | When operational scaling demands it |
+| Mode                        | Communication                   | When to escalate                           |
+|-----------------------------|---------------------------------|--------------------------------------------|
+| **Source-level** (monolith) | Direct calls                    | Default starting point                     |
+| **Deployment-level**        | Same process, separate packages | When teams need independent release cycles |
+| **Service-level**           | Network calls                   | When operational scaling demands it        |
 
 Start source-level. A good architecture allows sliding up *and back down* this spectrum without rewriting.
 
 ### True vs Accidental Duplication
 
-| Type | Definition | Action |
-|------|-----------|--------|
-| **True** | Every change to one requires the same change to the other | Eliminate -- extract shared code |
+| Type           | Definition                                                 | Action                                |
+|----------------|------------------------------------------------------------|---------------------------------------|
+| **True**       | Every change to one requires the same change to the other  | Eliminate -- extract shared code      |
 | **Accidental** | Code looks similar *now* but evolves along different paths | **Do not unify** -- they will diverge |
 
 **Common traps:** Two use cases with similar DTOs (accidental -- each serves different actors). A DB record that looks like a view model (accidental -- keep layers decoupled). Two contexts with similar `User` types (accidental -- will evolve independently). **Rule:** When separating use cases or layers, similar code is usually accidental duplication. Verify before unifying.
@@ -364,22 +364,22 @@ Start source-level. A good architecture allows sliding up *and back down* this s
 
 The examples use `async` throughout. Adapt based on I/O profile:
 
-| Profile | Style | Notes |
-|---------|-------|-------|
-| Network I/O dominant (APIs, DBs, messaging) | `async` | Use `asyncio`, `async def`, `await` |
-| CPU-bound or simple CLI tools | Sync | Drop `async`/`await`; use regular functions |
-| Mixed | `async` with `run_in_executor` | Keep domain pure either way |
+| Profile                                     | Style                          | Notes                                       |
+|---------------------------------------------|--------------------------------|---------------------------------------------|
+| Network I/O dominant (APIs, DBs, messaging) | `async`                        | Use `asyncio`, `async def`, `await`         |
+| CPU-bound or simple CLI tools               | Sync                           | Drop `async`/`await`; use regular functions |
+| Mixed                                       | `async` with `run_in_executor` | Keep domain pure either way                 |
 
 **Domain stays the same regardless:** pure, sync, no I/O. The choice affects application and adapter layers only. Ports can define sync or async methods -- pick one per project and stay consistent.
 
 ## Testing Strategy
 
-| Type | Purpose |
-|------|---------|
-| **Unit** | Domain + use cases with in-memory adapters |
-| **Contract** | Same suite against all port implementations (parameterized) |
-| **Integration** | Real infra via composition root |
-| **E2E** | Public surface (HTTP/CLI) |
+| Type            | Purpose                                                     |
+|-----------------|-------------------------------------------------------------|
+| **Unit**        | Domain + use cases with in-memory adapters                  |
+| **Contract**    | Same suite against all port implementations (parameterized) |
+| **Integration** | Real infra via composition root                             |
+| **E2E**         | Public surface (HTTP/CLI)                                   |
 
 ### The Test Boundary
 
@@ -437,21 +437,21 @@ Keep the Testing API and its fakes/builders in a separate `testing/` package tha
 
 Frameworks want deep integration. Protect your core by keeping them in outer layers only.
 
-| Risk | Description |
-|------|-------------|
-| Architecture pollution | Framework asks you to inherit base classes into your entities/use cases |
-| Outgrowing the framework | As your product matures, the framework's design fights you |
-| Evolution divergence | Framework deprecates features you depend on |
-| Lock-in | A better alternative appears, but you're stuck |
+| Risk                     | Description                                                             |
+|--------------------------|-------------------------------------------------------------------------|
+| Architecture pollution   | Framework asks you to inherit base classes into your entities/use cases |
+| Outgrowing the framework | As your product matures, the framework's design fights you              |
+| Evolution divergence     | Framework deprecates features you depend on                             |
+| Lock-in                  | A better alternative appears, but you're stuck                          |
 
 ### The Solution: Constrain Framework Imports
 
-| Principle | Python application |
-|-----------|-------------------|
-| Keep at arm's length | Framework imports only in `adapters/` and `composition/`, never in `domain/` or `application/` |
-| Don't derive business objects from framework bases | Entities are plain `@dataclass`, not Django `Model` or SQLAlchemy `Base` |
-| Use proxies in outer layers | Adapter classes wrap framework behavior and implement your ports |
-| Let only composition root know the framework | `compose.py` wires FastAPI/Django; it's the dirtiest module -- that's OK |
+| Principle                                          | Python application                                                                             |
+|----------------------------------------------------|------------------------------------------------------------------------------------------------|
+| Keep at arm's length                               | Framework imports only in `adapters/` and `composition/`, never in `domain/` or `application/` |
+| Don't derive business objects from framework bases | Entities are plain `@dataclass`, not Django `Model` or SQLAlchemy `Base`                       |
+| Use proxies in outer layers                        | Adapter classes wrap framework behavior and implement your ports                               |
+| Let only composition root know the framework       | `compose.py` wires FastAPI/Django; it's the dirtiest module -- that's OK                       |
 
 ```python
 # WRONG: Framework in domain
@@ -500,20 +500,20 @@ def create_app() -> Application:
 
 Architecture is defined by boundaries and dependencies, not by process boundaries. Microservices are a **deployment choice**, not an architectural choice.
 
-| Fallacy | Reality |
-|---------|---------|
-| "Services are decoupled" | Still strongly coupled by shared data structures |
+| Fallacy                                   | Reality                                                                |
+|-------------------------------------------|------------------------------------------------------------------------|
+| "Services are decoupled"                  | Still strongly coupled by shared data structures                       |
 | "Services enable independent development" | Only if internal architecture is clean; monoliths can achieve the same |
-| "Adding a new feature is easy" | Cross-cutting features require coordinated changes across all services |
+| "Adding a new feature is easy"            | Cross-cutting features require coordinated changes across all services |
 
 **Rule:** Start monolith with clean internal boundaries. Extract services only when you have a proven need for independent deployment. A well-structured monolith is architecturally superior to poorly structured microservices.
 
 ## Details (What Is NOT Architecture)
 
-| Detail | Why it's not architecture | Python implication |
-|--------|--------------------------|-------------------|
-| **Database** | Just a mechanism to move data between disk and RAM | Repository ports return domain dataclasses, never ORM models |
-| **Web / UI** | An I/O device -- one of many delivery mechanisms | Route handlers are thin adapters; no business logic in routes |
+| Detail         | Why it's not architecture                                | Python implication                                               |
+|----------------|----------------------------------------------------------|------------------------------------------------------------------|
+| **Database**   | Just a mechanism to move data between disk and RAM       | Repository ports return domain dataclasses, never ORM models     |
+| **Web / UI**   | An I/O device -- one of many delivery mechanisms         | Route handlers are thin adapters; no business logic in routes    |
 | **Frameworks** | Tools for someone else's problems, not your architecture | Use in adapters/composition only; domain/application import none |
 
 **Key distinction:** The *data* is architecturally significant. The *database* is not.
@@ -549,23 +549,23 @@ Architecture is defined by boundaries and dependencies, not by process boundarie
 
 ## Operating Modes
 
-| Mode | Output | Reference |
-|------|--------|-----------|
-| **GENERATE** | Full domain-first project with tests | See `canonical-example.md` |
-| **REVIEW** | Violations + PR-ready fix checklist | See `review-checklists.md` |
-| **LIBRARY** | Small public API, `py.typed`, deprecation policy, plugins | See `library-mode.md` |
-| **SCRIPT** | Single file with logical layer sections | See `script-mode.md` |
+| Mode         | Output                                                    | Reference                  |
+|--------------|-----------------------------------------------------------|----------------------------|
+| **GENERATE** | Full domain-first project with tests                      | See `canonical-example.md` |
+| **REVIEW**   | Violations + PR-ready fix checklist                       | See `review-checklists.md` |
+| **LIBRARY**  | Small public API, `py.typed`, deprecation policy, plugins | See `library-mode.md`      |
+| **SCRIPT**   | Single file with logical layer sections                   | See `script-mode.md`       |
 
 ### Selecting a Mode
 
 The agent selects the mode based on context:
 
-| Signal | Mode |
-|--------|------|
-| "Create a new project/service/feature" | GENERATE |
-| "Review this code for architecture violations" | REVIEW |
-| "Build a reusable library/SDK/package" | LIBRARY |
-| Deliverable is a single file; no `pyproject.toml` | SCRIPT |
+| Signal                                            | Mode     |
+|---------------------------------------------------|----------|
+| "Create a new project/service/feature"            | GENERATE |
+| "Review this code for architecture violations"    | REVIEW   |
+| "Build a reusable library/SDK/package"            | LIBRARY  |
+| Deliverable is a single file; no `pyproject.toml` | SCRIPT   |
 
 If ambiguous, ask the user. A project may use multiple modes over its lifecycle (GENERATE initially, REVIEW on changes, LIBRARY if extracted).
 
@@ -601,46 +601,46 @@ Multi-context: add per-context layering + independence contracts. See `review-ch
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---------|-----|
-| Importing ORM models in domain | Domain uses plain dataclasses; adapters map to/from ORM |
-| Pydantic models in domain layer | Pydantic at boundaries only; domain uses `@dataclass(frozen=True, slots=True)` |
-| Use case returns framework response | Use case returns DTO; adapter maps to HTTP/CLI response |
-| Passing `dict[str, Any]` between layers | Define typed dataclasses or Pydantic models at each boundary |
-| Raw DB connections in use cases | Use UoW pattern; use case receives transaction-bound repos |
-| Logging in domain entities | Domain stays pure; observability hooks at adapter boundaries |
-| Reading `os.environ` in core | Centralize config parsing; inject via composition root |
-| Framework types leaking into ports | Ports use stdlib types only (`Protocol`, `dataclass`, `TypedDict`) |
-| Unifying accidentally similar DTOs | Each use case gets its own request/response -- they serve different actors and will diverge |
-| Passing entities across boundaries | Use separate DTOs; entities and view models change for different reasons |
-| Folder structure reveals framework | Organize by bounded context, not by framework convention |
-| Starting with microservices | Start monolith with clean boundaries; extract services when proven need exists |
-| Tests structurally coupled to production | Test through a Testing API that hides internal structure |
-| Premature boundary elimination | Verify duplication is real before unifying; similar code often serves different actors |
+| Mistake                                  | Fix                                                                                         |
+|------------------------------------------|---------------------------------------------------------------------------------------------|
+| Importing ORM models in domain           | Domain uses plain dataclasses; adapters map to/from ORM                                     |
+| Pydantic models in domain layer          | Pydantic at boundaries only; domain uses `@dataclass(frozen=True, slots=True)`              |
+| Use case returns framework response      | Use case returns DTO; adapter maps to HTTP/CLI response                                     |
+| Passing `dict[str, Any]` between layers  | Define typed dataclasses or Pydantic models at each boundary                                |
+| Raw DB connections in use cases          | Use UoW pattern; use case receives transaction-bound repos                                  |
+| Logging in domain entities               | Domain stays pure; observability hooks at adapter boundaries                                |
+| Reading `os.environ` in core             | Centralize config parsing; inject via composition root                                      |
+| Framework types leaking into ports       | Ports use stdlib types only (`Protocol`, `dataclass`, `TypedDict`)                          |
+| Unifying accidentally similar DTOs       | Each use case gets its own request/response -- they serve different actors and will diverge |
+| Passing entities across boundaries       | Use separate DTOs; entities and view models change for different reasons                    |
+| Folder structure reveals framework       | Organize by bounded context, not by framework convention                                    |
+| Starting with microservices              | Start monolith with clean boundaries; extract services when proven need exists              |
+| Tests structurally coupled to production | Test through a Testing API that hides internal structure                                    |
+| Premature boundary elimination           | Verify duplication is real before unifying; similar code often serves different actors      |
 
 ## Reference Files
 
-| File | Content |
-|------|---------|
-| `port-contracts.md` | All standard Protocol definitions with full code |
-| `canonical-example.md` | Complete Money Transfer example (domain through composition) |
-| `library-mode.md` | Library/SDK development: public API, versioning, plugins, packaging |
-| `script-mode.md` | Single-file scripts: PEP 723, exit codes, logical layout |
-| `review-checklists.md` | All review checklists for REVIEW mode output |
+| File                   | Content                                                             |
+|------------------------|---------------------------------------------------------------------|
+| `port-contracts.md`    | All standard Protocol definitions with full code                    |
+| `canonical-example.md` | Complete Money Transfer example (domain through composition)        |
+| `library-mode.md`      | Library/SDK development: public API, versioning, plugins, packaging |
+| `script-mode.md`       | Single-file scripts: PEP 723, exit codes, logical layout            |
+| `review-checklists.md` | All review checklists for REVIEW mode output                        |
 
 ## Glossary
 
-| Term | Definition |
-|------|-----------|
-| **Adapter** | Concrete implementation of a port (transport/persistence/messaging); a plugin to the core |
-| **Application Layer** | Use cases + port contracts (no framework types) |
-| **Boundary** | A line separating software elements; restricts knowledge between sides |
-| **Composition Root** | Process bootstrap wiring adapters to ports; the outermost wiring point |
-| **Domain** | Pure business logic (entities, value objects, domain services); the most stable layer |
-| **DomainEvent** | Base `TypedDict` all domain events extend (`type`, `v`, `id`, `at`) |
-| **Outbox** | Transactional event persistence for reliable publish-after-commit |
-| **Partial Boundary** | Lightweight boundary (strategy, facade) when full separation is too expensive |
-| **Plugin Architecture** | External details (DB, UI) are plugins to business rules via ports |
-| **Port** | Core-owned interface (`Protocol`) expressing an external dependency |
-| **Testing API** | Test-only API with superpowers (seed, freeze time, bypass auth) hiding production structure |
-| **UoW** | Port scoping a transaction, yielding tx-bound adapters to a work function |
+| Term                    | Definition                                                                                  |
+|-------------------------|---------------------------------------------------------------------------------------------|
+| **Adapter**             | Concrete implementation of a port (transport/persistence/messaging); a plugin to the core   |
+| **Application Layer**   | Use cases + port contracts (no framework types)                                             |
+| **Boundary**            | A line separating software elements; restricts knowledge between sides                      |
+| **Composition Root**    | Process bootstrap wiring adapters to ports; the outermost wiring point                      |
+| **Domain**              | Pure business logic (entities, value objects, domain services); the most stable layer       |
+| **DomainEvent**         | Base `TypedDict` all domain events extend (`type`, `v`, `id`, `at`)                         |
+| **Outbox**              | Transactional event persistence for reliable publish-after-commit                           |
+| **Partial Boundary**    | Lightweight boundary (strategy, facade) when full separation is too expensive               |
+| **Plugin Architecture** | External details (DB, UI) are plugins to business rules via ports                           |
+| **Port**                | Core-owned interface (`Protocol`) expressing an external dependency                         |
+| **Testing API**         | Test-only API with superpowers (seed, freeze time, bypass auth) hiding production structure |
+| **UoW**                 | Port scoping a transaction, yielding tx-bound adapters to a work function                   |

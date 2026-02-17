@@ -13,7 +13,7 @@ The `layout` style takes an option that defines how child widgets will be arrang
 ### Values
 
 | Value                | Description                                                                   |
-| -------------------- | ----------------------------------------------------------------------------- |
+|----------------------|-------------------------------------------------------------------------------|
 | `grid`               | Child widgets will be arranged in a grid.                                     |
 | `horizontal`         | Child widgets will be arranged along the horizontal axis, from left to right. |
 | `vertical` (default) | Child widgets will be arranged along the vertical axis, from top to bottom.   |

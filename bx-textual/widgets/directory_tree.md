@@ -64,7 +64,7 @@ if __name__ == "__main__":
 ## Reactive Attributes
 
 | Name          | Type   | Default | Description                                     |
-| ------------- | ------ | ------- | ----------------------------------------------- |
+|---------------|--------|---------|-------------------------------------------------|
 | `show_root`   | `bool` | `True`  | Show the root node.                             |
 | `show_guides` | `bool` | `True`  | Show guide lines between levels.                |
 | `guide_depth` | `int`  | `4`     | Amount of indentation between parent and child. |
