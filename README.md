@@ -1,8 +1,25 @@
+# bx_skills
+
+<!-- Badges -->
+[![CI](https://github.com/bitranox/bx_skills/actions/workflows/default_cicd_public.yml/badge.svg)](https://github.com/bitranox/bx_skills/actions/workflows/default_cicd_public.yml)
+[![CodeQL](https://github.com/bitranox/bx_skills/actions/workflows/codeql.yml/badge.svg)](https://github.com/bitranox/bx_skills/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Open in Codespaces](https://img.shields.io/badge/Codespaces-Open-blue?logo=github&logoColor=white&style=flat-square)](https://codespaces.new/bitranox/bx_skills?quickstart=1)
+[![PyPI](https://img.shields.io/pypi/v/bx_skills.svg)](https://pypi.org/project/bx_skills/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/bx_skills.svg)](https://pypi.org/project/bx_skills/)
+[![Code Style: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-46A3FF?logo=ruff&labelColor=000)](https://docs.astral.sh/ruff/)
+[![codecov](https://codecov.io/gh/bitranox/bx_skills/graph/badge.svg?token=UFBaUDIgRk)](https://codecov.io/gh/bitranox/bx_skills)
+[![Maintainability](https://qlty.sh/badges/041ba2c1-37d6-40bb-85a0-ec5a8a0aca0c/maintainability.svg)](https://qlty.sh/gh/bitranox/projects/bx_skills)
+[![Known Vulnerabilities](https://snyk.io/test/github/bitranox/bx_skills/badge.svg)](https://snyk.io/test/github/bitranox/bx_skills)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+
+
+
 # Claude Skills
 
 A collection of Claude Code skills for software engineering workflows.
 
-Skills prefixed with `bx-` are custom-built. The remaining skills are collected and adapted from community sources:
+Skills prefixed with `bx-` are custom-built or modified skills from one of the following sources :
 
 - [Vercel Agent Skills Directory](https://skills.sh)
 - [Obra Superpowers Skill Library](https://skills.sh/obra/superpowers)
@@ -14,91 +31,26 @@ Skills prefixed with `bx-` are custom-built. The remaining skills are collected 
 
 ## Installation
 
-### Linux / macOS
+```bash
+# install uv/uvx
+python -m pip install --upgrade uv
+# install bx-skills
+uvx bx_skills@latest --help
+```
 
-Clone the repo and run the sync script to install all skills at once:
+## CLI Usage
 
 ```bash
-# Clone to a permanent location
-git clone https://github.com/bitranox/skills.git ~/repos/skills
-
-# Install skills to ~/.claude/skills/
-~/repos/skills/sync-skills.sh
+bx-skills --help                                        # Show help
+bx-skills list                                          # Browse catalog
+bx-skills list -q                                       # Machine-readable list
+bx-skills status --target all --scope both              # Audit installed skills
+bx-skills install --all --target claude-code            # Install all skills
+bx-skills install bx-textual --target claude-code --scope project  # Install specific skill
+bx-skills uninstall bx-textual --target claude-code -y  # Remove a skill
+bx-skills info                                          # Version & metadata
+bx-skills tui                                           # Launch interactive TUI
 ```
-
-To update later, just run the sync script again — it pulls the latest changes automatically:
-
-```bash
-~/repos/skills/sync-skills.sh
-```
-
-To add skills to a specific project instead:
-
-```bash
-cd ~/my-project
-~/repos/skills/psync-skills.sh
-```
-
-### Windows (PowerShell 5.x+)
-
-```powershell
-# Clone to a permanent location
-git clone https://github.com/bitranox/skills.git $env:USERPROFILE\repos\skills
-
-# Install skills to ~/.claude/skills/
-& $env:USERPROFILE\repos\skills\sync-skills.ps1
-```
-
-To update later:
-
-```powershell
-& $env:USERPROFILE\repos\skills\sync-skills.ps1
-```
-
-To add skills to a specific project instead:
-
-```powershell
-cd C:\my-project
-& $env:USERPROFILE\repos\skills\psync-skills.ps1
-```
-
-## Sync Scripts
-
-Two pairs of scripts are provided (Bash and PowerShell) to sync skill directories from this repo to their target locations.
-
-### `sync-skills.sh` / `sync-skills.ps1` — Sync to user-level skills
-
-Syncs all skill directories to `~/.claude/skills/`. On Linux, ownership is inherited from `$HOME`.
-
-```bash
-# Bash - from anywhere:
-~/repos/skills/sync-skills.sh
-```
-
-```powershell
-# PowerShell - from anywhere:
-& $env:USERPROFILE\repos\skills\sync-skills.ps1
-```
-
-If you directly clone the repo into `~/.claude/skills/`, the script detects this and will only `git pull` without copying.
-
-### `psync-skills.sh` / `psync-skills.ps1` — Sync to project-level skills
-
-Syncs all skill directories to `<cwd>/.claude/skills/`. On Linux, ownership is inherited from the current working directory. Run this from the root of the project you want to add skills to.
-
-```bash
-# Bash - from a project directory:
-cd ~/my-project
-~/repos/skills/psync-skills.sh
-```
-
-```powershell
-# PowerShell - from a project directory:
-cd C:\my-project
-& $env:USERPROFILE\repos\skills\psync-skills.ps1
-```
-
-All scripts auto-detect the repo location, run `git pull` first, and skip hidden directories (`.git`) and regular files.
 
 ## Auto-Update via Shell Alias
 
@@ -107,38 +59,10 @@ All scripts auto-detect the repo location, run `git pull` first, and skip hidden
 Add the following to `~/.bashrc` to automatically sync skills before every `claude` session:
 
 ```bash
-alias claude='~/repos/skills/sync-skills.sh && command claude'
+alias claude='uvx bx_skills@latest install --all -q && command claude'
 ```
 
 Reload your shell or run `source ~/.bashrc` to activate.
-
-For project-level skills instead:
-
-```bash
-alias claude='~/repos/skills/psync-skills.sh && command claude'
-```
-
-### PowerShell
-
-Run this once to add the alias to your PowerShell profile:
-
-```powershell
-if (!(Test-Path $PROFILE)) { New-Item -Path $PROFILE -ItemType File -Force }
-Add-Content -Path $PROFILE -Value @'
-
-function Invoke-Claude {
-    & $env:USERPROFILE\repos\skills\sync-skills.ps1
-    & claude @args
-}
-Set-Alias -Name claude -Value Invoke-Claude
-'@
-```
-
-Reload PowerShell or run `. $PROFILE` to activate.
-
-For project-level skills instead, replace `sync-skills.ps1` with `psync-skills.ps1` in the snippet above.
-
-All arguments are passed through, so `claude --help`, `claude -p "prompt"`, etc. work as expected.
 
 ## Skills
 
