@@ -7,22 +7,6 @@ description: >-
   notifications, and CLI tools. Covers Proxmox VE 9.1.2.
 ---
 
-# Proxmox VE Administration Guide (Release 9.1.2)
-
-Reference documentation for Proxmox VE administration extracted from
-the official admin guide. Use the Read tool to load files relevant
-to the current task.
-
-
----
-name: bx-proxmox
-description: >-
-  Use when configuring, managing, or troubleshooting Proxmox VE -
-  installation, host administration, clusters, VMs, containers,
-  storage, Ceph, SDN, firewall, user management, HA, backups,
-  notifications, and CLI tools. Covers Proxmox VE 9.1.2.
----
-
 # Proxmox VE Operations Reference (Release 9.1.2)
 
 ---
@@ -153,9 +137,36 @@ systemctl status corosync                                  # 4. verify
 
 ---
 
-## 6. Management Commands
+## 6. Action Review Protocol
 
-### 6.1 Cluster & Node
+> **Mandatory.** Perform this review before every action executed directly on a Proxmox node, VM, or container (commands, config changes, service operations).
+
+> **Exception:** Read-only operations — reading logs, querying status, gathering information without changing anything — are considered safe and can be performed immediately without this review.
+
+### 6.1 Steelman Prompt
+
+Consider the planned action or configuration to be executed on the Proxmox server in its ideal, most successful form.
+Imagine this action represents the safest, most efficient, and optimally integrated solution.
+Articulate how this action perfectly fulfills the goals of system administration, increases stability, and fully meets user needs.
+
+### 6.2 Red-Team Prompt
+
+Review the planned Proxmox action as if you were an experienced admin or security analyst seeking to uncover potential risks.
+Identify possible weaknesses in the configuration, consider outage risks, data loss, or unintended side effects.
+Test the robustness of the plan under worst-case scenarios to ensure it remains safe and reliable even under pressure.
+
+### 6.3 Decision
+
+At the end of the red-team review, assess whether the identified risks or weaknesses are severe enough to stop the planned action.
+If the action appears safe, logical, and robust, it can be executed immediately.
+If significant uncertainties remain, the user must be explicitly asked for confirmation.
+Conclude with a clear decision: either **"Execute action"** or **"Ask user for confirmation"**.
+
+---
+
+## 7. Management Commands
+
+### 7.1 Cluster & Node
 
 ```bash
 pvecm status                                               # cluster status
@@ -178,7 +189,7 @@ pvenode stopall --timeout 300                              # stop all guests
 pvenode wakeonlan {node}                                   # Wake-on-LAN
 ```
 
-### 6.2 VM Management (`qm`)
+### 7.2 VM Management (`qm`)
 
 #### Lifecycle
 
@@ -260,7 +271,7 @@ qm set {vmid} --protection 1                               # protect
 qm set {vmid} --hotplug network,disk,usb,cpu,memory        # hotplug
 ```
 
-### 6.3 Container Management (`pct`)
+### 7.3 Container Management (`pct`)
 
 #### Lifecycle
 
@@ -329,7 +340,7 @@ pct set {vmid} --protection 1                              # protect
 
 **Supported OS types:** `alpine`, `archlinux`, `centos`, `debian`, `devuan`, `fedora`, `gentoo`, `nixos`, `opensuse`, `ubuntu`, `unmanaged`.
 
-### 6.4 Container Templates (`pveam`)
+### 7.4 Container Templates (`pveam`)
 
 ```bash
 pveam update                                               # update database
@@ -343,9 +354,9 @@ pveam remove {storage}:vztmpl/{template_name}              # remove
 
 ---
 
-## 7. Storage Management (`pvesm`)
+## 8. Storage Management (`pvesm`)
 
-### 7.1 Status & Configuration
+### 8.1 Status & Configuration
 
 ```bash
 pvesm status                                               # overview all stores
@@ -359,7 +370,7 @@ pvesm list {storage} --content iso                         # ISOs only
 pvesm list {storage} --content vztmpl                      # CT templates only
 ```
 
-### 7.2 Add Storage
+### 8.2 Add Storage
 
 **Available types:** `dir`, `nfs`, `cifs`, `pbs`, `zfspool`, `lvm`, `lvmthin`, `iscsi`, `iscsidirect`, `rbd`, `cephfs`, `btrfs`, `zfs`, `esxi`
 
@@ -389,7 +400,7 @@ pvesm add dir mydir --path /mnt/data \
   --content images,backup,iso,vztmpl --mkdir 1
 ```
 
-### 7.3 Manage Storage
+### 8.3 Manage Storage
 
 ```bash
 pvesm set {storage_id} --content images,backup             # update content types
@@ -401,7 +412,7 @@ pvesm set {storage_id} --bwlimit \
 pvesm remove {storage_id}                                  # remove config (NOT data)
 ```
 
-### 7.4 Volume Operations
+### 8.4 Volume Operations
 
 ```bash
 pvesm alloc {storage} {vmid} vm-{vmid}-disk-0 32G          # allocate disk
@@ -410,7 +421,7 @@ pvesm path {storage}:{volume}                               # get filesystem pat
 pvesm extractconfig {backup_volume}                         # extract config from backup
 ```
 
-### 7.5 Scan Remote Storage
+### 8.5 Scan Remote Storage
 
 ```bash
 pvesm scan nfs {server_ip}                                  # NFS exports
@@ -422,7 +433,7 @@ pvesm scan lvmthin {vg_name}                                # local thin pools
 pvesm scan zfs                                              # local ZFS pools
 ```
 
-### 7.6 Backup Pruning
+### 8.6 Backup Pruning
 
 ```bash
 pvesm prune-backups {storage} \
@@ -431,7 +442,7 @@ pvesm prune-backups {storage} \
 pvesm prune-backups {storage} --keep-last 3 --dry-run 1    # dry run
 ```
 
-### 7.7 Content Types
+### 8.7 Content Types
 
 | Type       | Description                      |
 |------------|----------------------------------|
@@ -444,9 +455,9 @@ pvesm prune-backups {storage} --keep-last 3 --dry-run 1    # dry run
 
 ---
 
-## 8. Backup & Restore
+## 9. Backup & Restore
 
-### 8.1 Create Backups (`vzdump`)
+### 9.1 Create Backups (`vzdump`)
 
 ```bash
 vzdump {vmid} --storage {storage} --mode snapshot \
@@ -458,7 +469,7 @@ vzdump --all --exclude 100,200 --storage {storage}         # exclude guests
 vzdump --stop                                              # stop running jobs
 ```
 
-### 8.2 Backup Options
+### 9.2 Backup Options
 
 | Option                   | Values / Example                                                  |
 |--------------------------|-------------------------------------------------------------------|
@@ -473,14 +484,14 @@ vzdump --stop                                              # stop running jobs
 | **Notes**                | `--notes-template '{{guestname}} on {{node}} ({{vmid}})'`         |
 | **PBS change detection** | `--pbs-change-detection-mode metadata` (incremental CT backups)   |
 
-### 8.3 Scheduled Backups
+### 9.3 Scheduled Backups
 
 - Configure: **Datacenter > Backup** or `/etc/pve/jobs.cfg`
 - Schedule format: Calendar events (`sat 02:00`, `*/6:00`, `mon..fri 22:00`)
 - Managed by `pvescheduler` daemon
 - **Repeat missed:** Runs skipped jobs after host was offline
 
-### 8.4 Restore
+### 9.4 Restore
 
 ```bash
 # Restore VM
@@ -496,7 +507,7 @@ pct restore {vmid} {backup_file} --storage {target_storage}
 pvesm extractconfig {backup_volume}
 ```
 
-### 8.5 Backup Encryption
+### 9.5 Backup Encryption
 
 Only with PBS storage:
 
@@ -508,7 +519,7 @@ pvesm set {pbs_storage} --encryption-key autogen           # auto-generate key
 
 ---
 
-## 9. Storage Replication (`pvesr`)
+## 10. Storage Replication (`pvesr`)
 
 > Replicates guest volumes via ZFS snapshots to another node. Reduces migration time and adds redundancy for local storage. **Supported storage: ZFS (local) only.**
 
@@ -539,9 +550,9 @@ replication: secure,network=10.1.2.0/24
 
 ---
 
-## 10. High Availability (`ha-manager`)
+## 11. High Availability (`ha-manager`)
 
-### 10.1 Status & Resources
+### 11.1 Status & Resources
 
 ```bash
 ha-manager status                                          # HA status
@@ -551,7 +562,7 @@ ha-manager config --type vm                                # VMs only
 ha-manager config --type ct                                # CTs only
 ```
 
-### 10.2 Manage Resources
+### 11.2 Manage Resources
 
 ```bash
 ha-manager add vm:{vmid} --state started \
@@ -565,7 +576,7 @@ ha-manager set vm:{vmid} --failback 1                      # enable failback
 
 **Resource states:** `started`, `stopped`, `disabled`, `enabled`, `ignored`
 
-### 10.3 Migration & Maintenance
+### 11.3 Migration & Maintenance
 
 ```bash
 ha-manager migrate vm:{vmid} {target_node}                 # online migrate
@@ -576,7 +587,7 @@ ha-manager crm-command node-maintenance enable {node}      # enable maintenance
 ha-manager crm-command node-maintenance disable {node}     # disable maintenance
 ```
 
-### 10.4 HA Rules
+### 11.4 HA Rules
 
 ```bash
 # Node affinity (prefer/restrict nodes)
@@ -591,7 +602,7 @@ ha-manager rules list                                      # list all rules
 ha-manager rules remove {rule_id}                          # remove rule
 ```
 
-### 10.5 Fencing & Logs
+### 11.5 Fencing & Logs
 
 - **Fencing:** Watchdog-based (softdog or hardware). Node fences itself on quorum loss. Use hardware watchdog (IPMI) in production.
 - **CRM log:** `journalctl -u pve-ha-crm -f`
@@ -599,9 +610,9 @@ ha-manager rules remove {rule_id}                          # remove rule
 
 ---
 
-## 11. Firewall
+## 12. Firewall
 
-### 11.1 Configuration Files
+### 12.1 Configuration Files
 
 | Scope   | Path                                   | Sections                                                  |
 |---------|----------------------------------------|-----------------------------------------------------------|
@@ -610,7 +621,7 @@ ha-manager rules remove {rule_id}                          # remove rule
 | VM/CT   | `/etc/pve/firewall/{vmid}.fw`          | `[OPTIONS]`, `[RULES]`, `[IPSET]`, `[ALIASES]`            |
 | VNet    | `/etc/pve/sdn/firewall/{vnet_name}.fw` | `[OPTIONS]`, `[RULES]` (FORWARD only, nftables)           |
 
-### 11.2 Enable Firewall
+### 12.2 Enable Firewall
 
 ```ini
 # /etc/pve/firewall/cluster.fw
@@ -624,7 +635,7 @@ policy_out: ACCEPT
 
 For VMs/CTs: set `enable: 1` in VM firewall config **AND** `firewall=1` on each network interface.
 
-### 11.3 Rule Syntax
+### 12.3 Rule Syntax
 
 ```ini
 [RULES]
@@ -644,7 +655,7 @@ GROUP webserver                               # reference security group
 **Actions:** `ACCEPT`, `DROP`, `REJECT`
 **Options:** `--source`, `--dest`, `--sport`, `--dport`, `--proto`, `--iface`, `--log`, `--icmp-type`
 
-### 11.4 Security Groups & IP Sets
+### 12.4 Security Groups & IP Sets
 
 ```ini
 # /etc/pve/firewall/cluster.fw
@@ -661,7 +672,7 @@ IN ACCEPT -p tcp -dport 443
 myserver 10.0.0.5
 ```
 
-### 11.5 Host Options
+### 12.5 Host Options
 
 | Option                                 | Default                          | Description                    |
 |----------------------------------------|----------------------------------|--------------------------------|
@@ -675,7 +686,7 @@ myserver 10.0.0.5
 | `nftables`                             | `0`                              | Enable nftables (tech preview) |
 | `log_ratelimit`                        | `enable=1,rate=1/second,burst=5` | Log rate limiting              |
 
-### 11.6 VM/CT Options
+### 12.6 VM/CT Options
 
 | Option      | Default | Description                        |
 |-------------|---------|------------------------------------|
@@ -690,9 +701,9 @@ myserver 10.0.0.5
 
 ---
 
-## 12. User & Permission Management (`pveum`)
+## 13. User & Permission Management (`pveum`)
 
-### 12.1 Users & Groups
+### 13.1 Users & Groups
 
 ```bash
 pveum user list                                            # list users
@@ -707,7 +718,7 @@ pveum group add admins --comment "Admin group"             # add group
 pveum user modify user@pve --groups admins                 # assign to group
 ```
 
-### 12.2 Roles & ACLs
+### 13.2 Roles & ACLs
 
 ```bash
 pveum role list                                            # list roles
@@ -723,7 +734,7 @@ pveum acl delete /vms/{vmid} \
   --users user@pve --roles PVEVMAdmin                      # remove ACL
 ```
 
-### 12.3 API Tokens
+### 13.3 API Tokens
 
 ```bash
 pveum user token add user@pve mytoken --privsep 0          # create (inherit perms)
@@ -731,7 +742,7 @@ pveum user token list user@pve                             # list
 pveum user token remove user@pve mytoken                   # remove
 ```
 
-### 12.4 Auth Realms
+### 13.4 Auth Realms
 
 | Realm    | Type                |
 |----------|---------------------|
@@ -747,7 +758,7 @@ pveum realm add myldap --type ldap \
   --base-dn "dc=example,dc=com" --user-attr uid           # add LDAP
 ```
 
-### 12.5 Pools & 2FA
+### 13.5 Pools & 2FA
 
 ```bash
 pveum pool add mypool --comment "Development pool"         # create pool
@@ -760,7 +771,7 @@ pveum pool set mypool --vms 100,101,102                    # assign VMs
 
 ---
 
-## 13. Ceph Management (`pveceph`)
+## 14. Ceph Management (`pveceph`)
 
 ```bash
 pveceph install                                            # install (each node)
@@ -806,7 +817,7 @@ ceph pg stat                                               # PG health
 
 ---
 
-## 14. SDN (Software-Defined Network)
+## 15. SDN (Software-Defined Network)
 
 > Virtual zones (isolation), VNets (virtual networks), and subnets (IP ranges). Applied cluster-wide.
 
@@ -825,7 +836,7 @@ pvesh set /cluster/sdn                                     # apply SDN changes
 
 ---
 
-## 15. Network Diagnostics
+## 16. Network Diagnostics
 
 ```bash
 # Interface status
@@ -862,9 +873,9 @@ journalctl -b -u corosync | grep -i "link\|knet"          # link debugging
 
 ---
 
-## 16. Service Daemons & Logs
+## 17. Service Daemons & Logs
 
-### 16.1 Daemons
+### 17.1 Daemons
 
 | Service        | Port / Address   | User     | Purpose                              |
 |----------------|------------------|----------|--------------------------------------|
@@ -878,7 +889,7 @@ journalctl -b -u corosync | grep -i "link\|knet"          # link debugging
 - `/etc/default/pvedaemon`
 - `/etc/default/pveproxy`
 
-### 16.2 Log Commands
+### 17.2 Log Commands
 
 ```bash
 journalctl -u pve-cluster -f                               # cluster filesystem
@@ -897,14 +908,14 @@ journalctl -u ceph.target -f                               # Ceph
 - Proxy access: `/var/log/pveproxy/access.log`
 - Task logs: `/var/log/pve/tasks/`
 
-### 16.3 Service Management
+### 17.3 Service Management
 
 ```bash
 systemctl reload pveproxy                                  # graceful reload (preferred)
 systemctl restart pvedaemon pveproxy                       # restart (interrupts consoles)
 ```
 
-### 16.4 pveproxy Configuration (`/etc/default/pveproxy`)
+### 17.4 pveproxy Configuration (`/etc/default/pveproxy`)
 
 | Setting                | Description                                        |
 |------------------------|----------------------------------------------------|
@@ -928,7 +939,7 @@ systemctl restart pvedaemon pveproxy                       # restart (interrupts
 
 ---
 
-## 17. Certificate Management (`pvenode`)
+## 18. Certificate Management (`pvenode`)
 
 ```bash
 pvenode cert info                                          # view certificates
@@ -957,7 +968,7 @@ pvenode config set \
 
 ---
 
-## 18. Code & Response Style
+## 19. Code & Response Style
 
 - **Responses:** Short, precise, CLI-focused (`pvesh`, `pvecm`, `pvesm`, `qm`, `pct`, `ha-manager`, `vzdump`, `pvesr`, `pvenode`, `pveceph`, `pveum`, `pveam`).
 - **Troubleshooting:** Always query logs first: `journalctl -u pvedaemon -n 50`, `pvenode task list --errors 1`, `/var/log/pveproxy/access.log`.
@@ -966,7 +977,7 @@ pvenode config set \
 
 ---
 
-## 19. Cluster-Size-Aware Workflows
+## 20. Cluster-Size-Aware Workflows
 
 | Size            | Behavior                                                                                               |
 |-----------------|--------------------------------------------------------------------------------------------------------|
@@ -1002,7 +1013,7 @@ Set VMID range: **Datacenter > Options > Next Free VMID Range**
 
 ---
 
-## 20. Node Maintenance Workflow
+## 21. Node Maintenance Workflow
 
 1. **Pre-check:** `pvecm status` (quorum survives -1 node), `ha-manager status`
 2. **Enable maintenance:** `ha-manager crm-command node-maintenance enable {node}`
@@ -1015,7 +1026,7 @@ Set VMID range: **Datacenter > Options > Next Free VMID Range**
 
 ---
 
-## 21. Cluster Cold Start (After Power Failure)
+## 22. Cluster Cold Start (After Power Failure)
 
 1. Power on nodes -- cluster is inquorate until enough nodes boot.
 2. `pve-guests` service waits for quorum before starting onboot guests.
@@ -1025,7 +1036,7 @@ Set VMID range: **Datacenter > Options > Next Free VMID Range**
 
 ---
 
-## 22. Guest Migration Details
+## 23. Guest Migration Details
 
 | Type              | Command                                                  | Notes                                         |
 |-------------------|----------------------------------------------------------|-----------------------------------------------|
@@ -1051,7 +1062,7 @@ migration: secure,network=10.1.2.0/24
 
 ---
 
-## 23. Important Configuration Files
+## 24. Important Configuration Files
 
 ### Cluster & Datacenter
 
@@ -1116,7 +1127,7 @@ migration: secure,network=10.1.2.0/24
 
 ---
 
-## 24. API Shell (`pvesh`) Quick Reference
+## 25. API Shell (`pvesh`) Quick Reference
 
 ```bash
 pvesh ls /nodes                                            # list child paths
@@ -1143,7 +1154,7 @@ pvesh usage /nodes/{node}/qemu/{vmid} \
 
 ---
 
-## 25. Troubleshooting Quick Reference
+## 26. Troubleshooting Quick Reference
 
 | Problem                 | Diagnosis                                                                                                        |
 |-------------------------|------------------------------------------------------------------------------------------------------------------|
