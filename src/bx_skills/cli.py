@@ -13,8 +13,10 @@ from bx_skills.core import (
     CATALOG_DIR,
     CLI_TARGETS,
     CLITarget,
+    InstallPlan,
     Scope,
     SkillAction,
+    SkillsError,
     build_plans,
     check_installed,
     detect_installed_targets,
@@ -61,9 +63,32 @@ def _out_console() -> Console:
     return Console(file=sys.stdout, highlight=False)
 
 
-def _err_console() -> Console:
-    """Return a Console bound to the current stderr."""
-    return Console(file=sys.stderr, highlight=False)
+# ── Plan execution ──────────────────────────────────────────────────────────
+
+
+def _execute_plans(plans: list[InstallPlan], *, quiet: bool, verb: str) -> None:
+    """Run plans, print progress, and exit with code 1 on any failure."""
+    succeeded = 0
+    failed = 0
+    for plan in plans:
+        try:
+            if plan.action == SkillAction.UNINSTALL:
+                uninstall_skill(plan)
+            else:
+                install_skill(plan)
+            succeeded += 1
+            if not quiet:
+                scope_label = "user" if plan.scope == Scope.USER else "project"
+                click.echo(f"OK {plan.skill.dir_name} -> {get_target_slug(plan.target)} ({scope_label})")
+        except SkillsError as exc:
+            failed += 1
+            click.echo(f"FAIL {exc}", err=True)
+
+    if not quiet:
+        click.echo(f"\n{succeeded} {verb}, {failed} failed.")
+
+    if failed:
+        sys.exit(1)
 
 
 # ── Internal helpers ─────────────────────────────────────────────────────────
@@ -160,25 +185,7 @@ def install(skills: tuple[str, ...], install_all: bool, targets: tuple[str, ...]
 
     actions = {s.dir_name: SkillAction.INSTALL for s in skill_list}
     plans = build_plans(skill_list, actions, resolved_targets, resolved_scopes)
-
-    succeeded = 0
-    failed = 0
-    for plan in plans:
-        try:
-            install_skill(plan)
-            succeeded += 1
-            if not quiet:
-                scope_label = "user" if plan.scope == Scope.USER else "project"
-                click.echo(f"OK {plan.skill.dir_name} -> {get_target_slug(plan.target)} ({scope_label})")
-        except Exception as exc:
-            failed += 1
-            click.echo(f"FAIL {plan.skill.dir_name}: {exc}", err=True)
-
-    if not quiet:
-        click.echo(f"\n{succeeded} installed, {failed} failed.")
-
-    if failed:
-        sys.exit(1)
+    _execute_plans(plans, quiet=quiet, verb="installed")
 
 
 # ── uninstall ────────────────────────────────────────────────────────────────
@@ -247,24 +254,7 @@ def uninstall(
             click.echo("Aborted.")
             return
 
-    succeeded = 0
-    failed = 0
-    for plan in plans:
-        try:
-            uninstall_skill(plan)
-            succeeded += 1
-            if not quiet:
-                scope_label = "user" if plan.scope == Scope.USER else "project"
-                click.echo(f"OK {plan.skill.dir_name} removed from {get_target_slug(plan.target)} ({scope_label})")
-        except Exception as exc:
-            failed += 1
-            click.echo(f"FAIL {plan.skill.dir_name}: {exc}", err=True)
-
-    if not quiet:
-        click.echo(f"\n{succeeded} removed, {failed} failed.")
-
-    if failed:
-        sys.exit(1)
+    _execute_plans(plans, quiet=quiet, verb="removed")
 
 
 # ── list ─────────────────────────────────────────────────────────────────────

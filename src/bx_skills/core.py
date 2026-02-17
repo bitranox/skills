@@ -7,6 +7,53 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
+__all__ = [
+    # Exceptions
+    "SkillsError",
+    "SkillInstallError",
+    "SkillUninstallError",
+    # Data classes & enums
+    "CLITarget",
+    "Scope",
+    "SkillAction",
+    "SkillInfo",
+    "InstallPlan",
+    # Constants
+    "CATALOG_DIR",
+    "CLI_TARGETS",
+    # Slug helpers
+    "get_target_slug",
+    "get_all_target_slugs",
+    "resolve_target_by_slug",
+    # Discovery & resolution
+    "detect_installed_targets",
+    "resolve_skills_by_names",
+    "parse_frontmatter",
+    "discover_skills",
+    "resolve_destination",
+    "check_installed",
+    # Planning & execution
+    "get_active_targets",
+    "build_plans",
+    "install_skill",
+    "uninstall_skill",
+]
+
+# ── Exceptions ────────────────────────────────────────────────────────────────
+
+
+class SkillsError(Exception):
+    """Base exception for all bx_skills operations."""
+
+
+class SkillInstallError(SkillsError):
+    """Raised when a skill install or update fails."""
+
+
+class SkillUninstallError(SkillsError):
+    """Raised when a skill uninstall fails."""
+
+
 # ── Data classes ──────────────────────────────────────────────────────────────
 
 
@@ -313,14 +360,28 @@ def _ignore_pycache(directory: str, contents: list[str]) -> set[str]:
 
 
 def install_skill(plan: InstallPlan) -> None:
-    """Install or update a skill by copying from the catalog."""
-    plan.destination.parent.mkdir(parents=True, exist_ok=True)
-    if plan.destination.exists():
-        shutil.rmtree(plan.destination)
-    shutil.copytree(plan.skill.source_path, plan.destination, ignore=_ignore_pycache)
+    """Install or update a skill by copying from the catalog.
+
+    Raises:
+        SkillInstallError: If the filesystem operation fails.
+    """
+    try:
+        plan.destination.parent.mkdir(parents=True, exist_ok=True)
+        if plan.destination.exists():
+            shutil.rmtree(plan.destination)
+        shutil.copytree(plan.skill.source_path, plan.destination, ignore=_ignore_pycache)
+    except OSError as exc:
+        raise SkillInstallError(f"{plan.skill.dir_name}: {exc}") from exc
 
 
 def uninstall_skill(plan: InstallPlan) -> None:
-    """Remove a skill directory."""
-    if plan.destination.exists():
-        shutil.rmtree(plan.destination)
+    """Remove a skill directory.
+
+    Raises:
+        SkillUninstallError: If the filesystem operation fails.
+    """
+    try:
+        if plan.destination.exists():
+            shutil.rmtree(plan.destination)
+    except OSError as exc:
+        raise SkillUninstallError(f"{plan.skill.dir_name}: {exc}") from exc

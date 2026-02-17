@@ -12,7 +12,6 @@ from bx_skills.app import (
     CellState,
     ConfirmScreen,
     HelpScreen,
-    ScopeScreen,
     SkillsInstallerApp,
     SkillsScreen,
     TargetsScreen,
@@ -63,70 +62,6 @@ async def test_targets_screen_blocks_without_selection(fake_home: Path) -> None:
         await pilot.pause()
         error_label = app.screen.query_one("#targets-error")
         assert "visible" in error_label.classes
-        assert app.screen is screen_before
-
-
-# ── ScopeScreen (class kept, removed from navigation flow) ──────────────────
-
-
-async def test_scope_screen_windsurf_warning_shown() -> None:
-    async with SkillsInstallerApp().run_test() as pilot:
-        app = pilot.app
-        app.skills = [_make_skill("s1", Path("/fake/s1"))]
-        # Include a project_only target (Windsurf-like)
-        app.selected_targets = [
-            CLITarget("TestCLI", ".test/skills/{skill}", ".test/skills/{skill}", False, ".test"),
-            CLITarget("Windsurf", "", ".windsurf/rules/{skill}", True, ".codeium/windsurf"),
-        ]
-        app.push_screen(ScopeScreen())
-        await pilot.pause()
-        warn = app.screen.query_one("#windsurf-warn")
-        assert "visible" in warn.classes
-
-
-async def test_scope_screen_blocks_user_only_with_all_project_only_targets() -> None:
-    async with SkillsInstallerApp().run_test() as pilot:
-        app = pilot.app
-        app.skills = [_make_skill("s1", Path("/fake/s1"))]
-        app.selected_targets = [
-            CLITarget("Windsurf", "", ".windsurf/rules/{skill}", True, ".codeium/windsurf"),
-        ]
-        app.push_screen(ScopeScreen())
-        await pilot.pause()
-
-        # Select only USER scope
-        sel_list = app.screen.query_one("#scope-list")
-        sel_list.select(Scope.USER)
-        sel_list.deselect(Scope.PROJECT)
-        await pilot.pause()
-
-        screen_before = app.screen
-        app.screen.action_next()
-        await pilot.pause()
-        error = app.screen.query_one("#scope-error")
-        assert "visible" in error.classes
-        assert app.screen is screen_before
-
-
-async def test_scope_screen_blocks_without_selection() -> None:
-    async with SkillsInstallerApp().run_test() as pilot:
-        app = pilot.app
-        app.skills = [_make_skill("s1", Path("/fake/s1"))]
-        app.selected_targets = [
-            CLITarget("TestCLI", ".test/skills/{skill}", ".test/skills/{skill}", False, ".test"),
-        ]
-        app.push_screen(ScopeScreen())
-        await pilot.pause()
-
-        sel_list = app.screen.query_one("#scope-list")
-        sel_list.deselect_all()
-        await pilot.pause()
-
-        screen_before = app.screen
-        app.screen.action_next()
-        await pilot.pause()
-        error = app.screen.query_one("#scope-error")
-        assert "visible" in error.classes
         assert app.screen is screen_before
 
 

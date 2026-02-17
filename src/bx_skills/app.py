@@ -1,7 +1,5 @@
 """Textual TUI application for installing AI coding assistant skills."""
 
-# pyright: reportAttributeAccessIssue=false
-
 from __future__ import annotations
 
 from enum import Enum
@@ -32,6 +30,7 @@ from bx_skills.core import (
     Scope,
     SkillAction,
     SkillInfo,
+    SkillsError,
     build_plans,
     check_installed,
     discover_skills,
@@ -93,16 +92,6 @@ Screen {
 }
 
 .error-label.visible {
-    display: block;
-}
-
-.windsurf-warning {
-    color: $warning;
-    padding: 0 2 1 2;
-    display: none;
-}
-
-.windsurf-warning.visible {
     display: block;
 }
 
@@ -243,10 +232,22 @@ class HelpScreen(ModalScreen[None]):
             yield Static(HELP_TEXT, classes="help-body")
 
 
+# ── Typed base screen ────────────────────────────────────────────────────────
+
+
+class InstallerScreen(Screen):
+    """Base screen with typed access to SkillsInstallerApp."""
+
+    @property
+    def installer(self) -> SkillsInstallerApp:
+        """Return the app instance typed as SkillsInstallerApp."""
+        return self.app  # type: ignore[return-value]
+
+
 # ── Screen 1: TargetsScreen ──────────────────────────────────────────────────
 
 
-class TargetsScreen(Screen):
+class TargetsScreen(InstallerScreen):
     """Select which CLI tools to install skills for."""
 
     BINDINGS: ClassVar[list[BindingType]] = [
@@ -288,7 +289,7 @@ class TargetsScreen(Screen):
             error_label.add_class("visible")
             return
         error_label.remove_class("visible")
-        self.app.selected_targets = selected  # type: ignore[attr-defined]
+        self.installer.selected_targets = selected
         self.app.push_screen(SkillsScreen())
 
     def action_quit_app(self) -> None:
@@ -298,92 +299,12 @@ class TargetsScreen(Screen):
         self.app.push_screen(HelpScreen())
 
 
-# ── Screen 2: ScopeScreen ────────────────────────────────────────────────────
-
-
-class ScopeScreen(Screen):
-    """Select user-level and/or project-level scope."""
-
-    BINDINGS: ClassVar[list[BindingType]] = [
-        Binding("enter", "next", "Next", priority=True),
-        Binding("escape", "go_back", "Back"),
-        Binding("q", "quit_app", "Quit", show=False),
-        Binding("question_mark", "help", "Help", key_display="?"),
-    ]
-
-    def compose(self) -> ComposeResult:
-        yield Static("Select Installation Scope", classes="screen-title")
-        yield Static(
-            "Skills can be installed globally (user) and/or per-project",
-            classes="screen-subtitle",
-        )
-
-        cwd = Path.cwd()
-        yield SelectionList[Scope](
-            Selection("User-level  (global, in ~/)", Scope.USER, initial_state=True),
-            Selection(
-                f"Project-level  (current directory: {cwd})",
-                Scope.PROJECT,
-                initial_state=False,
-            ),
-            id="scope-list",
-        )
-
-        yield Label(
-            "\u26a0 Windsurf does not support user-level skills and will be skipped for that scope.",
-            classes="windsurf-warning",
-            id="windsurf-warn",
-        )
-        yield Label("", classes="error-label", id="scope-error")
-        yield Footer()
-
-    def on_mount(self) -> None:
-        # Show Windsurf warning if Windsurf is among selected targets
-        targets: list[CLITarget] = self.app.selected_targets  # type: ignore[attr-defined]
-        has_windsurf = any(t.project_only for t in targets)
-        if has_windsurf:
-            self.query_one("#windsurf-warn", Label).add_class("visible")
-
-    def action_next(self) -> None:
-        sel_list = self.query_one("#scope-list", SelectionList)
-        selected = list(sel_list.selected)
-        error_label = self.query_one("#scope-error", Label)
-
-        if not selected:
-            error_label.update("Select at least one scope.")
-            error_label.add_class("visible")
-            return
-
-        # Check: if all selected targets are project_only, USER-only is invalid
-        targets: list[CLITarget] = self.app.selected_targets  # type: ignore[attr-defined]
-        all_project_only = all(t.project_only for t in targets)
-        if all_project_only and selected == [Scope.USER]:
-            error_label.update(
-                "All selected CLIs are project-level only. Select Project-level scope or add other CLI targets."
-            )
-            error_label.add_class("visible")
-            return
-
-        error_label.remove_class("visible")
-        self.app.selected_scopes = selected  # type: ignore[attr-defined]
-        self.app.push_screen(SkillsScreen())
-
-    def action_go_back(self) -> None:
-        self.app.pop_screen()
-
-    def action_quit_app(self) -> None:
-        self.app.exit()
-
-    def action_help(self) -> None:
-        self.app.push_screen(HelpScreen())
-
-
-# ── Screen 3: SkillsScreen ───────────────────────────────────────────────────
+# ── Screen 2: SkillsScreen ───────────────────────────────────────────────────
 
 _SCOPE_COLUMNS: list[tuple[Scope, str]] = [(Scope.USER, "user"), (Scope.PROJECT, "project")]
 
 
-class SkillsScreen(Screen):
+class SkillsScreen(InstallerScreen):
     """Select skills to install/update/delete via a DataTable with per-scope columns."""
 
     BINDINGS: ClassVar[list[BindingType]] = [
@@ -414,8 +335,8 @@ class SkillsScreen(Screen):
         yield Footer()
 
     def on_mount(self) -> None:
-        skills: list[SkillInfo] = self.app.skills  # type: ignore[attr-defined]
-        targets: list[CLITarget] = self.app.selected_targets  # type: ignore[attr-defined]
+        skills: list[SkillInfo] = self.installer.skills
+        targets: list[CLITarget] = self.installer.selected_targets
         self._user_col_active = not all(t.project_only for t in targets)
 
         table = self.query_one("#skills-table", DataTable)
@@ -514,13 +435,13 @@ class SkillsScreen(Screen):
             scope_actions = {dn: self._to_skill_action(dn, scope) for dn in self._skill_order}
             plans.extend(
                 build_plans(
-                    self.app.skills,  # type: ignore[attr-defined]
+                    self.installer.skills,
                     scope_actions,
-                    self.app.selected_targets,  # type: ignore[attr-defined]
+                    self.installer.selected_targets,
                     [scope],
                 )
             )
-        self.app._plans = plans  # type: ignore[attr-defined]
+        self.installer._plans = plans
         self.app.push_screen(ConfirmScreen())
 
     def action_select_all(self) -> None:
@@ -552,10 +473,10 @@ class SkillsScreen(Screen):
         self.app.push_screen(HelpScreen())
 
 
-# ── Screen 4: ConfirmScreen ──────────────────────────────────────────────────
+# ── Screen 3: ConfirmScreen ──────────────────────────────────────────────────
 
 
-class ConfirmScreen(Screen):
+class ConfirmScreen(InstallerScreen):
     """Review planned operations before executing."""
 
     BINDINGS: ClassVar[list[BindingType]] = [
@@ -578,8 +499,8 @@ class ConfirmScreen(Screen):
         yield Footer()
 
     def on_mount(self) -> None:
-        plans: list[InstallPlan] = self.app._plans  # type: ignore[attr-defined]
-        skills: list[SkillInfo] = self.app.skills  # type: ignore[attr-defined]
+        plans: list[InstallPlan] = self.installer._plans
+        skills: list[SkillInfo] = self.installer.skills
         log = self.query_one("#confirm-log", RichLog)
 
         # Group by action type
@@ -643,10 +564,10 @@ class ConfirmScreen(Screen):
         self.app.push_screen(HelpScreen())
 
 
-# ── Screen 5: ResultsScreen ──────────────────────────────────────────────────
+# ── Screen 4: ResultsScreen ──────────────────────────────────────────────────
 
 
-class ResultsScreen(Screen):
+class ResultsScreen(InstallerScreen):
     """Execute plans and show progressive results."""
 
     BINDINGS: ClassVar[list[BindingType]] = [
@@ -667,7 +588,7 @@ class ResultsScreen(Screen):
     @work(thread=True)
     def _execute_plans(self) -> None:
         worker = get_current_worker()
-        plans: list[InstallPlan] = self.app._plans  # type: ignore[attr-defined]
+        plans: list[InstallPlan] = self.installer._plans
         log = self.query_one("#results-log", RichLog)
 
         succeeded = 0
@@ -700,7 +621,7 @@ class ResultsScreen(Screen):
                         f"[green]\\[OK][/green] {desc} (updated)",
                     )
                 succeeded += 1
-            except Exception as exc:
+            except SkillsError as exc:
                 failed += 1
                 self.app.call_from_thread(
                     log.write,
@@ -743,7 +664,6 @@ class SkillsInstallerApp(App):
         # State — populated by screens
         self.skills: list[SkillInfo] = []
         self.selected_targets: list[CLITarget] = []
-        self.skill_actions: dict[str, SkillAction] = {}  # kept for CLI compat
         self._plans: list[InstallPlan] = []
 
     def on_mount(self) -> None:

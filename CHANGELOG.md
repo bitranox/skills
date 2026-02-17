@@ -16,6 +16,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-02-17
+
+### Added
+
+- Domain exceptions: `SkillsError`, `SkillInstallError`, `SkillUninstallError` in `core.py`.
+- `__all__` export list in `core.py` documenting the public API.
+- `InstallerScreen` typed base class for TUI screens, replacing scattered `type: ignore[attr-defined]`.
+- `[project.urls]` section in `pyproject.toml` (Homepage, Repository, Issues).
+- `homepage` URL set in package metadata.
+
+### Changed
+
+- `install_skill` and `uninstall_skill` now raise `SkillInstallError`/`SkillUninstallError` instead of raw `OSError`.
+- CLI and TUI catch `SkillsError` instead of `OSError` for consistent domain error handling.
+- CLI install/uninstall loops extracted into shared `_execute_plans` helper.
+- README skills table updated to match current catalog (18 skills).
+
+### Removed
+
+- Dead `ScopeScreen` class from TUI (scope selection merged into SkillsScreen).
+- Dead `_err_console()` function from CLI.
+- Dead `skill_actions` attribute from `SkillsInstallerApp`.
+- File-level `# pyright: reportAttributeAccessIssue=false` suppression from `app.py`.
+
 ## [1.0.0] - 2026-02-17
 
 ### Added

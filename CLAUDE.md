@@ -50,7 +50,6 @@ bx_skills/
 │   ├── test_core_execution.py  # Install/uninstall execution
 │   ├── test_core_frontmatter.py # YAML frontmatter parsing
 │   ├── test_app_screens.py     # TUI screen tests
-│   ├── test_app_skill_item.py  # TUI SkillItem widget tests
 │   ├── test_app_integration.py # TUI integration tests
 │   ├── test_init.py            # Package metadata tests
 │   └── test_theme.py           # Theme tests
@@ -69,7 +68,7 @@ This is a **flat module** project (not layered Clean Architecture). All source l
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `core.py`           | Pure business logic: data classes (`CLITarget`, `Scope`, `SkillInfo`, `InstallPlan`), discovery, path resolution, planning, installation/uninstall execution, slug mapping. |
 | `cli.py`            | CLI adapter: Rich-click commands wrapping core functions. Thin layer — validation, argument parsing, output formatting.                                                     |
-| `app.py`            | TUI adapter: Textual app with 5 screens (Targets, Scope, Skills, Confirm, Results).                                                                                         |
+| `app.py`            | TUI adapter: Textual app with 4 screens (Targets, Skills, Confirm, Results).                                                                                                 |
 | `theme.py`          | Catppuccin Mocha theme constants.                                                                                                                                           |
 | `__init__conf__.py` | Static metadata constants kept in sync with `pyproject.toml`.                                                                                                               |
 
