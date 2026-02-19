@@ -253,7 +253,7 @@ def parse_frontmatter(path: Path) -> tuple[str, str]:
         i += 1
 
     name = fields.get("name", fallback_name)
-    description = fields.get("description", "")
+    description = " ".join(fields.get("description", "").split())
     return name, description
 
 

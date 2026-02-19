@@ -50,7 +50,8 @@ def test_literal_block_scalar(tmp_path: Path) -> None:
     md.parent.mkdir()
     md.write_text("---\nname: Test\ndescription: |\n  Line one\n  line two\n---\n", encoding="utf-8")
     _, desc = parse_frontmatter(md)
-    assert desc == "Line one\nline two"
+    # Literal block scalar newlines are collapsed to spaces for descriptions
+    assert desc == "Line one line two"
 
 
 def test_literal_block_scalar_strip(tmp_path: Path) -> None:

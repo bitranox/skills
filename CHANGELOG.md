@@ -16,6 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.3] - 2026-02-19
+
+### Fixed
+
+- **core**: Descriptions from literal block scalars (`|`) now collapse newlines to spaces,
+  matching the display behavior of folded scalars (`>`). Prevents multi-line descriptions
+  from rendering with hard line breaks in the `bx-skills list` table.
+
 ## [1.2.2] - 2026-02-19
 
 ### Fixed
