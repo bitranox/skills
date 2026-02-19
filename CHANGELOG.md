@@ -16,6 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.4] - 2026-02-19
+
+### Fixed
+
+- **TUI**: Skill descriptions now word-wrap in the DataTable when the terminal window
+  is narrow. Previously long descriptions were truncated instead of wrapping to the
+  next line (`height=None` on `add_row` enables auto-height).
+
 ## [1.2.3] - 2026-02-19
 
 ### Fixed

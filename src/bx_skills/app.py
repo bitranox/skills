@@ -365,6 +365,7 @@ class SkillsScreen(InstallerScreen):
                 self._render_cell(skill.dir_name, Scope.PROJECT),
                 Text(skill.description, style="dim"),
                 key=skill.dir_name,
+                height=None,
             )
 
     def _render_cell(self, dir_name: str, scope: Scope) -> Text:
