@@ -16,6 +16,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-02-19
+
+### Changed
+
+- **bx-skill-writer**: Added CRITICAL callouts in SKILL.md and testing-skills-with-subagents.md
+  ensuring GREEN/REFACTOR tests use the current working-directory version of a skill, not a stale
+  installed copy at `~/.claude/skills/`. Added checklist items in both files. Clarified the
+  `[skill-being-tested]` placeholder to read from the working directory.
+- **bx-skill-writer**: Updated CLAUDE_MD_TESTING.md documentation variants A–D to show both
+  `.claude/skills/` (project) and `~/.claude/skills/` (personal) paths.
+
+### Fixed
+
+- **bx-humanise-de**: Corrections and refinements to AI writing detection patterns.
+- **bx-humanize-en**: Corrections and refinements to AI writing detection patterns.
+
 ## [1.2.0] - 2026-02-19
 
 ### Added

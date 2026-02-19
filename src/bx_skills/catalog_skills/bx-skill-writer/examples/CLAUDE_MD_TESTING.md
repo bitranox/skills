@@ -70,29 +70,31 @@ No mention of skills in CLAUDE.md at all.
 ```markdown
 ## Skills Library
 
-You have access to skills at `~/.claude/skills/`. Consider
-checking for relevant skills before working on tasks.
+You have access to skills at `.claude/skills/` (project) and
+`~/.claude/skills/` (personal). Consider checking for relevant
+skills before working on tasks.
 ```
 
 ### Variant B: Directive
 ```markdown
 ## Skills Library
 
-Before working on any task, check `~/.claude/skills/` for
-relevant skills. You should use skills when they exist.
+Before working on any task, check for relevant skills.
+You should use skills when they exist.
 
-Browse: `ls ~/.claude/skills/`
-Search: `grep -r "keyword" ~/.claude/skills/`
+Browse: `ls .claude/skills/ ~/.claude/skills/`
+Search: `grep -r "keyword" .claude/skills/ ~/.claude/skills/`
 ```
 
 ### Variant C: Claude.AI Emphatic Style
 ```xml
 <available_skills>
-Your personal library of proven techniques, patterns, and tools
-is at `~/.claude/skills/`.
+Your library of proven techniques, patterns, and tools lives in two places:
+- Project skills: `.claude/skills/` (shared with team, takes priority)
+- Personal skills: `~/.claude/skills/` (your own collection)
 
-Browse categories: `ls ~/.claude/skills/`
-Search: `grep -r "keyword" ~/.claude/skills/ --include="SKILL.md"`
+Browse categories: `ls .claude/skills/ ~/.claude/skills/`
+Search: `grep -r "keyword" .claude/skills/ ~/.claude/skills/ --include="SKILL.md"`
 
 Instructions: `skills/using-skills`
 </available_skills>
@@ -104,7 +106,7 @@ library contains battle-tested approaches that prevent common mistakes.
 THIS IS EXTREMELY IMPORTANT. BEFORE ANY TASK, CHECK FOR SKILLS!
 
 Process:
-1. Starting work? Check: `ls ~/.claude/skills/[category]/`
+1. Starting work? Check: `ls .claude/skills/ ~/.claude/skills/`
 2. Found a skill? READ IT COMPLETELY before proceeding
 3. Follow the skill's guidance - it prevents known pitfalls
 
@@ -119,8 +121,8 @@ If a skill existed for your task and you didn't use it, you failed.
 Your workflow for every task:
 
 1. **Before starting:** Check for relevant skills
-   - Browse: `ls ~/.claude/skills/`
-   - Search: `grep -r "symptom" ~/.claude/skills/`
+   - Browse: `ls .claude/skills/ ~/.claude/skills/`
+   - Search: `grep -r "symptom" .claude/skills/ ~/.claude/skills/`
 
 2. **If skill exists:** Read it completely before proceeding
 

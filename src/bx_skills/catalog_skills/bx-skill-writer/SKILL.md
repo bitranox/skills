@@ -11,7 +11,7 @@ description: Use when creating new skills, editing existing skills, structuring 
 
 **Personal skills live in agent-specific directories (`~/.claude/skills` for Claude Code, `~/.agents/skills/` for Codex)** 
 
-**if there is a skill in the current directory, work on THAT skill, not `~/.claude/skills` or `~/.agents/skills/`**
+**if there is a skill in the current directory, work on AND test THAT skill, not `~/.claude/skills` or `~/.agents/skills/`**
 
 You write test cases (pressure scenarios with subagents), watch them fail (baseline behavior), write the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
 
@@ -715,6 +715,12 @@ This is "watch the test fail" — you must see what agents naturally do before w
 
 Write skill that addresses those specific rationalizations. Don't add extra content for hypothetical cases.
 
+> **CRITICAL: Test the version you are editing, not a stale installed copy.**
+>
+> When developing a skill in the current directory (e.g., `./my-skill/SKILL.md`), GREEN and REFACTOR tests MUST use that file — not whatever may be installed at `~/.claude/skills/`. Two approaches:
+> 1. **Paste content into prompt** (subagent testing): Read the current `./SKILL.md` and paste its full content into the subagent prompt.
+> 2. **Copy to project skills dir** (live-agent testing): `cp -r ./my-skill/ .claude/skills/my-skill/` — project-level skills take priority over user-space.
+
 **How to dispatch a verification test:**
 
 ```
@@ -808,6 +814,7 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 - [ ] Code inline OR link to separate file
 - [ ] One excellent example (not multi-language)
 - [ ] Cross-references use skill name with REQUIRED markers (no `@` links)
+- [ ] Test uses current working-directory version (not a stale copy at `~/.claude/skills/`)
 - [ ] Run scenarios WITH skill - verify agents now comply
 
 **REFACTOR Phase - Close Loopholes:**

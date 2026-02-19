@@ -5,7 +5,7 @@ description: |
   Verwende diesen Skill beim Bearbeiten oder Überprüfen von Texten, um sie
   natürlicher und menschlicher klingen zu lassen. Basiert auf der deutschen
   Wikipedia-Seite "Anzeichen für KI-generierte Inhalte" und dem englischen
-  Pendant "Signs of AI writing". Erkennt und korrigiert Muster wie:
+  Pendant "Signs of AI writing". Erkennt und korrigiert 32 Muster wie:
   aufgeblähte Symbolik, Werbesprache, oberflächliche Partizip-Analysen,
   vage Autoritäten, Gedankenstrich-Übergebrauch, Trikolon, KI-typische
   Konjunktionen, negative Parallelismen, Fazit-Abschnitte, formelhafte
@@ -303,7 +303,7 @@ KI-Muster zu vermeiden ist nur die halbe Arbeit. Steriler, stimmloser Text ist g
 
 ### 18. Emojis und Unicode-Symbole
 
-**Problem:** KI-Chatbots setzen Emojis vor Abschnittsüberschriften oder Aufzählungspunkte. In deutschen Texten grundsätzlich unüblich und daher besonders auffällig. GPT-4-Modelle bauen auch Unicode-Symbole ein, die auf normalen Tastaturen nicht zu finden sind.
+**Problem:** KI-Chatbots setzen Emojis vor Abschnittsüberschriften oder Aufzählungspunkte. In deutschen Texten grundsätzlich unüblich und daher besonders auffällig. GPT-4-Modelle bauen auch Unicode-Symbole ein, die auf normalen Tastaturen nicht zu finden sind. Auch Sonderzeichen wie Pfeile (ersetze durch `-->`) und Smileys (ersetze durch `;-)`) entfernen.
 
 **Vorher:**
 > 🚀 **Startphase:** Das Produkt erscheint in Q3
@@ -315,21 +315,24 @@ KI-Muster zu vermeiden ist nur die halbe Arbeit. Steriler, stimmloser Text ist g
 
 ---
 
-### Icons, Emojis, Sonderzeichen
+### 19. Unnötige Tabellen
 
-Ersetze "--" durch "-" oder vermeide sie ganz
-Ersetze "-->" durch "-->"
-Ersetze Smileys durch ";-)"
-Ansonsten Icons und Emojis entfernen
+**Problem:** KI-Chatbots erzeugen gerne kleine Tabellen, die als Fließtext besser dargestellt wären. Kein Mensch würde in einem Blogpost oder einer E-Mail eine Tabelle für Daten verwenden, die in einem Satz stehen könnten.
 
-### Tabellen
+**Vorher:**
+> | Kennzahl | Wert |
+> |---|---|
+> | Marktbewertung (2024) | ca. 2,1 Mrd. USD |
+> | Wichtige Einrichtungen | NLDB, CBR Biobank |
 
-Verwende keine Tabellen, es sei denn, der Nutzer fragt ausdrücklich danach. Kein Mensch würde in einem Blogpost oder einer E-Mail Tabellen verwenden.
-Finde eine andere, bessere Art, den Inhalt darzustellen.
+**Nachher:**
+> Der indische Biobanking-Markt wurde 2024 auf etwa 2,1 Milliarden USD geschätzt. Zu den wichtigsten akkreditierten Einrichtungen gehören die NLDB und die CBR Biobank.
 
-### Typographische Anführungszeichen
+---
 
-**Problem:** ChatGPT verwendet typographische Anführungszeichen statt gerader Anführungszeichen.
+### 20. Typographische Anführungszeichen
+
+**Problem:** ChatGPT verwendet typographische Anführungszeichen statt gerader Anführungszeichen. Im Deutschen sind typographische Anführungszeichen zwar korrekt, aber ChatGPT setzt sie inkonsistent ein und wechselt innerhalb desselben Textes zwischen verschiedenen Stilen.
 
 **Vorher:**
 > Er sagte, „das Projekt liegt im Zeitplan", aber andere widersprachen.
@@ -341,7 +344,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ## KOMMUNIKATIONSMUSTER
 
-### 19. Kollaborative Kommunikationsartefakte
+### 21. Kollaborative Kommunikationsartefakte
 
 **Wörter, auf die man achten sollte:** *Ich hoffe, das hilft*, *Natürlich!*, *Sicherlich!*, *Möchten Sie...*, *gibt es noch etwas*, *lassen Sie mich wissen*, *detailliertere Aufschlüsselung*, *hier ist ein...*
 
@@ -355,7 +358,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ---
 
-### 20. Briefartiges Schreiben
+### 22. Briefartiges Schreiben
 
 **Wörter, auf die man achten sollte:** *Betreff:*, *Liebe Wikipedia-Editoren/Administratoren*, *Ich hoffe, diese Nachricht erreicht Sie wohlauf*, *Ich schreibe, um...*, *Ich bin bereit/würde gerne...*, *Vielen Dank für Ihre Zeit/Überlegung*
 
@@ -373,7 +376,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ---
 
-### 21. Wissenslücken-Hinweise
+### 23. Wissenslücken-Hinweise
 
 **Wörter, auf die man achten sollte:** *Stand [Datum]*, *Bis zu meinem letzten Update*, *Stand meines letzten Wissensupdates*, *Obwohl spezifische Details begrenzt/rar sind...*, *nicht allgemein verfügbar/dokumentiert/offengelegt*, *in den bereitgestellten/verfügbaren Quellen/Suchergebnissen...*, *basierend auf verfügbaren Informationen*
 
@@ -387,7 +390,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ---
 
-### 22. Prompt-Ablehnung
+### 24. Prompt-Ablehnung
 
 **Wörter, auf die man achten sollte:** *als KI-Sprachmodell*, *als großes Sprachmodell*, *Es tut mir leid, aber ich kann...*
 
@@ -401,7 +404,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ---
 
-### 23. Platzhaltertext
+### 25. Platzhaltertext
 
 **Problem:** KI-Chatbots generieren Antworten mit Lückentextvorlagen, die der Nutzer ersetzen soll. Manche Nutzer vergessen, die Platzhalter auszufüllen.
 
@@ -413,7 +416,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ---
 
-### 24. Sycophantischer/unterwürfiger Ton
+### 26. Sycophantischer/unterwürfiger Ton
 
 **Problem:** Übertrieben positive, gefallsüchtige Sprache.
 
@@ -427,7 +430,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ## FÜLLWÖRTER UND ABSICHERUNG
 
-### 25. Füllphrasen
+### 27. Füllphrasen
 
 **Vorher --> Nachher:**
 - "Um dieses Ziel zu erreichen" --> "Um das zu erreichen"
@@ -439,7 +442,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ---
 
-### 26. Übertriebene Absicherung
+### 28. Übertriebene Absicherung
 
 **Problem:** Übermäßiges Einschränken von Aussagen.
 
@@ -453,7 +456,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ## DEUTSCHSPEZIFISCHE KI-MUSTER
 
-### 27. ChatGPT-typischer "Sound"
+### 29. ChatGPT-typischer "Sound"
 
 **Problem:** Insbesondere ChatGPT hat einen erkennbaren "Sound": gekünstelt wirkende "Ausgewogenheit" mit wenig Inhalt. Sprachlich einwandfreie, aber gleichförmige Sätze.
 
@@ -472,7 +475,7 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ---
 
-### 28. Anglizistische Konstruktionen in deutschen Texten
+### 30. Anglizistische Konstruktionen in deutschen Texten
 
 **Problem:** Da Sprachmodelle überwiegend auf englischsprachigen Texten trainiert werden, schleichen sich anglizistische Konstruktionen ein, die im Deutschen unnatürlich wirken. Auch ein plötzlicher Wechsel zwischen verschiedenen Sprachregistern (z.B. von umgangssprachlich zu hochformal) ist auffällig.
 
@@ -484,15 +487,27 @@ Finde eine andere, bessere Art, den Inhalt darzustellen.
 
 ---
 
-### 29. Markdown-Artefakte
+### 31. Markdown-Artefakte
 
 **Problem:** KI-Chatbots sind auf Markdown als Ausgabeformat programmiert. Wenn Texte aus einem Chatbot kopiert werden, bleiben Markdown-Fragmente stehen: `#` für Überschriften, `**text**` für Fettschrift, `- ` für Listen, `---` für Trennlinien. Diese haben in normalem Fließtext nichts verloren.
 
+**Vorher:**
+> Die Stadt hat **drei Hauptindustrien**: - Tourismus - Landwirtschaft - Fertigung. Mehr Infos unter [der offiziellen Seite](https://example.com).
+
+**Nachher:**
+> Die Stadt hat drei Hauptindustrien: Tourismus, Landwirtschaft und Fertigung.
+
 ---
 
-### 30. ChatGPT-Suchreferenzen
+### 32. ChatGPT-Suchreferenzen
 
 **Problem:** ChatGPT kann "Gehe zu Suche Nr." (manchmal umgeben von Unicode-Punkten) am Ende von Sätzen einfügen. Dies sind Stellen, wo der Chatbot auf eine externe Website verlinkt hat. Auch Konstruktionen wie "RC-Network.de+1ROTOR Magazin+1" sind typische Artefakte der ChatGPT-Suchfunktion.
+
+**Vorher:**
+> Die Europäische Modellflug-Union wurde 1969 gegründet und vertrat rund 180.000 Modellflieger. RC-Network.de+1ROTOR Magazin+1
+
+**Nachher:**
+> Die Europäische Modellflug-Union wurde 1969 gegründet und vertrat rund 180.000 Modellflieger.
 
 ---
 

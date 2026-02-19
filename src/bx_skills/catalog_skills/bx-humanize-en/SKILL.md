@@ -4,7 +4,7 @@ description: |
   Remove signs of AI-generated writing from text. Use when editing or reviewing
   text to make it sound more natural and human-written. Based on Wikipedia's
   comprehensive "Signs of AI writing" guide (February 2026 revision). Detects
-  and fixes 30+ patterns including: inflated symbolism, promotional language,
+  and fixes 35 patterns including: inflated symbolism, promotional language,
   superficial -ing analyses, vague attributions, opinion overgeneralization,
   em dash overuse, rule of three, AI vocabulary words, negative parallelisms,
   section summaries, placeholder text, Markdown artifacts, table overuse,
@@ -283,7 +283,7 @@ Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as
 
 ### 17. Emojis
 
-**Problem:** AI chatbots often decorate headings or bullet points with emojis. GPT-4 models may also insert Unicode symbols not found on standard keyboards.
+**Problem:** AI chatbots often decorate headings or bullet points with emojis. GPT-4 models may also insert Unicode symbols not found on standard keyboards. Also watch for special arrows (replace with `-->`), smileys (replace with `;-)`), and other non-keyboard symbols.
 
 **Before:**
 > 🚀 **Launch Phase:** The product launches in Q3
@@ -300,10 +300,10 @@ Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as
 **Problem:** ChatGPT and DeepSeek typically use curly quotes ("...") instead of straight quotes ("..."). They may do this inconsistently within the same response. They also use curly apostrophes (') instead of straight apostrophes ('). Note: Gemini and Claude typically do not use curly quotes. Microsoft Word and macOS/iOS "smart quotes" also produce curly quotes, so this alone doesn't prove AI use.
 
 **Before:**
-> He said \u201cthe project is on track\u201d but others disagreed.
+> He said “the project is on track” but others disagreed. They felt the timeline wasn’t realistic.
 
 **After:**
-> He said "the project is on track" but others disagreed.
+> He said "the project is on track" but others disagreed. They felt the timeline wasn't realistic.
 
 ---
 
@@ -338,16 +338,19 @@ Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as
 
 ### 21. Skipping Heading Levels
 
-**Problem:** AI chatbots tend to skip level-2 headings and start from level 3. In Markdown, this means jumping from `#` to `###` without `##`.
+**Problem:** AI chatbots tend to skip level-2 headings and start from level 3. In Markdown, this means jumping from `#` to `###` without `##`. In HTML or rich text, this means going from `<h1>` to `<h3>`.
 
----
+**Before:**
+> # My Article
+> ### Background
+> ### Methods
+> ### Results
 
-### Icons, Emojis, Special Characters
-
-Replace "--" with "-" or even better, avoid them if possible.
-Replace "-->" with "-->"
-Replace smileys with ";-)"
-Otherwise remove icons and emojis.
+**After:**
+> # My Article
+> ## Background
+> ## Methods
+> ## Results
 
 ---
 
@@ -478,6 +481,12 @@ Otherwise remove icons and emojis.
 
 **Problem:** Most chatbots are factory-tuned to output Markdown. When text is copied from a chatbot into a non-Markdown context (email, document, wiki), Markdown syntax leaks through: `#` for headings, `**text**` for bold, `- ` for lists, `---` for dividers, `[text](url)` for links. The presence of faulty formatting mixed with Markdown is a strong indicator of LLM-generated content.
 
+**Before:**
+> The city has **three main industries**: - Tourism - Agriculture - Manufacturing. For more info, see [the official site](https://example.com).
+
+**After:**
+> The city has three main industries: tourism, agriculture, and manufacturing.
+
 ---
 
 ### 32. ChatGPT Search Reference Artifacts
@@ -486,11 +495,23 @@ Otherwise remove icons and emojis.
 
 Also watch for: `contentReference[oaicite:0]{index=0}`, `oai_citation`, `+1` artifacts (like "Example+1Source+1"), `[attached_file:1]`, `({"attribution":{"attributableIndex":"X-Y"}})`.
 
+**Before:**
+> The European Model Flying Union was founded in 1969 and represented approximately 180,000 model flyers. RC-Network.de+1ROTOR Magazin+1
+
+**After:**
+> The European Model Flying Union was founded in 1969 and represented approximately 180,000 model flyers.
+
 ---
 
 ### 33. UTM Source Parameters
 
 **Problem:** ChatGPT may add `utm_source=chatgpt.com` or `utm_source=openai` to URLs. Microsoft Copilot uses `utm_source=copilot.com`. Grok uses `referrer=grok.com`. This proves the chatbot was involved in finding the link, though not necessarily that it generated the surrounding text. Gemini and Claude use UTM parameters less often.
+
+**Before:**
+> Source: https://example.com/article?utm_source=chatgpt.com
+
+**After:**
+> Source: https://example.com/article
 
 ---
 
@@ -499,6 +520,12 @@ Also watch for: `contentReference[oaicite:0]{index=0}`, `oai_citation`, `+1` art
 ### 34. Sudden Shift in Writing Style
 
 **Problem:** A sudden shift in style - such as unexpectedly flawless grammar compared to surrounding text, or switching from casual to highly formal register - may indicate AI was used for part of the text. American English appearing where British English would be expected (or vice versa) is another tell, since LLMs default to American English unless prompted otherwise.
+
+**Before:**
+> so basicaly the town was founded around 1850 and ppl started farming there. The municipality subsequently experienced significant demographic growth, catalyzed by the establishment of critical transportation infrastructure and the diversification of its economic base.
+
+**After:**
+> *(Flag the style shift. Either the casual opening or the formal continuation was AI-generated. Rewrite for consistent register.)*
 
 ---
 

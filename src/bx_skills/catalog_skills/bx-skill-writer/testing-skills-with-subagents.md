@@ -83,6 +83,14 @@ Run this WITHOUT a TDD skill. Agent chooses B or C and rationalizes:
 
 Write skill addressing the specific baseline failures you documented. Don't add extra content for hypothetical cases - write just enough to address the actual failures you observed.
 
+> **CRITICAL: Test the version you are editing, not a stale installed copy.**
+>
+> If editing a skill in the current directory, the GREEN test must use that exact file. Either:
+> 1. **Paste its content** into the subagent prompt, or
+> 2. **Copy to project skills dir:** `cp -r ./my-skill/ .claude/skills/my-skill/`
+>
+> Testing against a stale user-space copy means you are not testing your changes.
+
 Run same scenarios WITH skill. Agent should now comply.
 
 If agent still fails: skill is unclear or incomplete. Revise and re-test.
@@ -157,6 +165,8 @@ Don't ask hypothetical questions - make the actual decision.
 
 You have access to: [skill-being-tested]
 ```
+
+Replace `[skill-being-tested]` with the **full content** of the SKILL.md you are currently editing (read from your working directory, not from `~/.claude/skills/`). For live-agent tests, copy the skill to `.claude/skills/` in the project first.
 
 Make agent believe it's real work, not a quiz.
 
@@ -316,6 +326,7 @@ Before deploying skill, verify you followed RED-GREEN-REFACTOR:
 
 **GREEN Phase:**
 - [ ] Wrote skill addressing specific baseline failures
+- [ ] Verified test uses the current working-directory version (not a stale user-space copy)
 - [ ] Ran scenarios WITH skill
 - [ ] Agent now complies
 
