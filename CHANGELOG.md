@@ -16,6 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-02-19
+
+### Fixed
+
+- **core**: Frontmatter parser now handles YAML literal block scalars (`|` and `|-`).
+  Previously only folded scalars (`>` / `>-`) were supported, causing `description: |`
+  multi-line values to display as the literal character `|`.
+- **md-table-formatting**: Tables inside blockquotes (`> | ... |`) are now detected and
+  reformatted. Previously only bare table rows starting with `|` were recognized.
+
 ## [1.2.1] - 2026-02-19
 
 ### Changed

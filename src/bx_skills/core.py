@@ -194,6 +194,26 @@ def resolve_skills_by_names(
 # ── Frontmatter parsing ──────────────────────────────────────────────────────
 
 
+def _read_block_scalar(indicator: str, lines: list[str], start: int) -> tuple[str, int]:
+    """Read a YAML block scalar (``>``, ``>-``, ``|``, or ``|-``).
+
+    Returns (joined_value, next_line_index).
+    """
+    block_lines: list[str] = []
+    i = start
+    while i < len(lines):
+        bline = lines[i]
+        if bline.strip() == "---" or (bline and not bline[0].isspace()):
+            break
+        block_lines.append(bline.strip())
+        i += 1
+    joiner = "\n" if indicator.startswith("|") else " "
+    value = joiner.join(bl for bl in block_lines if bl)
+    if indicator.endswith("-"):
+        value = value.rstrip()
+    return value, i
+
+
 def parse_frontmatter(path: Path) -> tuple[str, str]:
     """Parse YAML frontmatter from a SKILL.md file.
 
@@ -222,23 +242,10 @@ def parse_frontmatter(path: Path) -> tuple[str, str]:
             key = key.strip()
             raw_value = raw_value.strip()
 
-            # Handle double-quoted values
             if raw_value.startswith('"') and raw_value.endswith('"') and len(raw_value) > 1:
                 fields[key] = raw_value[1:-1]
-            # Handle folded block scalars (> or >-)
-            elif raw_value in (">", ">-"):
-                block_lines: list[str] = []
-                i += 1
-                while i < len(lines):
-                    bline = lines[i]
-                    if bline.strip() == "---" or (bline and not bline[0].isspace()):
-                        break
-                    block_lines.append(bline.strip())
-                    i += 1
-                value = " ".join(bl for bl in block_lines if bl)
-                if raw_value == ">-":
-                    value = value.rstrip()
-                fields[key] = value
+            elif raw_value in (">", ">-", "|", "|-"):
+                fields[key], i = _read_block_scalar(raw_value, lines, i + 1)
                 continue
             else:
                 fields[key] = raw_value

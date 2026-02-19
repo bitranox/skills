@@ -312,10 +312,10 @@ Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as
 **Problem:** AIs tend to create unnecessary small tables that could be better represented as prose. No human would use a table in a blog post or email for data that could be a single sentence.
 
 **Before:**
-> | Metric | Figure |
-> |---|---|
-> | Market Valuation (2024) | ~USD 2.1 billion |
-> | Major Facilities | NLDB, CBR Biobank |
+> | Metric                  | Figure            |
+> |-------------------------|-------------------|
+> | Market Valuation (2024) | ~USD 2.1 billion  |
+> | Major Facilities        | NLDB, CBR Biobank |
 
 **After:**
 > The Indian biobanking market was valued at approximately USD 2.1 billion in 2024. Major accredited facilities include the NLDB and CBR Biobank.

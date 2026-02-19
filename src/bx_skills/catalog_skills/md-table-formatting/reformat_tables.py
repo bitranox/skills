@@ -7,6 +7,7 @@ Rules applied:
 - Content cells have exactly one space padding
 - Consistent column count per table
 - Preserves column alignment markers (:---, :---:, ---:)
+- Reformats tables inside blockquotes (> | ... |), preserving prefix
 - Reformats tables inside ```markdown / ```md fenced code blocks
 - Skips tables inside all other fenced code blocks
 
@@ -164,6 +165,25 @@ def reformat_table(lines):
     return result
 
 
+def _strip_blockquote(line):
+    """Strip blockquote prefix (``> ``) from a line.
+
+    Returns (prefix, rest) where *prefix* is the blockquote marker(s)
+    including trailing space (e.g. ``"> "``, ``"> > "``) or ``""`` if the
+    line is not inside a blockquote.
+    """
+    prefix = ""
+    rest = line
+    while rest.startswith(">"):
+        rest = rest[1:]
+        if rest.startswith(" "):
+            prefix += "> "
+            rest = rest[1:]
+        else:
+            prefix += ">"
+    return prefix, rest
+
+
 def reformat_file(filepath, *, check_only=False, backup=False):
     """Reformat all tables in a file.
 
@@ -185,7 +205,11 @@ def reformat_file(filepath, *, check_only=False, backup=False):
 
     def flush_table():
         if table_lines:
-            result.extend(reformat_table(list(table_lines)))
+            prefixes = [t[0] for t in table_lines]
+            contents = [t[1] for t in table_lines]
+            formatted = reformat_table(contents)
+            for prefix, fline in zip(prefixes, formatted):
+                result.append(prefix + fline if prefix else fline)
             table_lines.clear()
 
     for line in lines:
@@ -225,9 +249,11 @@ def reformat_file(filepath, *, check_only=False, backup=False):
             continue
 
         # Collect table rows (must start with | and contain at least one more |)
+        # Also detect tables inside blockquotes (> | ... |)
         stripped = line.strip()
-        if stripped.startswith("|") and "|" in stripped[1:]:
-            table_lines.append(stripped)
+        bq_prefix, table_content = _strip_blockquote(stripped)
+        if table_content.startswith("|") and "|" in table_content[1:]:
+            table_lines.append((bq_prefix, table_content))
         else:
             flush_table()
             result.append(line)

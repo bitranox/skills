@@ -45,6 +45,22 @@ def test_folded_block_scalar_strip(tmp_path: Path) -> None:
     assert desc == "Stripped line"
 
 
+def test_literal_block_scalar(tmp_path: Path) -> None:
+    md = tmp_path / "skill" / "SKILL.md"
+    md.parent.mkdir()
+    md.write_text("---\nname: Test\ndescription: |\n  Line one\n  line two\n---\n", encoding="utf-8")
+    _, desc = parse_frontmatter(md)
+    assert desc == "Line one\nline two"
+
+
+def test_literal_block_scalar_strip(tmp_path: Path) -> None:
+    md = tmp_path / "skill" / "SKILL.md"
+    md.parent.mkdir()
+    md.write_text("---\nname: Test\ndescription: |-\n  Stripped line\n---\n", encoding="utf-8")
+    _, desc = parse_frontmatter(md)
+    assert desc == "Stripped line"
+
+
 def test_missing_file_returns_fallback(tmp_path: Path) -> None:
     md = tmp_path / "my-skill" / "SKILL.md"
     md.parent.mkdir()
