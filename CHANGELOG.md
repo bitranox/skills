@@ -16,6 +16,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-02-19
+
+### Fixed
+
+- Dependency pin: bumped `virtualenv>=20.37.0` to `>=20.38.0` (v20.37.0 was yanked from PyPI).
+
+### Changed
+
+- CI/CD workflow updated for public repository defaults.
+- Bandit configured to read `pyproject.toml` for scan settings.
+
+### Added
+
+- Empty Quickstart notebook placeholder.
+
 ## [1.1.0] - 2026-02-17
 
 ### Added
