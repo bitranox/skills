@@ -1,5 +1,5 @@
 ---
-name: bx-humanizer-de
+name: bx-humanize-de
 description: |
   Entfernt Anzeichen von KI-generiertem Text aus deutschsprachigen Texten.
   Verwende diesen Skill beim Bearbeiten oder Überprüfen von Texten, um sie

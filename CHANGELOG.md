@@ -16,6 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.9] - 2026-02-23
+
+### Fixed
+
+- **bx-humanize-de**: Renamed directory from `bx-humanise-de` to `bx-humanize-de`
+  for consistent American English spelling across the catalog.
+- **bx-humanize-de / bx-humanize-en**: Fixed frontmatter `name` fields — changed
+  `bx-humanizer-de` → `bx-humanize-de` and `bx-humanizer-en` → `bx-humanize-en`
+  to match their directory names.
+
 ## [1.2.8] - 2026-02-20
 
 ### Fixed
