@@ -18,7 +18,8 @@ Remember their choice as the **fix mode** for the rest of the pipeline.
 
 ## Step 1 — Run Tests
 
-Run `make test` and capture the full output.
+Run `make test` (if available) and capture the full output.
+Run `make testintegration` (if available) and capture the full output.
 
 ## Step 2 — Fix All Errors
 
